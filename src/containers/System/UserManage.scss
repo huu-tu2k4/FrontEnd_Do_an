@@ -1,0 +1,85 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.btn-edit {
+    padding: 5px 10px;
+    background-color: transparent;
+    color: orange;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: transparent !important;
+        color: orange !important;
+    }
+}
+
+.btn-delete {
+    padding: 5px 10px;
+    background-color: transparent;
+    color: red;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: transparent !important;
+        color: red !important;
+    }
+}
+
+.modal-user-container {
+  .modal-content {
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .close {
+        background-color: transparent !important;
+        color: white;
+        border: none;
+        font-size: 27px;
+      }
+    }
+  }
+    
+  .modal-user-body {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      width:49%;
+
+      &.input-container-address {
+        width: 100%;
+      }
+
+
+      .input {
+        border-radius: 3px;
+        border: 1px solid #cccccc;
+        outline: none;
+        padding: 0 10px;
+        height: 30px;
+      }
+    }
+  }
+}

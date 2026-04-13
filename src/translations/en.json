@@ -1,4 +1,30 @@
 {
+    "home_header": {
+        "specialty": "SPECIALTY",
+        "language": "Language",
+        "english": "English",
+        "vietnamese": "Vietnamese",
+        "logout": "Logout",
+        "find_doctor_by_specialty": "Find Doctor by Specialty",
+        "medical_examination": "MEDICAL EXAMINATION",
+        "select_hospital_clinic": "Select Hospital/Clinic",
+        "doctor": "DOCTOR",
+        "find_good_doctor": "Find Good Doctor",
+        "package": "PACKAGE",
+        "full_body_checkup": "Full Body Checkup",
+        "support": "Support"
+    },
+    "banner": {
+        "title1": "MEDICAL PLATFORM",
+        "title2": "COMPREHENSIVE HEALTHCARE",
+        "search-placeholder": "Search for medical specialties...",
+        "child1": "Specialty Examination",
+        "child2": "Remote Consultation",
+        "child3": "General Checkup",
+        "child4": "Medical Tests",
+        "child5": "Mental Health",
+        "child6": "Dental Checkup"
+    },
     "common": {
         "add": "Add",
         "edit": "Edit",
