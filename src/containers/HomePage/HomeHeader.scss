@@ -2,6 +2,10 @@
     height: 60px;
     width: 100%;
     padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: white;
 
     .home-header-content {
 
@@ -66,18 +70,29 @@
             .language {
                 .language-vi {
                     cursor: pointer;
+                    opacity: 0.3;
                     &.active {
+                        opacity: 1 !important;
                         font-weight: bold;
-                        color: lightblue;
+                        color: lightcoral;
+                    }
+
+                    &:hover {
+                        opacity: 0.8;
                     }
                 }
 
                 .language-en {
                     margin: 0 10px;
                     cursor: pointer;
+                    opacity: 0.3;
                     &.active {
                         font-weight: bold;
                         color: lightseagreen;
+                        opacity: 1 !important;
+                    }
+                    &:hover {
+                        opacity: 0.8;
                     }
                 }
             }
