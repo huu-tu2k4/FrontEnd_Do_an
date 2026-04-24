@@ -75,8 +75,22 @@
         "position": "Chức vụ",
         "position_P1": "Quản lý",
         "position_P2": "Nhân viên",
-        "submit": "Tạo",
+        "create": "Thêm mới",
+        "edit": "Lưu",
         "cancel": "Hủy",
-        "choose-image": "Chọn ảnh"
+        "choose-image": "Chọn ảnh",
+        "create_success": "Tạo người dùng thành công!"
+    }
+    ,
+    "common": {
+        "warning": "Cảnh báo"
+    },
+    "validation": {
+        "invalid_email": "Email không hợp lệ",
+        "email_in_use": "Email đã tồn tại, vui lòng thử email khác!",
+        "invalid_password": "Mật khẩu tối thiểu 6 ký tự và chứa chữ và số",
+        "invalid_phone": "Số điện thoại phải gồm 9-12 chữ số",
+        "missing_fields": "Vui lòng điền các trường bắt buộc",
+        "required": "Trường này là bắt buộc"
     }
 }

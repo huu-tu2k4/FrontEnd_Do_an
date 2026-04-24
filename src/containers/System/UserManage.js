@@ -139,6 +139,7 @@ class UserManage extends Component {
                 <div className="text-center title">Manage users</div>
                 <div>
                     <button 
+                    type="button"
                     className="btn btn-primary px-3"
                     onClick={() => this.handleAddNewUser()}
                     >
@@ -165,10 +166,10 @@ class UserManage extends Component {
                                         <td key={`lastName-${index}`}>{item.lastName}</td>
                                         <td key={`address-${index}`}>{item.address}</td>
                                         <td>
-                                            <button className="btn-edit" onClick={() => this.handleEditUser(item)}>
+                                            <button type="button" className="btn-edit" onClick={() => this.handleEditUser(item)}>
                                                 <i className="fas fa-pencil-alt"></i>
                                             </button>
-                                            <button className="btn-delete" onClick={() => this.handleDeleteUser(item)}>
+                                            <button type="button" className="btn-delete" onClick={() => this.handleDeleteUser(item)}>
                                                 <i className="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
