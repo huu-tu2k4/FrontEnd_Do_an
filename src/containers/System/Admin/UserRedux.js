@@ -64,14 +64,14 @@ class UserRedux extends Component {
             let arr = this.props.roleRedux;
             this.setState({
                 roleArr: arr,
-                role: arr && arr.length > 0 ? arr[0].key : ''
+                role: arr && arr.length > 0 ? arr[0].keyMap : ''
             })
         }
         if (prevProps.positionRedux !== this.props.positionRedux) {
             let arr = this.props.positionRedux;
             this.setState({
                 positionArr: arr,
-                position: arr && arr.length > 0 ? arr[0].key : ''
+                position: arr && arr.length > 0 ? arr[0].keyMap : ''
             })
         }
         if (prevProps.listUsers !== this.props.listUsers) {
@@ -85,8 +85,8 @@ class UserRedux extends Component {
                 address: '',
                 phoneNumber: '',
                 gender: '',
-                position: arrPosition && arrPosition.length > 0 ? arrPosition[0].key : '',
-                role: arrRole && arrRole.length > 0 ? arrRole[0].key : '',
+                position: arrPosition && arrPosition.length > 0 ? arrPosition[0].keyMap : '',
+                role: arrRole && arrRole.length > 0 ? arrRole[0].keyMap : '',
                 avatar: '',
                 userEditId: '',
                 action: CRUD_ACTIONS.CREATE,
@@ -434,7 +434,7 @@ class UserRedux extends Component {
                                             {
                                                 roles && roles.length > 0 && roles.map((role, index) => {
                                                     return (
-                                                        <option key={role.key || index} value={role.key}>
+                                                        <option key={role.keyMap || index} value={role.keyMap}>
                                                             {this.props.language === 'vi' ? role.valueVi : role.valueEn}
                                                         </option>
                                                     )
@@ -449,7 +449,7 @@ class UserRedux extends Component {
                                             {
                                                 positions && positions.length > 0 && positions.map((position, index) => {
                                                     return (
-                                                        <option key={position.key || index} value={position.key}>
+                                                        <option key={position.keyMap || index} value={position.keyMap}>
                                                             {this.props.language === 'vi' ? position.valueVi : position.valueEn}
                                                         </option>
                                                     )
@@ -466,7 +466,7 @@ class UserRedux extends Component {
                                         <div>
                                             {genders && genders.length > 0 && genders.map((g, idx) => {
                                                 const label = this.props.language === 'vi' ? g.valueVi : g.valueEn;
-                                                const val = g.key || idx;
+                                                const val = g.keyMap || idx;
                                                 return (
                                                     <div className="form-check form-check-inline" key={val}>
                                                         <input

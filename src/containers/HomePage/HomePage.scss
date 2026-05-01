@@ -19,10 +19,10 @@
                     background: url("../../assets/medicalFacility/anh_benh_vien.png");
                 }
                 &.section-doctor {
-                    background: url("../../assets/doctor/doctor.png");
                     width: 120px;
                     height: 120px;
                     border-radius: 50%;
+                    overflow: hidden;
                 }
                 &.section-handbook {
                     background: url("../../assets/handbook/handbook.png");
@@ -34,6 +34,9 @@
             }
         }
     }
+}
+.slick-disabled {
+    display: none !important;
 }
 .section-share {
     height: 330px;
@@ -84,6 +87,7 @@
 
     .section-customize {
         padding: 5px;
+        cursor: pointer;
         .customize-border {
             border: 1px solid #ea4d4d;
             

@@ -48,6 +48,10 @@
             "manage-specialty": "Quản lý chuyên khoa",
             "handbook": "Cẩm nang",
             "manage-handbook": "Quản lý cẩm nang"
+        },
+        "doctor": {
+            "manage-schedule": "Quản lý lịch khám",
+            "schedule": "Lịch khám"
         }
     }
     ,
@@ -80,8 +84,15 @@
         "cancel": "Hủy",
         "choose-image": "Chọn ảnh",
         "create_success": "Tạo người dùng thành công!"
-    }
-    ,
+    },
+    "admin": {
+        "manage-doctor": {
+            "select-doctor": "Chọn bác sĩ",
+            "description": "Mô tả",
+            "save": "Lưu bác sĩ",
+            "create": "Tạo bác sĩ"
+        }
+    },
     "common": {
         "warning": "Cảnh báo"
     },
@@ -92,5 +103,14 @@
         "invalid_phone": "Số điện thoại phải gồm 9-12 chữ số",
         "missing_fields": "Vui lòng điền các trường bắt buộc",
         "required": "Trường này là bắt buộc"
+    },
+    "manage-schedule": {
+        "save": "Lưu",
+        "title": "Quản lý lịch khám",
+        "select-doctor": "Chọn bác sĩ",
+        "select-date": "Chọn ngày",
+        "select-hour": "Chọn giờ",
+        "save-schedule": "Lưu lịch khám",
+        "create-schedule": "Tạo lịch khám"
     }
 }

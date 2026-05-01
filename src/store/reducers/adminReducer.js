@@ -5,7 +5,10 @@ const initialState = {
     genders: [],
     roles: [],
     positions: [],
-    users: []
+    users: [],
+    topDoctors: [],
+    allDoctors: [],
+    allScheduleTime: []
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -60,6 +63,41 @@ const adminReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_ALL_USERS_FAILED:
             state.users = [];
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_TOP_DOCTOR_SUCCESS:
+            let copyStateTopDoctor = { ...state };
+            copyStateTopDoctor.topDoctors = action.data;
+            return {
+                ...copyStateTopDoctor
+            }
+        case actionTypes.FETCH_TOP_DOCTOR_FAILED:
+            state.topDoctors = [];
+            console.log('check data top doctor failed: ', state.topDoctors);
+            return {
+                ...state
+            }
+
+        case actionTypes.FETCH_ALL_DOCTORS_SUCCESS:
+            let copyStateAllDoctors = { ...state };
+            copyStateAllDoctors.allDoctors = action.data;
+            return {
+                ...copyStateAllDoctors
+            }
+        case actionTypes.FETCH_ALL_DOCTORS_FAILED:
+            state.allDoctors = [];
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_SUCCESS:
+            let copyStateAllCodeScheduleTime = { ...state };
+            copyStateAllCodeScheduleTime.allScheduleTime = action.data;
+            return {
+                ...copyStateAllCodeScheduleTime
+            }
+        case actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILED:
+            state.allScheduleTime = [];
             return {
                 ...state
             }

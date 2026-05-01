@@ -2,7 +2,8 @@ import actionTypes from '../actions/actionTypes';
 
 const initialState = {
     isLoggedIn: false,
-    userInfo: null
+    userInfo: null,
+    detailDoctor: {}
 }
 
 const userReducer = (state = initialState, action) => {
@@ -24,6 +25,17 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: false,
                 userInfo: null
+            }
+        case actionTypes.FETCH_DETAIL_DOCTOR_SUCCESS:
+            let copyDetailDoctor = { ...state };
+            copyDetailDoctor.detailDoctor = action.data;
+            return {
+                ...copyDetailDoctor
+            };
+        case actionTypes.FETCH_DETAIL_DOCTOR_FAILED:
+            state.detailDoctor = {};
+            return {
+                ...state
             }
         default:
             return state;

@@ -2,15 +2,24 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
 import './TableManageUser.scss';
+
+const mdParser = new MarkdownIt(/* Markdown-it options */);
+function handleEditorChange({ html, text }) {
+    console.log('handleEditorChange', html, text);
+}
+
+
 
 class TableManageUser extends Component {
 
     constructor(props){
         super(props);
         this.state = {
-            
+            listUsers: []
         }
     }
 
@@ -36,6 +45,7 @@ class TableManageUser extends Component {
     
     render() {
         return (
+            <React.Fragment>
                 <table id="customers">
                     <tbody>
                         <tr>
@@ -45,7 +55,7 @@ class TableManageUser extends Component {
                             <th>Address</th>
                             <th>Action</th>
                         </tr>
-                        {this.props.listUsers.map((item, index) => {
+                        {(this.props.listUsers || []).map((item, index) => {
                             return (
                                 <tr key={index}>
                                     <td>{item.email}</td>
@@ -65,6 +75,14 @@ class TableManageUser extends Component {
                         })} 
                     </tbody>
                 </table>
+                <div style={{ marginTop: '16px' }}>Testing markdown editor below:</div>
+                <MdEditor
+                    value="# Hello Markdown"
+                    renderHTML={text => mdParser.render(text)}
+                    onChange={handleEditorChange}
+                    style={{ height: '500px' }}
+                />   
+            </React.Fragment>
         );
     }
 

@@ -13,7 +13,7 @@
         "package": "PACKAGE",
         "full_body_checkup": "Full Body Checkup",
         "support": "Support",
-        "wellcome": "Wellcome, "
+        "wellcome": "Welcome, "
     },
     "banner": {
         "title1": "MEDICAL PLATFORM",
@@ -48,6 +48,10 @@
             "manage-specialty": "Manage Specialty",
             "handbook": "Health Handbook",
             "manage-handbook": "Manage Health Handbook"
+        },
+        "doctor": {
+            "manage-schedule": "Manage Schedule",
+            "schedule": "Schedule"
         }
     },
     "user": {
@@ -80,6 +84,14 @@
         "choose-image": "Choose Image",
         "create_success": "Create a new user successfully!"
     },
+    "admin": {
+        "manage-doctor": {
+            "select-doctor": "Select Doctor",
+            "description": "Description",
+            "save": "Save Doctor",
+            "create": "Create Doctor"
+        }
+    },
     "common": {
         "warning": "Warning"
     },
@@ -90,5 +102,14 @@
         "invalid_phone": "Phone number must be 9-12 digits",
         "missing_fields": "Please fill in required fields",
         "required": "This field is required"
+    },
+    "manage-schedule": {
+        "save": "Save Schedule",
+        "title": "Manage Schedule",
+        "select-doctor": "Select Doctor",
+        "select-date": "Select Date",
+        "save-schedule": "Save Schedule",
+        "create-schedule": "Create Schedule",
+        "select-hour": "Select Hour"
     }
 }
