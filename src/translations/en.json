@@ -86,10 +86,23 @@
     },
     "admin": {
         "manage-doctor": {
+            "create_title": "Add Doctor Information",
+            "edit_title": "Edit Doctor Information",
+            "doctor": "Doctor",
             "select-doctor": "Select Doctor",
             "description": "Description",
             "save": "Save Doctor",
-            "create": "Create Doctor"
+            "create": "Create Doctor",
+            "price": "Price",
+            "select-price": "Select Price",
+            "payment": "Payment",
+            "select-payment": "Select Payment",
+            "province": "Province",
+            "select-province": "Select Province",
+            "clinic_name": "Clinic Name",
+            "clinic_address": "Clinic Address",
+            "note": "Note",
+            "content": "Doctor Introduction Content"
         }
     },
     "common": {
@@ -111,5 +124,18 @@
         "save-schedule": "Save Schedule",
         "create-schedule": "Create Schedule",
         "select-hour": "Select Hour"
+    }
+    ,
+    "patient": {
+        "detail-doctor": {
+            "schedule": "Doctor's Schedule",
+            "no_time": "No available appointment times on the selected day. Please choose another day.",
+            "price": "Price: ",
+            "payment": "Payment method: ",
+            "address": "Clinic address: ",
+            "hide-price": "Hide price table",
+            "show-price": "Show price table"
+        }
+        
     }
 }

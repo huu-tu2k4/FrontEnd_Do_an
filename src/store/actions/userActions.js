@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { getDetailInforDoctor } from '../../services/userService';
+import { getDetailInforDoctor, getScheduleDoctorByDate } from '../../services/userService';
 
 export const addUserSuccess = () => ({
     type: actionTypes.ADD_USER_SUCCESS
@@ -42,3 +42,19 @@ export const fetchDetailDoctorSuccess = (data) => ({
 export const fetchDetailDoctorFailed = () => ({
     type: actionTypes.FETCH_DETAIL_DOCTOR_FAILED
 })
+
+export const fetchDoctorScheduleByDate = (doctorId, date) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getScheduleDoctorByDate(doctorId, date);
+            if (res && res.errCode === 0) {
+                dispatch({ type: actionTypes.FETCH_SCHEDULE_DOCTOR_BY_DATE_SUCCESS, data: res.data });
+            } else {
+                dispatch({ type: actionTypes.FETCH_SCHEDULE_DOCTOR_BY_DATE_FAILED });
+            }
+        } catch (e) {
+            dispatch({ type: actionTypes.FETCH_SCHEDULE_DOCTOR_BY_DATE_FAILED });
+            console.log('Error fetching doctor schedule by date:', e);
+        }
+    }
+}

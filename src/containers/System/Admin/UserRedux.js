@@ -12,8 +12,6 @@ import {CRUD_ACTIONS, CommonUtils} from '../../../utils';
 import TableManageUser from "./TableManageUser";
 
 import './UserRedux.scss';
-import { create, update } from 'lodash';
-import e from 'cors';
 class UserRedux extends Component {
 
     constructor(props) {

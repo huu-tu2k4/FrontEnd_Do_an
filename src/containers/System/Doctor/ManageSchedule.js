@@ -96,7 +96,7 @@ class ManageSchedule extends Component {
         }
     }
 
-    handleSaveSchedule = () => {
+    handleSaveSchedule = async () => {
         let { rangeTime, selectedDoctor, currentDate } = this.state;
         let result = [];
         if (!currentDate) {
@@ -112,7 +112,7 @@ class ManageSchedule extends Component {
             return;
         }
 
-        let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+        let formatedDate = new Date(currentDate).getTime();
         
         if (rangeTime && rangeTime.length > 0 && selectedDoctor && _.isEmpty(selectedDoctor) === false) {
             let selectedTime = rangeTime.filter(item => item.isSelected === true);
@@ -120,7 +120,6 @@ class ManageSchedule extends Component {
                 selectedTime.map(item => {
                     let object = {};
                     object.doctorId = selectedDoctor.value;
-                    // object.date = moment(currentDate).startOf('day').valueOf();
                     object.date = formatedDate;
                     object.timeType = item.keyMap;
                     result.push(object);
@@ -128,10 +127,11 @@ class ManageSchedule extends Component {
             }
         }
         console.log('check result: ', result);
-        // this.props.saveDetailDoctor({
-        //     doctorId: selectedDoctor.value,
-        //     arrSchedule: result
-        // })
+        let res = await this.props.saveBulkScheduleDoctor({
+            arrSchedule: result,
+            doctorId: selectedDoctor.value,
+            date: formatedDate
+        });
     }
 
 
@@ -160,7 +160,7 @@ class ManageSchedule extends Component {
                                 value={this.state.currentDate}
                                 className="form-control"
                                 onChange={this.handleChangeDatePicker}
-                                minDate={new Date()}
+                                minDate={moment().startOf('day').toDate()}
                             />
 
                         </div>
@@ -209,7 +209,8 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
         saveDetailDoctor: (data) => dispatch(actions.saveDetailDoctor(data)),
-        fetchAllCodeScheduleTime: () => dispatch(actions.fetchAllCodeScheduleTime())
+        fetchAllCodeScheduleTime: () => dispatch(actions.fetchAllCodeScheduleTime()),
+        saveBulkScheduleDoctor: (data) => dispatch(actions.saveBulkScheduleDoctor(data))
     };
 };
 

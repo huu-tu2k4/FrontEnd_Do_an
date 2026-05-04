@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { emitter } from '../../utils/emitter';
 import _ from 'lodash';
-import e from 'cors';
 
 
 class ModalEditUser extends Component {

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import HomeHeader from '../../HomePage/HomeHeader';
 import * as actions from '../../../store/actions';
+import DoctorSchedule from './DoctorSchedule';
+import DoctorExtraInfor from './DoctorExtraInfor';
 
 import './DetailDoctor.scss';
 import { lang } from 'moment';
@@ -12,13 +14,15 @@ class DetailDoctor extends Component {
         super(props);
         this.state = {
             detailDoctor: {},
-            nameDoctor: ''
+            nameDoctor: '',
+            currentId: -1
         }
     }
 
     componentDidMount() {
         if(this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id;
+            this.setState({ currentId: id });
             this.props.fetchDetailDoctor(id);
         }
     }
@@ -53,7 +57,8 @@ class DetailDoctor extends Component {
 
     render() {
         let detailDoctor = this.state.detailDoctor;
-        console.log('check state detail doctor: ', this.state.detailDoctor);
+        console.log('check state:', this.state);
+        let { language } = this.props;
         return (
             <>
                 <HomeHeader isShowBanner={false} />
@@ -66,7 +71,9 @@ class DetailDoctor extends Component {
                         </div>
                         <div className="content-right">
                             <div className="up">
-                                <div className="name-doctor">{this.state.nameDoctor}</div>
+                                <div className="name-doctor">
+                                    {detailDoctor && detailDoctor.positionData ? (language === 'vi' ? detailDoctor.positionData.valueVi : detailDoctor.positionData.valueEn) + ', ' : ''}{this.state.nameDoctor}
+                                </div>
                             </div>
                             <div className="down">
                                 {detailDoctor.markdownData && detailDoctor.markdownData.description &&
@@ -76,9 +83,12 @@ class DetailDoctor extends Component {
                         </div>
                     </div>
                     <div className="schedule-doctor">
-                    </div>
-                    <div className="schedule-doctor">
-
+                        <div className="content-left">
+                            <DoctorSchedule doctorIdFromParent={this.state.currentId} />
+                        </div>
+                        <div className="content-right">
+                            <DoctorExtraInfor doctorIdFromParent={this.state.currentId} />
+                        </div>
                     </div>
                     <div className="detail-infor-doctor">
                         {detailDoctor.markdownData && detailDoctor.markdownData.contentHTML &&

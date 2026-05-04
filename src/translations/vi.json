@@ -87,11 +87,24 @@
     },
     "admin": {
         "manage-doctor": {
+            "create_title": "Thêm thông tin bác sĩ",
+            "edit_title": "Chỉnh sửa thông tin bác sĩ",
+            "doctor": "Bác sĩ",
             "select-doctor": "Chọn bác sĩ",
             "description": "Mô tả",
             "save": "Lưu bác sĩ",
-            "create": "Tạo bác sĩ"
-        }
+            "create": "Tạo bác sĩ",
+            "price": "Giá khám bệnh",
+            "select-price": "Chọn Giá",
+            "payment": "Phương thức thanh toán",
+            "select-payment": "Chọn Phương Thức",
+            "province": "Tỉnh Thành",
+            "select-province": "Chọn Tỉnh Thành",
+            "clinic_name": "Tên Phòng Khám",
+            "clinic_address": "Địa Chỉ Phòng Khám",
+            "note": "Ghi Chú",
+            "content": "Nội dung giới thiệu bác sĩ"
+        }            
     },
     "common": {
         "warning": "Cảnh báo"
@@ -112,5 +125,18 @@
         "select-hour": "Chọn giờ",
         "save-schedule": "Lưu lịch khám",
         "create-schedule": "Tạo lịch khám"
+    }
+    ,
+    "patient": {
+        "detail-doctor": {
+            "schedule": "Lịch khám",
+            "no_time": "Không có thời gian khám nào vào ngày đã chọn. Vui lòng chọn ngày khác.",
+            "price": "Giá khám: ",
+            "payment": "Phương thức thanh toán: ",
+            "address": "Địa chỉ phòng khám: ",
+            "hide-price": "Ẩn bảng giá",
+            "show-price": "Xem chi tiết"
+        }
+        
     }
 }

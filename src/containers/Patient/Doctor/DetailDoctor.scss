@@ -36,6 +36,27 @@
         }
     }
 
+    .schedule-doctor {
+        display: flex;
+        margin: 0 100px;
+        margin-bottom: 20px;
+        padding: 10px 0;
+        min-height: 200px;
+        .content-left {
+            width: 50%;
+            padding: 10px;
+            // border: 1px solid #54d23e;
+            background-color: #f9f9f9;
+            
+        }
+        .content-right {
+            width: 50%;
+            padding: 10px;
+            // border: 1px solid #cb1c1c;
+            background-color: #f9f9f9;
+        }
+    }
+
     .detail-infor-doctor {
         border: 1px solid #ddd;
         padding: 10px 100px;
@@ -52,5 +73,11 @@
             height: auto;
             margin-bottom: 40px;
         }
+    }
+    .comment-doctor {
+        border: 1px solid #df3c3c;
+        padding: 10px 100px;
+        background-color: #f9f9f9;
+        height: 50px;
     }
 }

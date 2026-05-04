@@ -3,7 +3,8 @@ import actionTypes from '../actions/actionTypes';
 const initialState = {
     isLoggedIn: false,
     userInfo: null,
-    detailDoctor: {}
+    detailDoctor: {},
+    scheduleDoctorByDate: {}
 }
 
 const userReducer = (state = initialState, action) => {
@@ -34,6 +35,17 @@ const userReducer = (state = initialState, action) => {
             };
         case actionTypes.FETCH_DETAIL_DOCTOR_FAILED:
             state.detailDoctor = {};
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_SCHEDULE_DOCTOR_BY_DATE_SUCCESS:
+            let copyScheduleDoctorByDate = { ...state };
+            copyScheduleDoctorByDate.scheduleDoctorByDate = action.data;
+            return {
+                ...copyScheduleDoctorByDate
+            };
+        case actionTypes.FETCH_SCHEDULE_DOCTOR_BY_DATE_FAILED:
+            state.scheduleDoctorByDate = {};
             return {
                 ...state
             }
