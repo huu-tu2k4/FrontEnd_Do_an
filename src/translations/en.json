@@ -132,9 +132,22 @@
             "no_time": "No available appointment times on the selected day. Please choose another day.",
             "price": "Price: ",
             "payment": "Payment method: ",
-            "address": "Clinic address: ",
+            "address-clinic": "Clinic address: ",
             "hide-price": "Hide price table",
-            "show-price": "Show price table"
+            "show-price": "Show price table",
+            "booking": "Book Appointment",
+            "full-name": "Full Name",
+            "phone-number": "Phone Number",
+            "email": "Email",
+            "address": "Address",
+            "book-for": "Book for",
+            "gender": "Gender",
+            "reason": "Reason for appointment",
+            "birthday": "Date of Birth",
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "booking_success": "Booking appointment successfully!",
+            "booking_failed": "Failed to book appointment!"
         }
         
     }

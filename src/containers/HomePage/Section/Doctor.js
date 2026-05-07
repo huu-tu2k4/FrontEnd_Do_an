@@ -27,7 +27,7 @@ class Doctor extends Component {
     }
 
     handleViewDetailDoctor = (doctor) => {
-        console.log('doctor', doctor);
+        // console.log('doctor', doctor);
         this.props.history.push(`/detail-doctor/${doctor.id}`);
         
     }

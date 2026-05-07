@@ -1,0 +1,273 @@
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { FormattedMessage } from 'react-intl';
+import { Modal } from 'reactstrap';
+import ProfileDoctor from '../ProfileDoctor';
+import DatePicker from '../../../../components/Input/DatePicker';
+import * as actions from '../../../../store/actions';
+import _ from 'lodash';
+import { LANGUAGE } from '../../../../utils';
+import Select from 'react-select';
+import { postPatientBookAppointment } from '../../../../services/userService';
+import { toast } from 'react-toastify';
+import moment from 'moment';
+
+import './BookingModal.scss';
+
+class BookingModal extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            fullName: '',
+            phoneNumber: '',
+            email: '',
+            address: '',
+            reason: '',
+            birthday: '',
+            gender: '',
+            doctorId: '',
+            timeType: '',
+            selectedGender: '',
+            genderArr: [],
+            isDisabled: false
+            
+        }
+    }
+
+    componentDidMount() {
+        this.props.fetchGender();
+        
+    }
+
+    buildDataGender = (data) => {
+        // console.log('check data gender: ', data);
+        let result = [];
+        let language = this.props.language;
+        if(data && data.length > 0) {
+            data.map(item => {
+                let object = {};
+                object.label = language === LANGUAGE.VI ? item.valueVi : item.valueEn;
+                object.keyMap = item.keyMap;
+                result.push(object);
+            })
+        }
+        return result;
+    }
+
+    async componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.genders !== prevProps.genders) {
+            let dataGender = this.buildDataGender(this.props.genders);
+            this.setState({
+                genderArr: dataGender
+            })
+        }
+        if(this.props.language !== prevProps.language) {
+            let dataGender = this.buildDataGender(this.props.genders);
+            this.setState({
+                genderArr: dataGender
+            })
+        }
+        if(this.props.dataTime !== prevProps.dataTime) {
+            let doctorId = this.props.dataTime.doctorId;
+            let timeType = this.props.dataTime.timeType;
+            this.setState({
+                doctorId: doctorId,
+                timeType: timeType
+            })
+        }
+    }
+
+    handleOnChangeInput = (event, id) => {
+        let valueInput = event.target.value;
+        let stateCopy = { ...this.state };
+        stateCopy[id] = valueInput;
+        this.setState({
+            ...stateCopy
+        })
+    }
+
+    handleChangeSelect = (selectedOption) => {
+        this.setState({ selectedGender: selectedOption });
+    }
+
+    buildTimeBooking = (dataTime) => {
+        let { language } = this.props;
+        if(dataTime && !_.isEmpty(dataTime)) {
+            let timeVi = dataTime.timeTypeData.valueVi;
+            let timeEn = dataTime.timeTypeData.valueEn;
+            let timeDisplay = language === LANGUAGE.VI ? timeVi : timeEn;
+            let date = language === LANGUAGE.VI ?
+                moment.unix(+dataTime.date / 1000).format('dddd - DD/MM/YYYY') :
+                moment.unix(+dataTime.date / 1000).locale('en').format('ddd - MM/DD/YYYY');
+            date = date.charAt(0).toUpperCase() + date.slice(1);
+            
+            return `${timeDisplay} - ${date}`;
+        } else {
+            return '';
+        }
+    }
+
+    buildDoctorName = (dataProfile) => {
+        let { language } = this.props;
+        if(dataProfile && dataProfile.doctorData) {
+            let nameVi = `${dataProfile.doctorData.lastName} ${dataProfile.doctorData.firstName}`;
+            let nameEn = `${dataProfile.doctorData.firstName} ${dataProfile.doctorData.lastName}`;
+            return language === LANGUAGE.VI ? nameVi : nameEn;
+        }
+        return '';
+    }
+
+    handleConfirmBooking = async () => {
+        this.setState({ isDisabled: true });
+        let doctorName = this.buildDoctorName(this.props.dataTime);
+        let timeString = this.buildTimeBooking(this.props.dataTime);
+        let date = new Date(this.state.birthday).getTime();
+        let inputData = {
+            fullName: this.state.fullName,
+            phoneNumber: this.state.phoneNumber,
+            email: this.state.email,
+            address: this.state.address,
+            reason: this.state.reason,
+            date: date,
+            selectedGender: this.state.selectedGender.label,
+            doctorId: this.state.doctorId,
+            timeType: this.state.timeType,
+            language: this.props.language,
+            timeString: timeString,
+            doctorName: doctorName
+        };
+        let res = await postPatientBookAppointment(inputData);
+        if(res && res.errCode === 0) {
+            toast.success(<FormattedMessage id="patient.detail-doctor.booking_success" />);
+            this.props.onClose();
+            this.setState({
+                fullName: '',
+                phoneNumber: '',
+                email: '',
+                address: '',
+                reason: '',
+                birthday: '',
+                selectedGender: ''
+            })
+        } else {
+            toast.error(<FormattedMessage id="patient.detail-doctor.booking_failed" />);
+        }
+    }
+
+    render() {
+        let { selectedGender, genderArr } = this.state;
+        let { isOpen, onClose, dataTime } = this.props;
+        let doctorId = dataTime && !_.isEmpty(dataTime) ? dataTime.doctorId : '';
+        // console.log('check dataTime: ', dataTime);
+        return (
+            <Modal
+                isOpen={isOpen}
+                size='lg'
+                centered
+                className="booking-modal-container">
+                <div className="booking-modal-content">
+                    <div className="booking-modal-header">
+                        <FormattedMessage id="patient.detail-doctor.booking" />
+                        <i className="fas fa-times booking-modal-close" onClick={onClose} />
+                    </div>
+                    <div className="booking-modal-body">
+                        <div className="doctor-infor">
+                            <ProfileDoctor 
+                            doctorId={doctorId} 
+                            isShowDescription={false} 
+                            dataTime={dataTime}
+                            />
+                        </div>
+                        <div className="row">
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.full-name" /></label>
+                                <input 
+                                type="text" 
+                                className="form-control"
+                                value={this.state.fullName}
+                                onChange={(e) => this.handleOnChangeInput(e, 'fullName')}
+                                />
+                            </div>
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.phone-number" /></label>
+                                <input 
+                                type="text" 
+                                className="form-control"
+                                value={this.state.phoneNumber}
+                                onChange={(e) => this.handleOnChangeInput(e, 'phoneNumber')}
+                                />
+                            </div>
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.email" /></label>
+                                <input 
+                                type="text" 
+                                className="form-control"
+                                value={this.state.email}
+                                onChange={(e) => this.handleOnChangeInput(e, 'email')}
+                                />
+                            </div>
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.address" /></label>
+                                <input 
+                                type="text" 
+                                className="form-control"
+                                value={this.state.address}
+                                onChange={(e) => this.handleOnChangeInput(e, 'address')}
+                                />
+                            </div>
+                            <div className="col-12 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.reason" /></label>
+                                <input 
+                                type="text" 
+                                className="form-control"
+                                value={this.state.reason}
+                                onChange={(e) => this.handleOnChangeInput(e, 'reason')}
+                                />
+                            </div>
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.birthday" /></label>
+                                <DatePicker
+                                    className="form-control"
+                                    value={this.state.birthday}
+                                    onChange={(date) => {this.setState({ birthday: date[0] })}}
+                                />
+                            </div>
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="patient.detail-doctor.gender" /></label>
+                                <Select
+                                    value={selectedGender}
+                                    onChange={this.handleChangeSelect}
+                                    options={genderArr}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="booking-modal-footer">
+                        <button className="btn-booking-confirm" disabled={this.state.isDisabled} onClick={() => this.handleConfirmBooking()}>
+                            <FormattedMessage id="patient.detail-doctor.confirm" />
+                        </button>
+                        <button className="btn-booking-cancel" onClick={onClose} >
+                            <FormattedMessage id="patient.detail-doctor.cancel" />
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+        )
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        genders: state.admin.genders
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchGender: () => dispatch(actions.fetchGenderStart()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookingModal);

@@ -9,7 +9,6 @@ import './TableManageUser.scss';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 function handleEditorChange({ html, text }) {
-    console.log('handleEditorChange', html, text);
 }
 
 
@@ -74,14 +73,7 @@ class TableManageUser extends Component {
                             )
                         })} 
                     </tbody>
-                </table>
-                <div style={{ marginTop: '16px' }}>Testing markdown editor below:</div>
-                <MdEditor
-                    value="# Hello Markdown"
-                    renderHTML={text => mdParser.render(text)}
-                    onChange={handleEditorChange}
-                    style={{ height: '500px' }}
-                />   
+                </table>  
             </React.Fragment>
         );
     }

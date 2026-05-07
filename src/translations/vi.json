@@ -133,9 +133,22 @@
             "no_time": "Không có thời gian khám nào vào ngày đã chọn. Vui lòng chọn ngày khác.",
             "price": "Giá khám: ",
             "payment": "Phương thức thanh toán: ",
-            "address": "Địa chỉ phòng khám: ",
+            "address-clinic": "Địa chỉ phòng khám: ",
             "hide-price": "Ẩn bảng giá",
-            "show-price": "Xem chi tiết"
+            "show-price": "Xem chi tiết",
+            "booking": "Đặt lịch khám",
+            "full-name": "Họ và tên",
+            "phone-number": "Số điện thoại",
+            "email": "Email",
+            "address": "Địa chỉ",
+            "book-for": "Đặt cho ai",
+            "gender": "Giới tính",
+            "reason": "Lý do khám bệnh",
+            "birthday": "Ngày sinh",
+            "confirm": "Xác nhận",
+            "cancel": "Hủy",
+            "booking_success": "Đặt lịch khám thành công!",
+            "booking_failed": "Đặt lịch thất bại!"
         }
         
     }

@@ -129,7 +129,6 @@ class UserRedux extends Component {
     }
 
     handleSaveUser = async () => {
-        console.log('state before submit: ', this.state);
         const { email, password, phoneNumber } = this.state;
         // if (!this.validatePhoneNumber(phoneNumber)) {
         //     ToastUtil.warn('common.warning', 'validation.invalid_phone');

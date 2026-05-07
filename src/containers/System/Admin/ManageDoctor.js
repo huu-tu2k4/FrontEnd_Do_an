@@ -144,7 +144,6 @@ class ManageDoctor extends Component {
             addressClinic: this.state.addressClinic,
             note: this.state.note
         })
-        console.log('check res save doctor: ', res);
         if(res && res.errCode === 0) {
             this.setState({
                 contentHTML: '',
@@ -211,7 +210,6 @@ class ManageDoctor extends Component {
     
 
     render() {
-        console.log('check state selected doctor: ', this.state);
         let { hasOldData } = this.state;
         let {listPayment, listPrice, listProvince} = this.state;
         return (

@@ -45,7 +45,7 @@ class DoctorExtraInfor extends Component {
             <div className='doctor-extra-infor-container'>
                 <div className="content-up">
                     <div className="text-address">
-                        <FormattedMessage id="patient.detail-doctor.address" />
+                        <FormattedMessage id="patient.detail-doctor.address-clinic" />
                     </div>
                     <div className="name-clinic">
                         {extraInfor && extraInfor.nameClinic ? extraInfor.nameClinic : ''}
@@ -57,7 +57,7 @@ class DoctorExtraInfor extends Component {
                 <div className="content-down">
                     {isShowDetailInfor === false ? (
                         <div className="short-infor">
-                            Giá khám: 
+                            <span className="left"><FormattedMessage id="patient.detail-doctor.price" /></span>: 
                             {extraInfor && extraInfor.priceData ? (
                                 language === LANGUAGE.VI ? (
                                     <NumberFormat

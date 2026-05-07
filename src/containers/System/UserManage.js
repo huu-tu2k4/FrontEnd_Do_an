@@ -76,7 +76,6 @@ class UserManage extends Component {
     }
 
     handleEditUser = async (user) => {
-        console.log('Edit user: ', user);
         this.setState({
             isOpenModalEditUser: true,
             userEdit: user
@@ -85,7 +84,6 @@ class UserManage extends Component {
     }
     
     updateUser = async (userData) => {
-        console.log('Check data from Modal Edit: ', userData);
         try {
             let response = await editUserService(userData);
             if(response && response.errCode === 0){
@@ -103,7 +101,6 @@ class UserManage extends Component {
     }
 
     handleDeleteUser = async (user) => {
-        console.log('Delete user: ', user);
         try {
             let response = await deleteUserService(user.id);
             if(response && response.errCode === 0){

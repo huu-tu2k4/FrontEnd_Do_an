@@ -75,7 +75,6 @@ const adminReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_TOP_DOCTOR_FAILED:
             state.topDoctors = [];
-            console.log('check data top doctor failed: ', state.topDoctors);
             return {
                 ...state
             }

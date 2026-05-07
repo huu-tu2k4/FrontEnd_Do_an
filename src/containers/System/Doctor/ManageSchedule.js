@@ -75,7 +75,6 @@ class ManageSchedule extends Component {
     }
 
     handleChangeDatePicker = (date) => {
-        console.log('handleChangeDatePicker', date);
         this.setState({
             currentDate: date[0]
         })
@@ -126,7 +125,6 @@ class ManageSchedule extends Component {
                 })
             }
         }
-        console.log('check result: ', result);
         let res = await this.props.saveBulkScheduleDoctor({
             arrSchedule: result,
             doctorId: selectedDoctor.value,
@@ -138,7 +136,6 @@ class ManageSchedule extends Component {
     render() {
         let { language } = this.props;
         let { rangeTime } = this.state;
-        console.log('check state rangeTime: ', rangeTime);
         return (
             <div className="manage-schedule-container">
                 <div className="m-s-title">
