@@ -13,7 +13,7 @@
                 background-repeat: no-repeat;
                 background-color: white;
                 &.section-specialty {
-                    background: url("../../assets/specialty/specialty1.png");
+                    // background: url("../../assets/specialty/specialty1.png");
                 }
                 &.section-medical-facility {
                     background: url("../../assets/medicalFacility/anh_benh_vien.png");
@@ -184,5 +184,19 @@
     .footer-content {
         font-size: 14px;
         color: #333;
+    }
+}
+.specialty-item {
+
+    cursor: pointer;
+    
+    .specialty-name {
+        padding: 10px 0;
+
+        span {
+            &:hover {
+                color: #45c3d2;
+            }
+        }
     }
 }

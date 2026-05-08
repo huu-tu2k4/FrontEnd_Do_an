@@ -3,11 +3,41 @@ import { connect } from 'react-redux';
 
 import { FormattedMessage } from 'react-intl';
 import Slider from 'react-slick';
+import { getAllSpecialty } from '../../../services/userService';
+import { withRouter } from 'react-router';
+
 
 class Specialty extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            arrSpecialties: []
+        }
+    }
+
+    componentDidMount() {
+        this.handleGetAllSpecialty();
+    }
+
+    handleGetAllSpecialty = async () => {
+        let res = await getAllSpecialty();
+        if (res && res.data) {
+            this.setState({
+                arrSpecialties: res.data ? res.data : []
+            });
+        }
+    }
+
+    handleViewDetailSpecialty = (item) => {
+        if (this.props.history) {
+            this.props.history.push(`/detail-specialty/${item.id}`);
+        }
+    }
+
     render() {
-        
+        let arrSpecialties = this.state.arrSpecialties;
+        let { language } = this.props;
         return (
             <div className="section-share section-specialty">
                 <div className="section-container">
@@ -17,30 +47,25 @@ class Specialty extends Component {
                     </div>
                     <div className="section-body">
                         <Slider {...this.props.settings}>
-                            <div className="section-customize">
-                                <div className="bg-image section-specialty"> </div>
-                                <span>Cơ xương khớp 1</span>
-                            </div>
-                            <div className="section-customize">
-                                <div className="bg-image section-specialty"> </div>
-                                <span>Cơ xương khớp 2</span>
-                            </div>
-                            <div className="section-customize">
-                                <div className="bg-image section-specialty"> </div>
-                                <span>Cơ xương khớp 3</span>
-                            </div>
-                            <div className="section-customize">
-                                <div className="bg-image section-specialty"> </div>
-                                <span>Cơ xương khớp 4</span>
-                            </div>
-                            <div className="section-customize">
-                                <div className="bg-image section-specialty"> </div>
-                                <span>Cơ xương khớp 5</span>
-                            </div>
-                            <div className="section-customize">
-                                <div className="bg-image section-specialty"> </div>
-                                <span>Cơ xương khớp 6</span>
-                            </div>
+                            {this.state.arrSpecialties && this.state.arrSpecialties.length > 0 &&
+                                this.state.arrSpecialties.map((item, index) => {
+                                    return (
+                                        <div 
+                                        className="section-customize specialty-item" 
+                                        key={index}
+                                        onClick={() => this.handleViewDetailSpecialty(item)}
+                                        >
+                                            <div 
+                                            className="bg-image section-specialty"
+                                            style={{ backgroundImage: `url(${item.image})` }}
+                                            > </div>
+                                            <div className="specialty-name">
+                                                <span>{language === 'vi' ? item.nameVi : item.nameEn}</span>
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            }
                         </Slider>
                     </div>
                     
@@ -63,4 +88,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Specialty);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Specialty));

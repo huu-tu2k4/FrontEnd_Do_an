@@ -103,8 +103,18 @@
             "clinic_name": "Tên Phòng Khám",
             "clinic_address": "Địa Chỉ Phòng Khám",
             "note": "Ghi Chú",
-            "content": "Nội dung giới thiệu bác sĩ"
-        }            
+            "content": "Nội dung giới thiệu bác sĩ",
+            "specialty": "Chuyên khoa",
+            "select-specialty": "Chọn chuyên khoa",
+            "clinic": "Phòng khám",
+            "select-clinic": "Chọn phòng khám"
+        },
+        "manage-specialty": {
+            "title": "Quản lý chuyên khoa",
+            "name-vi": "Tên chuyên khoa (Tiếng Việt)",
+            "name-en": "Tên chuyên khoa (Tiếng Anh)",
+            "save": "Lưu chuyên khoa"
+        }
     },
     "common": {
         "warning": "Cảnh báo"

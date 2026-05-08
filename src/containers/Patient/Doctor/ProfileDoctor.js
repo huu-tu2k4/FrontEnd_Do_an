@@ -6,6 +6,7 @@ import NumberFormat from 'react-number-format';
 import { LANGUAGE } from '../../../utils';
 import moment from 'moment';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 import './ProfileDoctor.scss';
 
@@ -39,11 +40,16 @@ class ProfileDoctor extends Component {
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
         if(this.props.language !== prevProps.language) {
-
+            let data = await this.getInforDoctor(this.props.doctorId);
+            this.setState({ dataProfile: data });
+            let name = this.buildNameDoctor(data);
+            this.setState({ nameDoctor: name });
         }
         if(this.props.doctorId !== prevProps.doctorId) {
             let data = await this.getInforDoctor(this.props.doctorId);
             this.setState({ dataProfile: data});
+            let name = this.buildNameDoctor(data);
+            this.setState({ nameDoctor: name });
         }
     }
 
@@ -53,7 +59,7 @@ class ProfileDoctor extends Component {
         if (inputData) {
             let labelEn = `${inputData.firstName} ${inputData.lastName}`;
             let labelVi = `${inputData.lastName} ${inputData.firstName}`;
-            fullName = language === 'vi' ? labelVi : labelEn;
+            fullName = language === LANGUAGE.VI ? labelVi : labelEn;
         }
         return fullName;
     }
@@ -86,8 +92,8 @@ class ProfileDoctor extends Component {
 
     render() {
         let { dataProfile } = this.state;
-        // console.log('check dataProfile: ', dataProfile);
-        let { language, isShowDescription, dataTime } = this.props;
+        console.log('check props: ', this.props);
+        let { language, isShowDescription, dataTime, isShowLinkDetail } = this.props;
         // console.log('check dataTime: ', dataTime);
         return (
             <div className="profile-doctor-container">
@@ -100,7 +106,7 @@ class ProfileDoctor extends Component {
                     <div className="content-right">
                         <div className="up">
                             <div className="name-doctor">
-                                {dataProfile && dataProfile.positionData ? (language === 'vi' ? dataProfile.positionData.valueVi : dataProfile.positionData.valueEn) + ', ' : ''}{this.state.nameDoctor}
+                                {dataProfile && dataProfile.positionData ? (language === LANGUAGE.VI ? dataProfile.positionData.valueVi : dataProfile.positionData.valueEn) + ', ' : ''}{this.state.nameDoctor}
                             </div>
                         </div>
                         <div className="down">
@@ -117,27 +123,40 @@ class ProfileDoctor extends Component {
                     </div>
                     
                 </div>
-                <div className="price">
-                    <FormattedMessage id="patient.detail-doctor.price" />
-                    {dataProfile && dataProfile.doctorInforData && dataProfile.doctorInforData.priceData ? (
-                        language === LANGUAGE.VI ? (
-                            <NumberFormat
-                                className="currency"
-                                value={dataProfile.doctorInforData.priceData.valueVi}
-                                displayType={'text'}
-                                thousandSeparator={true}
-                                suffix={' VND'}
-                            />
-                        ) : (
-                            <NumberFormat
-                                className="currency"
-                                value={dataProfile.doctorInforData.priceData.valueEn}
-                                displayType={'text'}
-                                thousandSeparator={true}
-                                suffix={'$'}
-                            />
-                        )
-                    ) : ('')}
+                <div>
+                    {isShowLinkDetail && isShowLinkDetail === true ? (
+                        <div className="view-detail">
+                            {/* <button className="btn-view-detail" onClick={this.handleViewDetail}>
+                                {language === LANGUAGE.VI ? 'Xem thêm' : 'See more'}
+                            </button> */}
+                            <Link to={`/detail-doctor/${this.props.doctorId}`} className="btn-view-detail">
+                                {language === LANGUAGE.VI ? 'Xem thêm' : 'See more'}
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="price">
+                            <FormattedMessage id="patient.detail-doctor.price" />
+                            {dataProfile && dataProfile.doctorInforData && dataProfile.doctorInforData.priceData ? (
+                                language === LANGUAGE.VI ? (
+                                    <NumberFormat
+                                        className="currency"
+                                        value={dataProfile.doctorInforData.priceData.valueVi}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        suffix={' VND'}
+                                    />
+                                ) : (
+                                    <NumberFormat
+                                        className="currency"
+                                        value={dataProfile.doctorInforData.priceData.valueEn}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        suffix={'$'}
+                                    />
+                                )
+                            ) : ('')}
+                        </div>
+                    )}
                 </div>
             </div>
         )

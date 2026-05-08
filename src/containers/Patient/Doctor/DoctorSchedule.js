@@ -21,11 +21,18 @@ class DoctorSchedule extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.getArrDays();
         let allDays = this.getArrDays();
         this.setState({ allDays: allDays });
-        
+        if(this.props.doctorIdFromParent) {
+            let allDays = this.getArrDays();
+            let date = allDays[0].value;
+            let doctorId = this.props.doctorIdFromParent;
+            await this.props.fetchDoctorScheduleByDate(this.props.doctorIdFromParent, date);
+            let res = this.props.scheduleDoctorByDate;
+            this.setState({ availableTime: res ? res : [] });
+        }
     }
 
     async componentDidUpdate(prevProps, prevState, snapshot) {

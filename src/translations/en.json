@@ -102,7 +102,17 @@
             "clinic_name": "Clinic Name",
             "clinic_address": "Clinic Address",
             "note": "Note",
-            "content": "Doctor Introduction Content"
+            "content": "Doctor Introduction Content",
+            "specialty": "Specialty",
+            "select-specialty": "Select Specialty",
+            "clinic": "Clinic",
+            "select-clinic": "Select Clinic"
+        },
+        "manage-specialty": {
+            "title": "Manage Specialty",
+            "name-vi": "Specialty Name (Vietnamese)",
+            "name-en": "Specialty Name (English)",
+            "save": "Save Specialty"
         }
     },
     "common": {
