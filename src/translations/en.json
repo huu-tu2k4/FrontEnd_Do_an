@@ -113,6 +113,12 @@
             "name-vi": "Specialty Name (Vietnamese)",
             "name-en": "Specialty Name (English)",
             "save": "Save Specialty"
+        },
+        "manage-clinic": {
+            "title": "Manage Clinic",
+            "name": "Clinic Name",
+            "address": "Clinic Address",
+            "save": "Save Clinic"
         }
     },
     "common": {

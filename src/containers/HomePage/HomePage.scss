@@ -200,3 +200,17 @@
         }
     }
 }
+.medical-facility-item {
+
+    cursor: pointer;
+    
+    .medical-facility-name {
+        padding: 10px 0;
+
+        span {
+            &:hover {
+                color: #45c3d2;
+            }
+        }
+    }
+}

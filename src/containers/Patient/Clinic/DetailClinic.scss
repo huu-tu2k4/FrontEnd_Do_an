@@ -1,0 +1,98 @@
+.detail-clinic-container {
+
+    .detail-clinic-body {
+        padding: 0 150px;
+        background: #eee;
+        display: flex;
+        flex-direction: column;
+
+        .description-clinic {
+            position: relative;
+            min-height: 200px;
+            padding: 10px;
+            padding-bottom: 40px; /* space for toggle */
+            background-color: white !important;
+            margin: 15px 0;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+
+            .description-toggle {
+                position: absolute;
+                left: 12px;
+                bottom: 10px;
+            }
+
+            .btn-toggle-desc {
+                background: none;
+                border: none;
+                padding: 0;
+                color: #007bff;
+                cursor: pointer;
+                font-size: 14px;
+                text-decoration: underline;
+                text-decoration: none;
+            }
+
+            .description-snippet {
+                color: #444;
+                font-size: 14px;
+                line-height: 1.4;
+                margin-top: 6px;
+                white-space: pre-wrap;
+            }
+        }
+        .search-sp-doctor {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+
+            .select-province {
+                padding: 6px 12px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                cursor: pointer;
+
+                &:hover {
+                    border-color: #007bff;
+                }
+            }
+        }
+
+        .each-doctor {
+            display: flex;
+            width: 100%;
+            min-height: 200px;
+            margin: 15px 0;
+            padding: 10px;
+
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            border-radius: 8px;
+
+            .dt-content-left {
+                width: 50%;
+                padding: 10px;
+                border-right: 1px solid #ddd;
+            }
+            .dt-content-right {
+                width: 50%;
+                padding: 10px;
+
+                .doctor-schedule {
+                    .doctor-schedule-container {
+                        border-right: unset !important;
+                    }
+                }
+                .doctor-extra-infor {
+                    border: 1px solid #ddd;
+                    margin-top: 10px;
+                    padding-top: 10px;
+                    .doctor-extra-infor-container {
+                        padding-left: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+}

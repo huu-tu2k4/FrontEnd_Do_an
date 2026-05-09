@@ -8,7 +8,8 @@ import { getAllCodeService,
         getAllDoctors,
         saveDetailDoctorService,
         saveBulkScheduleDoctorService,
-        getAllSpecialty
+        getAllSpecialty,
+        getAllClinic
         } from '../../services/userService';
 import { toast } from 'react-toastify';
 import LanguageUtils from '../../utils/LanguageUtils';
@@ -40,13 +41,15 @@ export const getRequiredDoctorInfor = () => {
             let resPayment = await getAllCodeService('PAYMENT');
             let resProvince = await getAllCodeService('PROVINCE');
             let resSpecialty = await getAllSpecialty();
+            let resClinic = await getAllClinic();
 
-            if (resPrice && resPrice.errCode === 0 && resPayment && resPayment.errCode === 0 && resProvince && resProvince.errCode === 0 && resSpecialty && resSpecialty.errCode === 0) {
+            if (resPrice && resPrice.errCode === 0 && resPayment && resPayment.errCode === 0 && resProvince && resProvince.errCode === 0 && resSpecialty && resSpecialty.errCode === 0 && resClinic && resClinic.errCode === 0) {
                 let data = {
                     price: resPrice.data,
                     payment: resPayment.data,
                     province: resProvince.data,
-                    specialty: resSpecialty.data
+                    specialty: resSpecialty.data,
+                    clinic: resClinic.data
                 }
                 // console.log('check data required doctor infor: ', data);
                 dispatch({ type: actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_SUCCESS, data: data });

@@ -114,6 +114,12 @@
             "name-vi": "Tên chuyên khoa (Tiếng Việt)",
             "name-en": "Tên chuyên khoa (Tiếng Anh)",
             "save": "Lưu chuyên khoa"
+        },
+        "manage-clinic": {
+            "title": "Quản lý phòng khám",
+            "name": "Tên phòng khám",
+            "address": "Địa chỉ phòng khám",
+            "save": "Lưu phòng khám"
         }
     },
     "common": {
