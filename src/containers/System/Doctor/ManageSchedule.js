@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import * as actions from '../../../store/actions';
-import { LANGUAGE, dateFormat } from '../../../utils';
+import { LANGUAGE, dateFormat, USER_ROLE } from '../../../utils';
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
 import _ from 'lodash';
@@ -26,6 +26,7 @@ class ManageSchedule extends Component {
     componentDidMount() {
         this.props.fetchAllDoctors();
         this.props.fetchAllCodeScheduleTime();
+        this.setDefaultDoctor();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -34,12 +35,17 @@ class ManageSchedule extends Component {
             this.setState({
                 listDoctors: dataSelect
             })
+            this.setDefaultDoctor();
         }
         if(prevProps.language !== this.props.language) {
             let dataSelect = this.buildDataInputSelect(this.props.listDoctors);
             this.setState({
                 listDoctors: dataSelect
             })
+            this.setDefaultDoctor();
+        }
+        if (prevProps.userInfo !== this.props.userInfo) {
+            this.setDefaultDoctor();
         }
         if(prevProps.allScheduleTime !== this.props.allScheduleTime) {
             let data = this.props.allScheduleTime;
@@ -49,6 +55,26 @@ class ManageSchedule extends Component {
             this.setState({
                 rangeTime: data
             })
+        }
+    }
+
+    setDefaultDoctor = () => {
+        const { userInfo, language } = this.props;
+        if (userInfo && userInfo.roleId === USER_ROLE.DOCTOR) {
+            // try to find in listDoctors first
+            let doctorOption = null;
+            if (this.state.listDoctors && this.state.listDoctors.length > 0) {
+                doctorOption = this.state.listDoctors.find(d => d.value === userInfo.id);
+            }
+            if (!doctorOption) {
+                let labelEn = `${userInfo.firstName} ${userInfo.lastName}`;
+                let labelVi = `${userInfo.lastName} ${userInfo.firstName}`;
+                doctorOption = {
+                    label: language === LANGUAGE.VI ? labelVi : labelEn,
+                    value: userInfo.id
+                };
+            }
+            this.setState({ selectedDoctor: doctorOption });
         }
     }
 
@@ -134,7 +160,7 @@ class ManageSchedule extends Component {
 
 
     render() {
-        let { language } = this.props;
+        let { language, userInfo } = this.props;
         let { rangeTime } = this.state;
         return (
             <div className="manage-schedule-container">
@@ -143,23 +169,27 @@ class ManageSchedule extends Component {
                 </div>
                 <div className="container">
                     <div className="row">
-                        <div className="col-6 form-group">
-                            <label><FormattedMessage id="manage-schedule.select-doctor" /></label>
-                            <Select
-                                value={this.state.selectedDoctor}
-                                onChange={this.handleChange}
-                                options={this.state.listDoctors}
-                            />
-                        </div>
+                        {!(userInfo && userInfo.roleId === USER_ROLE.DOCTOR) && (
+                            <div className="col-6 form-group">
+                                <label><FormattedMessage id="manage-schedule.select-doctor" /></label>
+                                <Select
+                                    value={this.state.selectedDoctor}
+                                    onChange={this.handleChange}
+                                    options={this.state.listDoctors}
+                                />
+                            </div>
+                        )}
                         <div className="col-6 form-group">
                             <label><FormattedMessage id="manage-schedule.select-date" /></label>
-                            <DatePicker
-                                value={this.state.currentDate}
-                                className="form-control"
-                                onChange={this.handleChangeDatePicker}
-                                minDate={moment().startOf('day').toDate()}
-                            />
-
+                            <div className="date-picker-wrapper">
+                                <DatePicker
+                                    value={this.state.currentDate}
+                                    className="form-control"
+                                    onChange={this.handleChangeDatePicker}
+                                    minDate={moment().startOf('day').toDate()}
+                                />
+                                <i className="calendar-icon fas fa-calendar"></i>
+                            </div>
                         </div>
                         <div className="col-12 pick-hour-container">
                             <label><FormattedMessage id="manage-schedule.select-hour" /></label>
@@ -199,6 +229,7 @@ const mapStateToProps = state => {
         language: state.app.language,
         listDoctors: state.admin.allDoctors,
         allScheduleTime: state.admin.allScheduleTime
+        ,userInfo: state.user.userInfo
     };
 };
 

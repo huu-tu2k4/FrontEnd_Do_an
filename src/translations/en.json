@@ -51,7 +51,9 @@
         },
         "doctor": {
             "manage-schedule": "Manage Schedule",
-            "schedule": "Schedule"
+            "schedule": "Schedule",
+            "patient": "My Patient",
+            "manage-patient": "Manage Patient"
         }
     },
     "user": {
@@ -140,8 +142,30 @@
         "save-schedule": "Save Schedule",
         "create-schedule": "Create Schedule",
         "select-hour": "Select Hour"
-    }
-    ,
+    },
+    "manage-patient": {
+        "title": "Manage Booked Patients",
+        "select-date": "Select Date",
+        "confirm-and-send-remedy": "Confirm and Send Remedy",
+        "cancel": "Cancel",
+        "patient-list": "Patient List",
+        "send-invoice": "Send Invoice",
+        "no-data": "No patients found for the selected date.",
+        "remedy": "Remedy Invoice",
+        "close": "Close",
+        "remedy-image": "Remedy Invoice Image",
+        "send-remedy": "Send Remedy Invoice",
+        "table": {
+            "id": "ID",
+            "index": "Index",
+            "time": "Time",
+            "name": "Patient Name",
+            "gender": "Gender",
+            "email": "Email",
+            "phone": "Phone Number",
+            "action": "Action"
+        }
+    },
     "patient": {
         "detail-doctor": {
             "schedule": "Doctor's Schedule",
@@ -153,6 +177,8 @@
             "show-price": "Show price table",
             "booking": "Book Appointment",
             "full-name": "Full Name",
+            "first-name": "First Name",
+            "last-name": "Last Name",
             "phone-number": "Phone Number",
             "email": "Email",
             "address": "Address",

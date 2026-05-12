@@ -15,7 +15,8 @@ class DetailDoctor extends Component {
         this.state = {
             detailDoctor: {},
             nameDoctor: '',
-            currentId: -1
+            currentId: -1,
+            selectedDate: null
         }
     }
 
@@ -54,6 +55,10 @@ class DetailDoctor extends Component {
         return fullName;
     }
 
+    onChangeDate = (date) => {
+        this.setState({ selectedDate: date });
+    }
+
 
     render() {
         let detailDoctor = this.state.detailDoctor;
@@ -84,7 +89,7 @@ class DetailDoctor extends Component {
                     </div>
                     <div className="schedule-doctor">
                         <div className="content-left">
-                            <DoctorSchedule doctorIdFromParent={this.state.currentId} />
+                            <DoctorSchedule doctorIdFromParent={this.state.currentId} onChangeDate={this.onChangeDate} />
                         </div>
                         <div className="content-right">
                             <DoctorExtraInfor doctorIdFromParent={this.state.currentId} />

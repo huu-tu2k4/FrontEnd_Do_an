@@ -92,7 +92,7 @@ class ProfileDoctor extends Component {
 
     render() {
         let { dataProfile } = this.state;
-        console.log('check props: ', this.props);
+        // console.log('check props: ', this.props);
         let { language, isShowDescription, dataTime, isShowLinkDetail } = this.props;
         // console.log('check dataTime: ', dataTime);
         return (

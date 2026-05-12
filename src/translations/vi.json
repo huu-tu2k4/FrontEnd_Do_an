@@ -51,7 +51,9 @@
         },
         "doctor": {
             "manage-schedule": "Quản lý lịch khám",
-            "schedule": "Lịch khám"
+            "schedule": "Lịch khám",
+            "patient": "Bệnh nhân của tôi",
+            "manage-patient": "Quản lý bệnh nhân"
         }
     }
     ,
@@ -141,8 +143,30 @@
         "select-hour": "Chọn giờ",
         "save-schedule": "Lưu lịch khám",
         "create-schedule": "Tạo lịch khám"
-    }
-    ,
+    },
+    "manage-patient": {
+        "title": "Quản lý bệnh nhân đã đặt lịch khám",
+        "select-date": "Chọn ngày",
+        "confirm-and-send-remedy": "Xác nhận và gửi hóa đơn",
+        "cancel": "Hủy",
+        "patient-list": "Danh sách bệnh nhân",
+        "send-invoice": "Gửi hóa đơn",
+        "no-data": "Không có bệnh nhân nào vào ngày đã chọn.",
+        "remedy": "Hóa đơn khám bệnh",
+        "close": "Đóng",
+        "send-remedy": "Gửi hóa đơn",
+        "remedy-image": "Hình ảnh hóa đơn",
+        "table": {
+            "id": "ID",
+            "index": "STT",
+            "time": "Thời gian",
+            "name": "Tên bệnh nhân",
+            "gender": "Giới tính",
+            "email": "Email",
+            "phone": "Số điện thoại",
+            "action": "Hành động"
+        }
+    },
     "patient": {
         "detail-doctor": {
             "schedule": "Lịch khám",
@@ -154,6 +178,8 @@
             "show-price": "Xem chi tiết",
             "booking": "Đặt lịch khám",
             "full-name": "Họ và tên",
+            "first-name": "Tên",
+            "last-name": "Họ",
             "phone-number": "Số điện thoại",
             "email": "Email",
             "address": "Địa chỉ",

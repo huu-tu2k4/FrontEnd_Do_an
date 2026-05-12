@@ -1,0 +1,146 @@
+
+.manage-patient-container {
+    padding: 20px;
+
+    .m-p-title {
+        text-transform: uppercase;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        text-align: center;
+        color: #183153;
+    }
+
+    .title-table {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 18px 0 12px;
+        color: #23374d;
+    }
+
+    .table-manage-patient {
+        width: 100%;
+        overflow-x: auto;
+        background: #fff;
+        border-radius: 6px;
+        padding: 8px;
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 720px;
+            background: transparent;
+        }
+
+        th {
+            background: #f6f9fb;
+            color: #243447;
+            font-weight: 700;
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e6eef6;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #2b3b4a;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fbfcfd;
+        }
+
+        tbody tr:hover {
+            background: #f1f7fb;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 24px 0;
+            color: #6b7a86;
+        }
+    }
+
+    td {
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            padding: 6px 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            margin-right: 8px;
+            transition: all .12s ease-in-out;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn.icon-btn {
+            min-width: 36px;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            font-size: 0; /* keep icon centered */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 6px;
+            box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+        }
+
+        .btn.icon-btn i {
+            font-size: 14px;
+            line-height: 1;
+            color: #fff;
+        }
+
+        .btn:last-child {
+            margin-right: 0;
+        }
+
+        .btn-primary { background-color: #0d6efd; color: #fff; }
+        .btn-secondary { background-color: #6c757d; color: #fff; }
+        .btn-warning { background-color: #ffc107; color: #212529; }
+
+        @media (max-width: 576px) {
+            .btn {
+                display: block;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 8px;
+            }
+            .btn.icon-btn {
+                display: inline-flex;
+                width: 40px;
+                margin-right: 6px;
+                margin-bottom: 0;
+            }
+        }
+    }
+    
+    .date-picker-wrapper {
+        position: relative;
+
+        .flatpickr-input,
+        input.form-control {
+            padding-right: 38px;
+        }
+
+        .calendar-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: rgba(0,0,0,0.45);
+            font-size: 14px;
+        }
+    }
+}
