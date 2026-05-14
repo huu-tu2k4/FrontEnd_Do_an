@@ -6,7 +6,6 @@ import DoctorSchedule from './DoctorSchedule';
 import DoctorExtraInfor from './DoctorExtraInfor';
 
 import './DetailDoctor.scss';
-import { lang } from 'moment';
 
 class DetailDoctor extends Component {
 
@@ -100,9 +99,6 @@ class DetailDoctor extends Component {
                             <div dangerouslySetInnerHTML={{ __html: detailDoctor.markdownData.contentHTML }}>
                             </div>
                         }
-                    </div>
-                    <div className="comment-doctor">
-
                     </div>
                 </div>
             </>

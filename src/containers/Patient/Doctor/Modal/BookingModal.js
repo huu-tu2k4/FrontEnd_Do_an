@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Modal } from 'reactstrap';
 import ProfileDoctor from '../ProfileDoctor';
 import DatePicker from '../../../../components/Input/DatePicker';
+import GlobalLoadingOverlay from '../../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import * as actions from '../../../../store/actions';
 import _ from 'lodash';
 import { LANGUAGE } from '../../../../utils';
@@ -11,6 +12,7 @@ import Select from 'react-select';
 import { postPatientBookAppointment } from '../../../../services/userService';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+
 
 import './BookingModal.scss';
 
@@ -31,7 +33,8 @@ class BookingModal extends Component {
             timeType: '',
             selectedGender: '',
             genderArr: [],
-            isDisabled: false
+            isDisabled: false,
+            isShowLoading: false
             
         }
     }
@@ -49,6 +52,7 @@ class BookingModal extends Component {
             data.map(item => {
                 let object = {};
                 object.label = language === LANGUAGE.VI ? item.valueVi : item.valueEn;
+                object.value = item.keyMap;
                 object.keyMap = item.keyMap;
                 result.push(object);
             })
@@ -88,10 +92,6 @@ class BookingModal extends Component {
         })
     }
 
-    handleChangeSelect = (selectedOption) => {
-        this.setState({ selectedGender: selectedOption });
-    }
-
     buildTimeBooking = (dataTime) => {
         let { language } = this.props;
         if(dataTime && !_.isEmpty(dataTime)) {
@@ -120,7 +120,7 @@ class BookingModal extends Component {
     }
 
     handleConfirmBooking = async () => {
-        this.setState({ isDisabled: true });
+        this.setState({ isDisabled: true, isShowLoading: true });
         let doctorName = this.buildDoctorName(this.props.dataTime);
         let timeString = this.buildTimeBooking(this.props.dataTime);
         let date = this.props.dataTime.date;
@@ -132,29 +132,36 @@ class BookingModal extends Component {
             address: this.state.address,
             reason: this.state.reason,
             date: date,
-            selectedGender: this.state.selectedGender.keyMap,
+            selectedGender: this.state.selectedGender,
             doctorId: this.state.doctorId,
             timeType: this.state.timeType,
             language: this.props.language,
             timeString: timeString,
             doctorName: doctorName
         };
-        let res = await postPatientBookAppointment(inputData);
-        if(res && res.errCode === 0) {
-            toast.success(<FormattedMessage id="patient.detail-doctor.booking_success" />);
-            this.props.onClose();
-            this.setState({
-                firstName: '',
-                lastName: '',
-                phoneNumber: '',
-                email: '',
-                address: '',
-                reason: '',
-                birthday: '',
-                selectedGender: '',
-                isDisabled: false
-            })
-        } else {
+        try {
+            let res = await postPatientBookAppointment(inputData);
+            if(res && res.errCode === 0) {
+                toast.success(<FormattedMessage id="patient.detail-doctor.booking_success" />);
+                this.props.onClose();
+                this.setState({
+                    firstName: '',
+                    lastName: '',
+                    phoneNumber: '',
+                    email: '',
+                    address: '',
+                    reason: '',
+                    birthday: '',
+                    selectedGender: '',
+                    isDisabled: false,
+                    isShowLoading: false
+                })
+            } else {
+                this.setState({ isDisabled: false, isShowLoading: false });
+                toast.error(<FormattedMessage id="patient.detail-doctor.booking_failed" />);
+            }
+        } catch (error) {
+            this.setState({ isDisabled: false, isShowLoading: false });
             toast.error(<FormattedMessage id="patient.detail-doctor.booking_failed" />);
         }
     }
@@ -171,6 +178,7 @@ class BookingModal extends Component {
                 centered
                 className="booking-modal-container">
                 <div className="booking-modal-content">
+                    <GlobalLoadingOverlay active={this.state.isShowLoading} />
                     <div className="booking-modal-header">
                         <FormattedMessage id="patient.detail-doctor.booking" />
                         <i className="fas fa-times booking-modal-close" onClick={onClose} />
@@ -253,8 +261,8 @@ class BookingModal extends Component {
                             <div className="col-6 form-group">
                                 <label><FormattedMessage id="patient.detail-doctor.gender"/>(*)</label>
                                 <Select
-                                    value={selectedGender}
-                                    onChange={this.handleChangeSelect}
+                                    value={genderArr.find(opt => opt.value === selectedGender) || null}
+                                    onChange={(selectedOption) => this.setState({ selectedGender: selectedOption ? selectedOption.value : '' })}
                                     options={genderArr}
                                 />
                             </div>

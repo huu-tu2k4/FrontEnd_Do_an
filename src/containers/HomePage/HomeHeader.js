@@ -60,7 +60,9 @@ changeLanguage = (language) => {
                                     EN
                                 </span>
                             </div>
-
+                            <div className="btn btn-login" onClick={() => this.props.history.push('/login')}>
+                                <i className="fas fa-user"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
