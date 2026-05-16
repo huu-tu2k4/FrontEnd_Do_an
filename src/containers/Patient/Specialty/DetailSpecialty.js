@@ -107,7 +107,7 @@ class DetailSpecialty extends Component {
                 .trim();
         }
         let snippet = rawDesc && rawDesc.length > 250 ? rawDesc.substring(0, 250) + '...' : rawDesc;
-        console.log('check state: ', this.state);
+        // console.log('check state: ', this.state);
         return (
             <div className='detail-specialty-container'>
                 <HomeHeader />

@@ -13,7 +13,7 @@ class Home extends Component {
             if (userInfo && userInfo.roleId === USER_ROLE.DOCTOR) {
                 linkToRedirect = '/doctor/manage-patient';
             } else {
-                linkToRedirect = '/system/user-manage';
+                linkToRedirect = '/system/user-redux';
             }
         }
 

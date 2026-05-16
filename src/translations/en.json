@@ -141,7 +141,8 @@
         "select-date": "Select Date",
         "save-schedule": "Save Schedule",
         "create-schedule": "Create Schedule",
-        "select-hour": "Select Hour"
+        "select-hour": "Select Hour",
+        "edit": "Edit"
     },
     "manage-patient": {
         "title": "Manage Booked Patients",

@@ -220,6 +220,7 @@ export const editUser = (data) => {
 export const fetchTopDoctor = () => {
     return async (dispatch, getState) => {
         try {
+            dispatch({ type: actionTypes.FETCH_TOP_DOCTOR_START });
             let res = await getTopDoctorHomeService(10);
                 if (res && res.errCode === 0) {
                     let payload = (res.data !== undefined) ? res.data : (res.users !== undefined ? res.users : res);

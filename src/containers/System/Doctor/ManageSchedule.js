@@ -8,6 +8,7 @@ import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { editBulkScheduleDoctorService, getScheduleDoctorByDate } from '../../../services/userService';
 
 import './ManageSchedule.scss';
 
@@ -19,7 +20,9 @@ class ManageSchedule extends Component {
             listDoctors: [],
             selectedDoctor: {},
             currentDate: '',
-            rangeTime: []
+            rangeTime: [],
+            scheduledTimes: [],
+            isEdit: false
         }
     }
 
@@ -54,7 +57,19 @@ class ManageSchedule extends Component {
             }
             this.setState({
                 rangeTime: data
+            }, () => {
+                const { selectedDoctor, currentDate } = this.state;
+                if (selectedDoctor && selectedDoctor.value && currentDate) {
+                    this.fetchScheduleForDoctorAndDate(selectedDoctor.value, currentDate);
+                }
             })
+        }
+        // when selectedDoctor changed, fetch schedule for current date
+        if (prevState.selectedDoctor !== this.state.selectedDoctor) {
+            const { selectedDoctor, currentDate } = this.state;
+            if (selectedDoctor && selectedDoctor.value && currentDate) {
+                this.fetchScheduleForDoctorAndDate(selectedDoctor.value, currentDate);
+            }
         }
     }
 
@@ -95,14 +110,22 @@ class ManageSchedule extends Component {
     }
 
     handleChange = async (selectedDoctor) => {
-        this.setState({ selectedDoctor: selectedDoctor });
-
-        
+        this.setState({ selectedDoctor: selectedDoctor }, () => {
+            const { currentDate } = this.state;
+            if (selectedDoctor && selectedDoctor.value && currentDate) {
+                this.fetchScheduleForDoctorAndDate(selectedDoctor.value, currentDate);
+            }
+        });
     }
 
     handleChangeDatePicker = (date) => {
         this.setState({
             currentDate: date[0]
+        }, () => {
+            const { selectedDoctor } = this.state;
+            if (selectedDoctor && selectedDoctor.value) {
+                this.fetchScheduleForDoctorAndDate(selectedDoctor.value, date[0]);
+            }
         })
     }
 
@@ -118,6 +141,36 @@ class ManageSchedule extends Component {
             this.setState({
                 rangeTime: rangeTime
             })
+        }
+    }
+
+    fetchScheduleForDoctorAndDate = async (doctorId, date) => {
+        if (!doctorId || !date) return;
+        let formattedDate = new Date(date).getTime();
+        try {
+            let res = await getScheduleDoctorByDate(doctorId, formattedDate);
+            console.log('getScheduleDoctorByDate res', res);
+            let data = null;
+            if (res && res.data) {
+                // prefer API shape {errCode, data}
+                if (res.data.errCode === 0) data = res.data.data;
+                else if (Array.isArray(res.data)) data = res.data;
+            }
+            data = data || [];
+            // store scheduled times
+            this.setState({ scheduledTimes: data, isEdit: data.length > 0 });
+
+            // mark rangeTime items
+            let { rangeTime } = this.state;
+            if (rangeTime && rangeTime.length > 0) {
+                let range = rangeTime.map(item => {
+                    let exists = data.find(d => String(d.timeType) === String(item.keyMap));
+                    return { ...item, isSelected: !!exists };
+                });
+                this.setState({ rangeTime: range });
+            }
+        } catch (error) {
+            console.error('fetchScheduleForDoctorAndDate error', error);
         }
     }
 
@@ -151,11 +204,36 @@ class ManageSchedule extends Component {
                 })
             }
         }
-        let res = await this.props.saveBulkScheduleDoctor({
-            arrSchedule: result,
-            doctorId: selectedDoctor.value,
-            date: formatedDate
-        });
+        if (this.state.isEdit) {
+            try {
+                let res = await editBulkScheduleDoctorService({
+                    arrSchedule: result,
+                    doctorId: selectedDoctor.value,
+                    date: formatedDate
+                });
+                console.log('editBulkScheduleDoctorService res', res);
+                if (res && res.errCode === 0) {
+                    toast.success('Update schedule successfully');
+                    // refresh schedule
+                    await this.fetchScheduleForDoctorAndDate(selectedDoctor.value, currentDate);
+                } else {
+                    toast.error('Update schedule failed');
+                }
+            } catch (err) {
+                console.error('editBulkScheduleDoctorService error', err);
+                toast.error('Update schedule failed');
+            }
+        } else {
+            let res = await this.props.saveBulkScheduleDoctor({
+                arrSchedule: result,
+                doctorId: selectedDoctor.value,
+                date: formatedDate
+            });
+            if (res && res.payload && res.payload.errCode === 0) {
+                toast.success('Create schedule successfully');
+                await this.fetchScheduleForDoctorAndDate(selectedDoctor.value, currentDate);
+            }
+        }
     }
 
 
@@ -213,7 +291,7 @@ class ManageSchedule extends Component {
                             <button 
                             className="btn btn-save-schedule btn-primary"
                             onClick={() => this.handleSaveSchedule()}
-                            ><FormattedMessage id="manage-schedule.save" /></button>
+                            >{this.state.isEdit ? <FormattedMessage id="manage-schedule.edit" /> : <FormattedMessage id="manage-schedule.save" />}</button>
                         </div>
 
                     </div>

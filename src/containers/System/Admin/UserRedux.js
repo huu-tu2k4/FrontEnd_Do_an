@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import LanguageUtils from '../../../utils/LanguageUtils';
 import {CRUD_ACTIONS, CommonUtils} from '../../../utils';
 import TableManageUser from "./TableManageUser";
+import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 
 import './UserRedux.scss';
 class UserRedux extends Component {
@@ -308,8 +309,9 @@ class UserRedux extends Component {
             gender, position, role, avatar} = this.state;
         return (
             <React.Fragment>
+                <GlobalLoadingOverlay active={isLoadingGender} text={'Loading...'} />
                 <div className="user-redux-container">
-                    <div className="title">
+                    <div className="m-u-title">
                         <FormattedMessage id="menu.admin.user-redux" />
                     </div>
                     <div className="user-redux-body">

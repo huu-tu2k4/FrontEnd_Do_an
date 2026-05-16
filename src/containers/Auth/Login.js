@@ -7,6 +7,7 @@ import * as actions from "../../store/actions";
 import './Login.scss';
 import { FormattedMessage } from 'react-intl';
 import { handleLoginApi } from '../../services/userService';
+import { setAuthToken } from '../../axios';
 import { USER_ROLE } from '../../utils/constant';
 
 
@@ -35,12 +36,17 @@ class Login extends Component {
             }
             if(userData && userData.errCode === 0) {
                 this.props.userLoginSuccess(userData.user);
+                // save jwt access token in memory for authenticated requests
+                if (userData.token) {
+                    setAuthToken(userData.token);
+                    try { localStorage.setItem('bearer_token', userData.token); } catch (e) {}
+                }
                 // navigate based on role instead of any leftover redirect query param
                 const roleId = userData.user && userData.user.roleId;
                 if (roleId === USER_ROLE.DOCTOR) {
                     this.props.navigate('/doctor/manage-patient');
                 } else if (roleId === USER_ROLE.ADMIN) {
-                    this.props.navigate('/system/user-manage');
+                    this.props.navigate('/system/user-redux');
                 } else {
                     this.props.navigate('/');
                 }

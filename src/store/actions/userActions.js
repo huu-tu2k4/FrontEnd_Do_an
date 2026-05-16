@@ -1,5 +1,8 @@
 import actionTypes from './actionTypes';
 import { getDetailInforDoctor, getScheduleDoctorByDate } from '../../services/userService';
+import { push } from 'connected-react-router';
+import axios from '../../axios';
+import { clearAuthToken } from '../../axios';
 
 export const addUserSuccess = () => ({
     type: actionTypes.ADD_USER_SUCCESS
@@ -14,9 +17,21 @@ export const userLoginFail = () => ({
     type: actionTypes.USER_LOGIN_FAIL
 })
 
-export const processLogout = () => ({
-    type: actionTypes.PROCESS_LOGOUT
-})
+export const processLogout = () => {
+    return (dispatch) => {
+        return (async () => {
+            try {
+                // notify backend to clear HttpOnly refresh cookie
+                await axios.post('/api/logout');
+            } catch (e) {
+                // ignore
+            }
+            try { clearAuthToken(); localStorage.removeItem('bearer_token'); localStorage.removeItem('refresh_token'); } catch (e) {}
+            dispatch({ type: actionTypes.PROCESS_LOGOUT });
+            dispatch(push('/login'));
+        })();
+    }
+}
 
 export const fetchDetailDoctor = (id) => {
     return async (dispatch, getState) => {

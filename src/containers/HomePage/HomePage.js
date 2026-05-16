@@ -7,6 +7,7 @@ import Doctor from './Section/Doctor';
 import Handbook from './Section/Handbook';
 import About from './Section/About';
 import HomeFooter from './HomeFooter';
+import GlobalLoadingOverlay from '../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -24,6 +25,7 @@ class HomePage extends Component {
         };
         return (
             <div>
+                <GlobalLoadingOverlay active={this.props.isLoadingTopDoctors} text={'Loading...'} />
                 <HomeHeader isShowBanner={true} />
                 <Specialty settings={settings} />
                 <MedicalFacility settings={settings} />
@@ -39,7 +41,8 @@ class HomePage extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: state.user.isLoggedIn
+        isLoggedIn: state.user.isLoggedIn, 
+        isLoadingTopDoctors: state.admin.isLoadingTopDoctor
     };
 };
 

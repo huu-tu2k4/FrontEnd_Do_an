@@ -41,7 +41,7 @@ class Doctor extends Component {
                 <div className="section-container">
                     <div className="section-header">
                         <span className="title-section"><FormattedMessage id="section.outstanding-doctor" /></span>
-                        <button className="btn-section"><FormattedMessage id="section.see-more" /></button>
+                        <button className="btn-section" onClick={() => this.props.history.push('/doctors')}><FormattedMessage id="section.see-more" /></button>
                     </div>
                     <div className="section-body">
                         <Slider {...this.props.settings}>

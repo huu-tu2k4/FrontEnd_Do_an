@@ -7,6 +7,7 @@ const initialState = {
     positions: [],
     users: [],
     topDoctors: [],
+    isLoadingTopDoctor: false,
     allDoctors: [],
     allScheduleTime: [],
     allDataRequiredDoctorInfor: [],
@@ -67,14 +68,21 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+        case actionTypes.FETCH_TOP_DOCTOR_START:
+            state.isLoadingTopDoctor = true;
+            return {
+                ...state
+            }
         case actionTypes.FETCH_TOP_DOCTOR_SUCCESS:
             let copyStateTopDoctor = { ...state };
             copyStateTopDoctor.topDoctors = action.data;
+            copyStateTopDoctor.isLoadingTopDoctor = false;
             return {
                 ...copyStateTopDoctor
             }
         case actionTypes.FETCH_TOP_DOCTOR_FAILED:
             state.topDoctors = [];
+            state.isLoadingTopDoctor = false;
             return {
                 ...state
             }

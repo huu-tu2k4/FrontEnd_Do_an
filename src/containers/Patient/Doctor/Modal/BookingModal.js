@@ -170,7 +170,7 @@ class BookingModal extends Component {
         let { selectedGender, genderArr } = this.state;
         let { isOpen, onClose, dataTime } = this.props;
         let doctorId = dataTime && !_.isEmpty(dataTime) ? dataTime.doctorId : '';
-        console.log('check dataTime: ', dataTime, this.props);
+        // console.log('check dataTime: ', dataTime, this.props);
         return (
             <Modal
                 isOpen={isOpen}

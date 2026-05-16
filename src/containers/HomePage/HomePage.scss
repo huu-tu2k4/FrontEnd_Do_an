@@ -16,7 +16,7 @@
                     // background: url("../../assets/specialty/specialty1.png");
                 }
                 &.section-medical-facility {
-                    background: url("../../assets/medicalFacility/anh_benh_vien.png");
+                    // background: url("../../assets/medicalFacility/anh_benh_vien.png");
                 }
                 &.section-doctor {
                     width: 120px;
@@ -25,12 +25,24 @@
                     overflow: hidden;
                 }
                 &.section-handbook {
-                    background: url("../../assets/handbook/handbook.png");
+                    // background: url("../../assets/handbook/handbook.png");
                 }
                 &.section-about {
                     
                 }
 
+            }
+            // text under the image (title/name)
+            span {
+                display: block;
+                margin-top: 8px;
+                text-align: center;
+                font-size: 14px;
+                color: #333;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 278px;
             }
         }
     }

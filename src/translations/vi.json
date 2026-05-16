@@ -142,7 +142,8 @@
         "select-date": "Chọn ngày",
         "select-hour": "Chọn giờ",
         "save-schedule": "Lưu lịch khám",
-        "create-schedule": "Tạo lịch khám"
+        "create-schedule": "Tạo lịch khám",
+        "edit": "Sửa"
     },
     "manage-patient": {
         "title": "Quản lý bệnh nhân đã đặt lịch khám",
