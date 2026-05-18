@@ -7,6 +7,7 @@ import { adminMenu, doctorMenu } from './menuApp';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGE, USER_ROLE } from '../../utils/constant';
 import { changeLanguageApp } from '../../store/actions/appActions';
+import { withRouter } from 'react-router';
 
 import './Header.scss';
 import _ from 'lodash';
@@ -48,7 +49,7 @@ class Header extends Component {
                 </div>
 
                 <div className="language">
-                    <span className="wellcome"><FormattedMessage id="home_header.wellcome" />{userInfo && userInfo.firstName ? userInfo.firstName : ''}</span>
+                    <span className="wellcome" onClick={() => this.props.history.push('/profile')} style={{cursor: 'pointer'}}><FormattedMessage id="home_header.wellcome" />{userInfo && userInfo.firstName ? userInfo.firstName : ''}</span>
                     <span className={`${language === LANGUAGE.VI ? 'active language-vi' : 'language-vi'}`} onClick={() => this.changeLanguage(LANGUAGE.VI)}>
                         VN
                     </span>
@@ -81,4 +82,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

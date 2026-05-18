@@ -7,6 +7,7 @@ import { CommonUtils } from '../../../utils';
 import handbookService from '../../../services/handbookService';
 import { getAllSpecialty } from '../../../services/userService';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 
 import './ManageHandbook.scss';
 
@@ -100,12 +101,18 @@ class ManageHandbook extends Component {
                     </div>
                     <div className="col-6 form-group">
                         <label><FormattedMessage id="admin.manage-handbook.specialty" /></label>
-                        <select className="form-control" value={this.state.selectedSpecialty} onChange={(e) => this.setState({ selectedSpecialty: e.target.value })}>
-                            <option value="">-- Select --</option>
+                        {/* <select className="form-control" value={this.state.selectedSpecialty} onChange={(e) => this.setState({ selectedSpecialty: e.target.value })}>
+                            <option value="" disabled>{this.props.language === 'vi' ? '-- Chọn --' : '-- Select --'}</option>
                             {this.state.specialties && this.state.specialties.length > 0 && this.state.specialties.map((sp) => (
                                 <option key={sp.id} value={sp.id}>{this.props.language === 'vi' ? sp.nameVi : sp.nameEn}</option>
                             ))}
-                        </select>
+                        </select> */}
+                        <Select
+                            value={this.state.selectedSpecialty}
+                            onChange={(e) => this.setState({ selectedSpecialty: e.target.value })}
+                            options={this.state.specialties.map(sp => ({ value: sp.id, label: this.props.language === 'vi' ? sp.nameVi : sp.nameEn }))}
+                            placeholder={<FormattedMessage id="admin.manage-handbook.select-specialty" />}
+                        />
                     </div>
                     <div className="form-group col-md-6">
                         <label><FormattedMessage id="user.image" /></label>
@@ -121,6 +128,9 @@ class ManageHandbook extends Component {
                                 )}
                             </div>
                         </div>
+                    </div>
+                    <div className="col-12">
+                        <span><FormattedMessage id="admin.manage-handbook.content" /></span>
                     </div>
                     <div className="col-12">
                         <MdEditor

@@ -122,6 +122,16 @@
             "name": "Tên phòng khám",
             "address": "Địa chỉ phòng khám",
             "save": "Lưu phòng khám"
+        },
+        "manage-handbook": {
+            "title": "Quản lý cẩm nang sức khỏe",
+            "name-vi": "Tên cẩm nang (Tiếng Việt)",
+            "name-en": "Tên cẩm nang (Tiếng Anh)",
+            "description": "Mô tả ngắn gọn về cẩm nang",
+            "content": "Nội dung chi tiết của cẩm nang",
+            "save": "Lưu cẩm nang",
+            "specialty": "Chuyên khoa liên quan",
+            "select-specialty": "Chọn chuyên khoa (nếu có)"
         }
     },
     "common": {

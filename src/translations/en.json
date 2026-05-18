@@ -121,6 +121,16 @@
             "name": "Clinic Name",
             "address": "Clinic Address",
             "save": "Save Clinic"
+        },
+        "manage-handbook": {
+            "title": "Manage Health Handbook",
+            "name-vi": "Handbook Name (Vietnamese)",
+            "name-en": "Handbook Name (English)",
+            "description": "Short description of the handbook",
+            "content": "Detailed content of the handbook",
+            "save": "Save Handbook",
+            "specialty": "Related Specialty",
+            "select-specialty": "Select Specialty (if any)"
         }
     },
     "common": {

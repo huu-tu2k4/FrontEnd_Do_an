@@ -21,7 +21,7 @@ import Doctor from '../routes/Doctor';
 import VerifyEmail from './Patient/VerifyEmail';
 import DetailSpecialty from './Patient/Specialty/DetailSpecialty';
 import DetailClinic from './Patient/Clinic/DetailClinic';
-import HandbookList from './HomePage/Handbook/HandbookList';
+import HandbookList from './Patient/Handbook/HandbookList';
 import DetailHandbook from './Patient/Handbook/DetailHandbook';
 import AllSpecialties from './Patient/Specialty/AllSpecialties';
 import AllClinics from './Patient/Clinic/AllClinics';

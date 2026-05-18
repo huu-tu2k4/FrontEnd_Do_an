@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './HomeHeader.scss';
 import logo from '../../assets/logo_v3.png';
 import { FormattedMessage } from 'react-intl';
-import { LANGUAGE } from '../../utils/constant';
+import { LANGUAGE, path } from '../../utils/constant';
 import { changeLanguageApp } from '../../store/actions/appActions';
 import { withRouter } from 'react-router';
 
@@ -12,10 +12,39 @@ import { withRouter } from 'react-router';
 
 class HomeHeader extends Component {
 
-changeLanguage = (language) => {
-    // this.props.changeLanguageApp(language);
-    this.props.changeLanguageAppRedux(language);
-}
+    state = {
+        isMenuOpen: false
+    }
+
+    menuRef = React.createRef();
+
+    changeLanguage = (language) => {
+        // this.props.changeLanguageApp(language);
+        this.props.changeLanguageAppRedux(language);
+    }
+
+    toggleMenu = (e) => {
+        e.stopPropagation();
+        this.setState(prev => ({ isMenuOpen: !prev.isMenuOpen }));
+    }
+
+    closeMenu = () => {
+        this.setState({ isMenuOpen: false });
+    }
+
+    handleDocumentClick = (e) => {
+        if (this.menuRef.current && !this.menuRef.current.contains(e.target)) {
+            this.closeMenu();
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('click', this.handleDocumentClick);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleDocumentClick);
+    }
 
     render() {
         let language = this.props.language;
@@ -23,28 +52,37 @@ changeLanguage = (language) => {
             <React.Fragment>
                 <div className="home-header-container">
                     <div className="home-header-content">
-                        <div className="left-content" onClick={() => this.props.history.push('/home')}>
-                            <i className="fas fa-bars"></i>
-                            <div className="header-logo">
+                        <div className="left-content" ref={this.menuRef}>
+                            <div className="menu-bars" onClick={this.toggleMenu}>
+                                <i className="fas fa-bars"></i>
+                            </div>
+                            <div className="header-logo" onClick={() => this.props.history.push(path.HOME_PAGE)}>
                                 <img src={logo} alt="Logo" />
                             </div>
+
+                            {this.state.isMenuOpen && (
+                                <div className="header-dropdown">
+                                    <ul>
+                                        <li onClick={() => { this.props.history.push(path.SPECIALTIES); this.closeMenu(); }}><FormattedMessage id="home_header.specialty" /></li>
+                                        <li onClick={() => { this.props.history.push(path.CLINICS); this.closeMenu(); }}><FormattedMessage id="home_header.medical_examination" /></li>
+                                        <li onClick={() => { this.props.history.push(path.DOCTORS); this.closeMenu(); }}><FormattedMessage id="home_header.doctor" /></li>
+                                        <li onClick={() => { this.props.history.push(path.HANDBOOK); this.closeMenu(); }}><FormattedMessage id="section.handbook" /></li>
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                         <div className="center-content">
-                            <div className="child-content">
+                            <div className="child-content" onClick={() => this.props.history.push(path.SPECIALTIES)}>
                                 <div className="title"><b><FormattedMessage id="home_header.specialty" /></b></div>
                                 <div className="sub-title"><FormattedMessage id="home_header.find_doctor_by_specialty" /></div>
                             </div>
-                            <div className="child-content">
+                            <div className="child-content" onClick={() => this.props.history.push(path.CLINICS)}>
                                 <div className="title"><b><FormattedMessage id="home_header.medical_examination" /></b></div>
                                 <div className="sub-title"><FormattedMessage id="home_header.select_hospital_clinic" /></div>
                             </div>
-                            <div className="child-content">
+                            <div className="child-content" onClick={() => this.props.history.push(path.DOCTORS)}>
                                 <div className="title"><b><FormattedMessage id="home_header.doctor" /></b></div>
                                 <div className="sub-title"><FormattedMessage id="home_header.find_good_doctor" /></div>
-                            </div>
-                            <div className="child-content">
-                                <div className="title"><b><FormattedMessage id="home_header.package" /></b></div>
-                                <div className="sub-title"><FormattedMessage id="home_header.full_body_checkup" /></div>
                             </div>
                         </div>
                         <div className="right-content">
@@ -60,7 +98,7 @@ changeLanguage = (language) => {
                                     EN
                                 </span>
                             </div>
-                            <div className="btn btn-login" onClick={() => this.props.history.push('/login')}>
+                            <div className="btn btn-login" onClick={() => this.props.history.push(path.LOGIN)}>
                                 <i className="fas fa-user"></i>
                             </div>
                         </div>
@@ -82,68 +120,40 @@ changeLanguage = (language) => {
                         </div>
                         <div className="content-down">
                             <div className="options">
-                                <div className="option-child">
+                                <div className="option-child" onClick={() => this.props.history.push(path.SPECIALTIES)}>
+                                    <div className="icon-child">
+                                        <i className="fas fa-hand-holding-heart"></i>
+                                    </div>
+                                    <div className="text-child">
+                                        <FormattedMessage id="section.specialty" />
+                                    </div>
+                                </div>
+                                <div className="option-child" onClick={() => this.props.history.push(path.CLINICS)}>
                                     <div className="icon-child">
                                         <i className="far fa-hospital"></i>
                                     </div>
                                     <div className="text-child">
-                                        <FormattedMessage id="banner.child1" />
+                                        <FormattedMessage id="section.medical-facility" />
                                     </div>
                                 </div>
-                            </div>
-                            <div className="options">
-                                <div className="option-child">
-                                    <div className="icon-child">
-                                        <i className="fas fa-mobile-alt"></i>
-                                    </div>
-                                    <div className="text-child">
-                                        <FormattedMessage id="banner.child2" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="options">
-                                <div className="option-child">
-                                    <div className="icon-child">
-                                        <i className="fas fa-procedures"></i>
-                                    </div>
-                                    <div className="text-child">
-                                        <FormattedMessage id="banner.child3" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="options">
-                                <div className="option-child">
-                                    <div className="icon-child">
-                                        <i className="fas fa-vial"></i>
-                                    </div>
-                                    <div className="text-child">
-                                        <FormattedMessage id="banner.child4" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="options">
-                                <div className="option-child">
+                                <div className="option-child" onClick={() => this.props.history.push(path.DOCTORS)}>
                                     <div className="icon-child">
                                         <i className="fas fa-user-md"></i>
                                     </div>
                                     <div className="text-child">
-                                        <FormattedMessage id="banner.child5" />
+                                        <FormattedMessage id="section.outstanding-doctor" />
                                     </div>
                                 </div>
-                            </div>
-                            <div className="options">
-                                <div className="option-child">
+                                <div className="option-child" onClick={() => this.props.history.push(path.HANDBOOK)}>
                                     <div className="icon-child">
-                                        <i className="fas fa-briefcase-medical"></i>
+                                        <i className="fas fa-book"></i>
                                     </div>
                                     <div className="text-child">
-                                        <FormattedMessage id="banner.child6" />
+                                        <FormattedMessage id="section.handbook" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        
                     </div>
                 )}
             </React.Fragment>
