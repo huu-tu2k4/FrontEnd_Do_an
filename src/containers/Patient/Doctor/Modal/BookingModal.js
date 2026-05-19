@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Modal } from 'reactstrap';
 import ProfileDoctor from '../ProfileDoctor';
 import DatePicker from '../../../../components/Input/DatePicker';
+import ValidatedInput from '../../../../components/Input/ValidatedInput';
 import GlobalLoadingOverlay from '../../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import * as actions from '../../../../store/actions';
 import _ from 'lodash';
@@ -213,20 +214,20 @@ class BookingModal extends Component {
                             </div>
                             <div className="col-6 form-group">
                                 <label><FormattedMessage id="patient.detail-doctor.phone-number" />(*)</label>
-                                <input 
-                                type="text" 
-                                className="form-control"
-                                value={this.state.phoneNumber}
-                                onChange={(e) => this.handleOnChangeInput(e, 'phoneNumber')}
+                                <ValidatedInput
+                                    type="phone"
+                                    value={this.state.phoneNumber}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'phoneNumber')}
+                                    required
                                 />
                             </div>
                             <div className="col-6 form-group">
                                 <label><FormattedMessage id="patient.detail-doctor.email" />(*)</label>
-                                <input 
-                                type="text" 
-                                className="form-control"
-                                value={this.state.email}
-                                onChange={(e) => this.handleOnChangeInput(e, 'email')}
+                                <ValidatedInput
+                                    type="email"
+                                    value={this.state.email}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'email')}
+                                    required
                                 />
                             </div>
                             <div className="col-6 form-group">

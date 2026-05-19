@@ -179,6 +179,7 @@
         }
 
         .search {
+            position: relative;
             width: fit-content;
             display: flex;
             justify-content: center;
@@ -196,6 +197,64 @@
                 height: 30px;
                 width: 360px;
                 background: transparent;
+            }
+            .search-type {
+                margin-left: 10px;
+                border: none;
+                padding: 6px 8px;
+                border-radius: 6px;
+                background: rgba(255,255,255,0.9);
+                cursor: pointer;
+            }
+            .search-results {
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 50%;
+                transform: translateX(-50%);
+                width: 92vw;
+                max-width: 720px;
+                max-height: 320px;
+                overflow: auto;
+                background: white;
+                box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+                border-radius: 10px;
+                padding: 10px 12px;
+                z-index: 1300;
+
+                .result-group {
+                    margin-bottom: 12px;
+                    h4 {
+                        margin: 0 0 8px 0;
+                        font-size: 14px;
+                        color: #222;
+                    }
+                    ul {
+                        margin: 0;
+                        padding: 0;
+                        list-style: none;
+                        li {
+                            padding: 8px 10px;
+                            cursor: pointer;
+                            border-radius: 6px;
+                            transition: background .12s ease, transform .08s ease;
+                            &:hover { background: #f5f7fb; transform: translateX(4px); }
+                        }
+                    }
+                }
+
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                    li.result-item {
+                        padding: 8px 10px;
+                        cursor: pointer;
+                        border-radius: 6px;
+                        transition: background .12s ease, transform .08s ease;
+                        &:hover { background: #f5f7fb; transform: translateX(4px); }
+                    }
+                    li.specialty-item { font-weight: 600; }
+                }
             }
         }
     }

@@ -13,7 +13,9 @@ import { withRouter } from 'react-router';
 class HomeHeader extends Component {
 
     state = {
-        isMenuOpen: false
+        isMenuOpen: false,
+        searchTerm: '',
+        searchResults: null
     }
 
     menuRef = React.createRef();
@@ -35,6 +37,63 @@ class HomeHeader extends Component {
     handleDocumentClick = (e) => {
         if (this.menuRef.current && !this.menuRef.current.contains(e.target)) {
             this.closeMenu();
+        }
+    }
+
+    handleSearchChange = (e) => {
+        const val = e.target.value;
+        console.log('Search input changed:', val);
+        if (val.trim() === '') {
+            this.setState({ searchTerm: val, searchResults: null });
+        } else {
+            this.setState({ searchTerm: val });
+        }
+    }
+
+    
+
+    navigateToDoctor = (id) => {
+        if (!id) return;
+        const target = path.DETAIL_DOCTOR.replace(':id', id);
+        this.props.history.push(target);
+    }
+
+    navigateToSpecialty = (id) => {
+        if (!id) return;
+        const target = path.DETAIL_SPECIALTY.replace(':id', id);
+        this.props.history.push(target);
+    }
+
+    handleSearchKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            console.log('Search key pressed:', e.key);
+            const q = this.state.searchTerm.trim();
+            console.log('Search query:', q);
+            if (!q) {
+                console.log('Empty query, skipping search');
+                return;
+            }
+            try {
+                const searchService = require('../../services/searchService').default;
+                console.log('Calling searchService.search with:', q, 'type=both');
+                const resp = await searchService.search(q, 'both');
+                console.log('Search response:', resp);
+                if (resp && resp.data) {
+                    // store payload to render on page
+                    this.setState({ searchResults: resp.data });
+                    if (Array.isArray(resp.data)) {
+                        console.log('Search results array length:', resp.data.length);
+                    } else if (resp.data.doctors || resp.data.specialties) {
+                        const d = Array.isArray(resp.data.doctors) ? resp.data.doctors.length : 0;
+                        const s = Array.isArray(resp.data.specialties) ? resp.data.specialties.length : 0;
+                        console.log(`Found ${d} doctors and ${s} specialties`);
+                    } else {
+                        console.log('Unexpected search payload:', resp.data);
+                    }
+                }
+            } catch (err) {
+                console.error('Search error', err);
+            }
         }
     }
 
@@ -115,7 +174,70 @@ class HomeHeader extends Component {
                             </div>
                             <div className="search">
                                 <i className="fas fa-search"></i>
-                                <input type="text" placeholder={<FormattedMessage id="banner.search-placeholder" />} />
+                                <FormattedMessage id="banner.search-placeholder">
+                                    {(placeholder) => (
+                                        <input
+                                            type="text"
+                                            value={this.state.searchTerm}
+                                            onChange={this.handleSearchChange}
+                                            onKeyDown={this.handleSearchKeyDown}
+                                            placeholder={placeholder}
+                                        />
+                                    )}
+                                </FormattedMessage>
+                                {/* single combined search (both) - selector removed */}
+
+                                {this.state.searchResults && (
+                                    <div className="search-results">
+                                        {/* doctor-only or array result */}
+                                        {Array.isArray(this.state.searchResults) && (
+                                            <ul>
+                                                {this.state.searchResults.map((item) => (
+                                                    <li key={item.id || item.nameEn} className="result-item" onClick={() => {
+                                                        if (!item.id) return;
+                                                        // detect item type by presence of name fields
+                                                        if (item.firstName || item.lastName) {
+                                                            this.navigateToDoctor(item.id);
+                                                        } else {
+                                                            this.navigateToSpecialty(item.id);
+                                                        }
+                                                    }}>
+                                                        {item.firstName || item.lastName
+                                                            ? `${item.firstName || ''} ${item.lastName || ''}`
+                                                            : (language === LANGUAGE.VI ? item.nameVi || item.nameEn : item.nameEn || item.nameVi)}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+
+                                        {/* both result */}
+                                        {!Array.isArray(this.state.searchResults) && this.state.searchResults.doctors && (
+                                            <div className="result-group">
+                                                <h4><FormattedMessage id="home_header.doctor" /></h4>
+                                                <ul>
+                                                    {this.state.searchResults.doctors.map(d => (
+                                                            <li key={d.id} className="result-item" onClick={() => this.navigateToDoctor(d.id)}>
+                                                                {d.positionData ? (language === LANGUAGE.VI ? (d.positionData.valueVi || d.positionData.valueEn) : (d.positionData.valueEn || d.positionData.valueVi)) + ' ' : ''}
+                                                                {d.lastName} {d.firstName}
+                                                                {d.doctorInforData && d.doctorInforData.specialtyData ? ` - ${language === LANGUAGE.VI ? (d.doctorInforData.specialtyData.nameVi || d.doctorInforData.specialtyData.nameEn) : (d.doctorInforData.specialtyData.nameEn || d.doctorInforData.specialtyData.nameVi)}` : ''}
+                                                            </li>
+                                                        ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        {!Array.isArray(this.state.searchResults) && this.state.searchResults.specialties && (
+                                            <div className="result-group">
+                                                <h4><FormattedMessage id="section.specialty" /></h4>
+                                                <ul>
+                                                    {this.state.searchResults.specialties.map(s => (
+                                                            <li key={s.id} className="result-item specialty-item" onClick={() => this.navigateToSpecialty(s.id)}>{language === LANGUAGE.VI ? (s.nameVi || s.nameEn) : (s.nameEn || s.nameVi)}</li>
+                                                        ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="content-down">

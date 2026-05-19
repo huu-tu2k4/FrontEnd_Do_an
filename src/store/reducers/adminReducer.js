@@ -2,6 +2,8 @@ import actionTypes from '../actions/actionTypes';
 
 const initialState = {
     isLoadingGender: false,
+    isLoadingUsers: false,
+    isSavingUser: false,
     genders: [],
     roles: [],
     positions: [],
@@ -60,11 +62,18 @@ const adminReducer = (state = initialState, action) => {
         case actionTypes.FETCH_ALL_USERS_SUCCESS:
             let copyStateUsers = { ...state };
             copyStateUsers.users = action.users;
+            copyStateUsers.isLoadingUsers = false;
             return {
                 ...copyStateUsers
             }
         case actionTypes.FETCH_ALL_USERS_FAILED:
             state.users = [];
+            state.isLoadingUsers = false;
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ALL_USERS_START:
+            state.isLoadingUsers = true;
             return {
                 ...state
             }
@@ -120,6 +129,24 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+        case actionTypes.CREATE_USER_START:
+            state.isSavingUser = true;
+            return { ...state }
+        case actionTypes.CREATE_USER_SUCCESS:
+            state.isSavingUser = false;
+            return { ...state }
+        case actionTypes.CREATE_USER_FAILED:
+            state.isSavingUser = false;
+            return { ...state }
+        case actionTypes.EDIT_USER_START:
+            state.isSavingUser = true;
+            return { ...state }
+        case actionTypes.EDIT_USER_SUCCESS:
+            state.isSavingUser = false;
+            return { ...state }
+        case actionTypes.EDIT_USER_FAILED:
+            state.isSavingUser = false;
+            return { ...state }
 
         default:
             return state;

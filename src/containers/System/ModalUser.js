@@ -2,6 +2,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import ValidatedInput from '../../components/Input/ValidatedInput';
 import { connect } from 'react-redux';
 import { emitter } from '../../utils/emitter';
 
@@ -87,11 +88,12 @@ class ModalUser extends Component {
                         <div className="input-container">
                             {/* <label><FormattedMessage id="manage-user.email"/></label> */}
                             <label>Email</label>
-                            <input onChange={(event) => {this.handleOnChange(event, 'email')}}
+                            <ValidatedInput onChange={(event) => {this.handleOnChange(event, 'email')}}
                                 type="email"
                                 className="form-control"
                                 placeholder="Email"
                                 value={this.state.email}
+                                required
                             />
                         </div>
                         <div className="input-container">

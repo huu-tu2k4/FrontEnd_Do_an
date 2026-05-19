@@ -5,6 +5,7 @@ import { getAllCodeService } from '../../../services/userService';
 import* as actions from '../../../store/actions/index';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import ValidatedInput from '../../../components/Input/ValidatedInput';
 import ToastUtil from '../../../utils/ToastUtil';
 import { toast } from 'react-toastify';
 import LanguageUtils from '../../../utils/LanguageUtils';
@@ -303,13 +304,18 @@ class UserRedux extends Component {
         let roles = this.props.roleRedux;
         let positions = this.props.positionRedux;
         let isLoadingGender = this.props.isLoadingGender;
+        let isLoadingUsers = this.props.isLoadingUsers;
+        let isSavingUser = this.props.isSavingUser;
 
         let {email, password, firstName, 
             lastName, phoneNumber, address, 
             gender, position, role, avatar} = this.state;
+        const loadingActive = isLoadingGender || isLoadingUsers || isSavingUser;
+        const loadingText = isSavingUser ? (LanguageUtils.getMessageByKey('common.saving', this.props.language) || 'Saving...') : (LanguageUtils.getMessageByKey('common.loading', this.props.language) || 'Loading...');
+
         return (
             <React.Fragment>
-                <GlobalLoadingOverlay active={isLoadingGender} text={'Loading...'} />
+                <GlobalLoadingOverlay active={loadingActive} text={loadingText} />
                 <div className="user-redux-container">
                     <div className="m-u-title">
                         <FormattedMessage id="menu.admin.user-redux" />
@@ -336,23 +342,15 @@ class UserRedux extends Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label><FormattedMessage id="user.email" />(*)</label>
-                                            <input 
-                                                name="email" 
-                                                type="email" 
-                                                className="form-control" 
-                                                disabled={this.state.action === CRUD_ACTIONS.EDIT}                                                 
+                                            <ValidatedInput
+                                                name="email"
+                                                type="email"
+                                                disabled={this.state.action === CRUD_ACTIONS.EDIT}
                                                 value={email}
                                                 onChange={(event) => this.onChangeInput(event, 'email')}
+                                                error={this.state.errors.email}
+                                                required
                                             />
-                                            {this.state.errors.email && (
-                                                <div className="invalid-feedback d-block">
-                                                    {typeof this.state.errors.email === 'string' && this.state.errors.email.startsWith && this.state.errors.email.startsWith('validation.') ? (
-                                                        <FormattedMessage id={this.state.errors.email} />
-                                                    ) : (
-                                                        this.state.errors.email
-                                                    )}
-                                                </div>
-                                            )}
                                         </div>                                        
                                     </div>
                                 </div>
@@ -395,22 +393,14 @@ class UserRedux extends Component {
                                 <div className="row mb-1">
                                     <div className="form-group col-md-4">
                                         <label><FormattedMessage id="user.phoneNumber" />(*)</label>
-                                        <input 
-                                            name="phoneNumber" 
-                                            type="text" 
-                                            className="form-control" 
+                                        <ValidatedInput
+                                            name="phoneNumber"
+                                            type="phone"
                                             value={phoneNumber}
                                             onChange={(event) => this.onChangeInput(event, 'phoneNumber')}
+                                            error={this.state.errors.phoneNumber}
+                                            required
                                         />
-                                        {this.state.errors.phoneNumber && (
-                                            <div className="invalid-feedback d-block">
-                                                {typeof this.state.errors.phoneNumber === 'string' && this.state.errors.phoneNumber.startsWith && this.state.errors.phoneNumber.startsWith('validation.') ? (
-                                                    <FormattedMessage id={this.state.errors.phoneNumber} />
-                                                ) : (
-                                                    this.state.errors.phoneNumber
-                                                )}
-                                            </div>
-                                        )}
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label><FormattedMessage id="user.address" /></label>
@@ -550,6 +540,8 @@ const mapStateToProps = state => {
         positionRedux: state.admin.positions,
         roleRedux: state.admin.roles,
         isLoadingGender: state.admin.isLoadingGender,
+        isLoadingUsers: state.admin.isLoadingUsers,
+        isSavingUser: state.admin.isSavingUser,
         listUsers: state.admin.users
     };
 };

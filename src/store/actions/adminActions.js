@@ -120,6 +120,7 @@ export const fetchRoleStart = () => {
 export const createNewUser = (data) => {
     return async (dispatch, getState) => {
         try {
+            dispatch({ type: actionTypes.CREATE_USER_START });
             let res = await createNewUserService(data);
             
             if (res && res.errCode === 0) {
@@ -144,6 +145,7 @@ export const createNewUser = (data) => {
 export const fetchAllUsers = () => {
     return async (dispatch, getState) => {
         try {
+            dispatch({ type: actionTypes.FETCH_ALL_USERS_START });
             let res = await getAllUsers('ALL');
             if (res && res.errCode === 0) {
                 dispatch({ type: actionTypes.FETCH_ALL_USERS_SUCCESS, users: res.users.reverse() });
@@ -191,6 +193,7 @@ export const deleteUser = (userId) => {
 export const editUser = (data) => {
     return async (dispatch, getState) => {
         try {
+            dispatch({ type: actionTypes.EDIT_USER_START });
             let res = await editUserService(data);
             if (res && res.errCode === 0) {
                 const language = getState().app.language;

@@ -149,7 +149,6 @@ class ManageSchedule extends Component {
         let formattedDate = new Date(date).getTime();
         try {
             let res = await getScheduleDoctorByDate(doctorId, formattedDate);
-            console.log('getScheduleDoctorByDate res', res);
             let data = null;
             if (res && res.data) {
                 // prefer API shape {errCode, data}
@@ -211,7 +210,6 @@ class ManageSchedule extends Component {
                     doctorId: selectedDoctor.value,
                     date: formatedDate
                 });
-                console.log('editBulkScheduleDoctorService res', res);
                 if (res && res.errCode === 0) {
                     toast.success('Update schedule successfully');
                     // refresh schedule

@@ -1,0 +1,12 @@
+.validated-input {
+  .form-control.is-invalid {
+    border-color: #dc3545;
+    box-shadow: none;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+}

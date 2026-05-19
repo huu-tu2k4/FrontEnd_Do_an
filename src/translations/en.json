@@ -57,6 +57,8 @@
         }
     },
     "user": {
+        "select-role": "Select role",
+        "select-position": "Select position",
         "create_title": "Create User",
         "email": "Email",
         "email_placeholder": "example@domain.com",
@@ -75,13 +77,11 @@
         "female": "Female",
         "image": "Image",
         "role": "Role",
-        "role_R1": "Administrator",
-        "role_R2": "User",
         "position": "Position",
-        "position_P1": "Manager",
-        "position_P2": "Staff",
         "create": "Create",
         "edit": "Save",
+        "delete": "Delete",
+        "action": "Action",
         "cancel": "Cancel",
         "choose-image": "Choose Image",
         "create_success": "Create a new user successfully!"
@@ -132,6 +132,17 @@
             "specialty": "Related Specialty",
             "select-specialty": "Select Specialty (if any)"
         }
+        ,
+        "tableManageUser": {
+            "email": "Email",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "position": "Position",
+            "address": "Address",
+            "action": "Action",
+            "edit": "Edit",
+            "delete": "Delete"
+        }
     },
     "common": {
         "warning": "Warning"
@@ -140,7 +151,7 @@
         "invalid_email": "Invalid email address",
         "email_in_use": "This email is already in use, please try another email!",
         "invalid_password": "Password must be at least 6 characters and include letters and numbers",
-        "invalid_phone": "Phone number must be 9-12 digits",
+        "invalid_phone": "Phone number must be exactly 10 digits",
         "missing_fields": "Please fill in required fields",
         "required": "This field is required"
     },
@@ -203,5 +214,13 @@
             "booking_failed": "Failed to book appointment!"
         }
         
+    },
+    "search": {
+        "placeholder": "Search for doctors, specialties...",
+        "type": {
+            "both": "Both",
+            "doctor": "Doctor",
+            "specialty": "Specialty"
+        }
     }
 }

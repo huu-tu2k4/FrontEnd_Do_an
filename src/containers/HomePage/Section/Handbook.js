@@ -28,7 +28,6 @@ class Handbook extends Component {
 
     render() {
         const { handbooks } = this.state;
-        console.log('handbooks:', handbooks);
         return (
             <div className="section-share section-handbook">
                 <div className="section-container">

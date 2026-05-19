@@ -8,7 +8,7 @@
         "find_doctor_by_specialty": "Tìm bác sĩ theo chuyên khoa",
         "medical_examination": "KHÁM BỆNH",
         "select_hospital_clinic": "Chọn bệnh viện phòng khám",
-        "doctor": "BÁC SĨ",
+        "doctor": "Bác sĩ",
         "find_good_doctor": "Tìm bác sĩ giỏi",
         "package": "GÓI KHÁM",
         "full_body_checkup": "Khám sức khỏe toàn diện",
@@ -58,6 +58,8 @@
     }
     ,
     "user": {
+        "select-role": "Chọn vai trò",
+        "select-position": "Chọn chức vụ",
         "create_title": "Tạo người dùng",
         "email": "Email",
         "email_placeholder": "example@domain.com",
@@ -76,13 +78,11 @@
         "female": "Nữ",
         "image": "Ảnh",
         "role": "Vai trò",
-        "role_R1": "Quản trị",
-        "role_R2": "Người dùng",
         "position": "Chức vụ",
-        "position_P1": "Quản lý",
-        "position_P2": "Nhân viên",
         "create": "Thêm mới",
         "edit": "Lưu",
+        "delete": "Xóa",
+        "action": "Hành động",
         "cancel": "Hủy",
         "choose-image": "Chọn ảnh",
         "create_success": "Tạo người dùng thành công!"
@@ -133,6 +133,17 @@
             "specialty": "Chuyên khoa liên quan",
             "select-specialty": "Chọn chuyên khoa (nếu có)"
         }
+        ,
+        "tableManageUser": {
+            "email": "Email",
+            "firstName": "Tên",
+            "lastName": "Họ",
+            "position": "Chức vụ",
+            "address": "Địa chỉ",
+            "action": "Hành động",
+            "edit": "Sửa",
+            "delete": "Xóa"
+        }
     },
     "common": {
         "warning": "Cảnh báo"
@@ -141,7 +152,7 @@
         "invalid_email": "Email không hợp lệ",
         "email_in_use": "Email đã tồn tại, vui lòng thử email khác!",
         "invalid_password": "Mật khẩu tối thiểu 6 ký tự và chứa chữ và số",
-        "invalid_phone": "Số điện thoại phải gồm 9-12 chữ số",
+        "invalid_phone": "Số điện thoại phải gồm đúng 10 chữ số",
         "missing_fields": "Vui lòng điền các trường bắt buộc",
         "required": "Trường này là bắt buộc"
     },
@@ -204,5 +215,13 @@
             "booking_failed": "Đặt lịch thất bại!"
         }
         
+    },
+    "search": {
+        "placeholder": "Tìm kiếm bác sĩ, chuyên khoa...",
+        "type": {
+            "both": "Tất cả",
+            "doctor": "Bác sĩ",
+            "specialty": "Chuyên khoa"
+        }
     }
 }
