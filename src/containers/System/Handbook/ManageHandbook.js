@@ -4,8 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import { CommonUtils } from '../../../utils';
-import handbookService from '../../../services/handbookService';
-import { getAllSpecialty } from '../../../services/userService';
+import { getAllSpecialty, createHandbook } from '../../../services/userService';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 
@@ -74,12 +73,12 @@ class ManageHandbook extends Component {
             ,
             specialtyId: this.state.selectedSpecialty
         };
-        let res = await handbookService.createCategory(payload);
+        let res = await createHandbook(payload);
         if (res && res.errCode === 0) {
             toast.success('Tạo Handbook thành công');
-            // this.setState({
-            //     nameVi: '', nameEn: '', imageBase64: '', descriptionHTML: '', descriptionMarkdown: '', previewImgURL: '', selectedSpecialty: ''
-            // });
+            this.setState({
+                nameVi: '', nameEn: '', imageBase64: '', descriptionHTML: '', descriptionMarkdown: '', previewImgURL: '', selectedSpecialty: ''
+            });
         } else {
             toast.error('Tạo Handbook thất bại');
             console.log('handbook create res:', res);

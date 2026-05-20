@@ -8,6 +8,7 @@ import Handbook from './Section/Handbook';
 import About from './Section/About';
 import HomeFooter from './HomeFooter';
 import GlobalLoadingOverlay from '../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
+import AIChatbot from '../../components/AIChatbot';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -27,6 +28,7 @@ class HomePage extends Component {
             <div>
                 <GlobalLoadingOverlay active={this.props.isLoadingTopDoctors} text={'Loading...'} />
                 <HomeHeader isShowBanner={true} />
+                <AIChatbot />
                 <Specialty settings={settings} />
                 <MedicalFacility settings={settings} />
                 <Doctor settings={settings} />

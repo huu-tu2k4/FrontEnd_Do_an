@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import HomeHeader from '../../HomePage/HomeHeader';
-import handbookService from '../../../services/handbookService';
+import { getHandbookById } from '../../../services/userService';
 
 import './DetailHandbook.scss';
 
@@ -17,7 +17,7 @@ class DetailHandbook extends Component {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id;
             try {
-                const res = await handbookService.getCategoryById(id);
+                const res = await getHandbookById(id);
                 if (res && res.errCode === 0) {
                     this.setState({ handbook: res.data });
                 }

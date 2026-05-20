@@ -92,6 +92,24 @@ const getAllPatientForDoctor = (data) => {
 const postSendRemedy = (data) => {
     return axios.post('/api/send-remedy', data);
 }
+const aiSuggestSpecialty = (symptoms) => {
+    return axios.post('/api/suggest-specialty', { symptoms });
+}
+const getAllhandbooks = () => {
+    return axios.get('/api/handbook/categories');
+}
+const getHandbookById = (id) => {
+    return axios.get(`/api/handbook/categories/${id}`);
+}
+const createHandbook = (data) => {
+    return axios.post('/api/handbook/categories', data);
+}
+const updateHandbook = (id, data) => {
+    return axios.put(`/api/handbook/categories/${id}`, data);
+}
+const deleteHandbook = (id) => {
+    return axios.delete(`/api/handbook/categories/${id}`);
+}
 export { 
     handleLoginApi,
     getAllUsers,
@@ -117,5 +135,11 @@ export {
     getDetailClinicById,
     getAllPatientForDoctor,
     postSendRemedy,
-    editBulkScheduleDoctorService
+    editBulkScheduleDoctorService,
+    aiSuggestSpecialty,
+    getAllhandbooks,
+    getHandbookById,
+    createHandbook,
+    updateHandbook,
+    deleteHandbook
 };
