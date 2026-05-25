@@ -92,15 +92,7 @@ class Doctor extends Component {
                                     }
                                     return '';
                                 };
-
-                                // Debug: log raw image payload and constructed URL for troubleshooting
-                                try {
-                                    console.log('Doctor image raw:', item.image);
-                                } catch (e) {}
                                 const built = buildImageUrl(item.image);
-                                try {
-                                    console.log('Doctor image built (preview):', built ? built.slice(0, 100) : built);
-                                } catch (e) {}
                                 imageBase64 = built;
                                 return (
                                     <div className="section-customize" key={index} onClick={() => this.handleViewDetailDoctor(item)}>

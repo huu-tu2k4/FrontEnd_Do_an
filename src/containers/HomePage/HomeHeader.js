@@ -42,7 +42,6 @@ class HomeHeader extends Component {
 
     handleSearchChange = (e) => {
         const val = e.target.value;
-        console.log('Search input changed:', val);
         if (val.trim() === '') {
             this.setState({ searchTerm: val, searchResults: null });
         } else {
@@ -66,27 +65,22 @@ class HomeHeader extends Component {
 
     handleSearchKeyDown = async (e) => {
         if (e.key === 'Enter') {
-            console.log('Search key pressed:', e.key);
             const q = this.state.searchTerm.trim();
-            console.log('Search query:', q);
             if (!q) {
                 console.log('Empty query, skipping search');
                 return;
             }
             try {
                 const searchService = require('../../services/searchService').default;
-                console.log('Calling searchService.search with:', q, 'type=both');
                 const resp = await searchService.search(q, 'both');
-                console.log('Search response:', resp);
                 if (resp && resp.data) {
                     // store payload to render on page
                     this.setState({ searchResults: resp.data });
                     if (Array.isArray(resp.data)) {
-                        console.log('Search results array length:', resp.data.length);
                     } else if (resp.data.doctors || resp.data.specialties) {
                         const d = Array.isArray(resp.data.doctors) ? resp.data.doctors.length : 0;
                         const s = Array.isArray(resp.data.specialties) ? resp.data.specialties.length : 0;
-                        console.log(`Found ${d} doctors and ${s} specialties`);
+                        // console.log(`Found ${d} doctors and ${s} specialties`);
                     } else {
                         console.log('Unexpected search payload:', resp.data);
                     }
