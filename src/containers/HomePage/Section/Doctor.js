@@ -64,8 +64,8 @@ class Doctor extends Component {
                                             <div className="outer-bg">
                                                 <div className="bg-image section-doctor" style={{ backgroundImage: `url(${imageBase64})` }}> </div>
                                             </div>
-                                            <div className="positon text-center">
-                                                <div>{displayName}</div>
+                                            <div className="positon text-center doctor-name">
+                                                <span>{displayName}</span>
                                                 <span>{position}</span>
                                             </div>
                                         </div>

@@ -212,6 +212,28 @@
         }
     }
 }
+.section-doctor {
+    .section-container {
+        .section-body {
+            .section-customize {
+                cursor: pointer;
+                .outer-bg {
+                    margin-top: 10px;
+                }
+                .doctor-name {
+                    padding: 10px 0;
+
+                    span {
+                        &:hover {
+                            color: #45c3d2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+   
+}
 .medical-facility-item {
 
     cursor: pointer;

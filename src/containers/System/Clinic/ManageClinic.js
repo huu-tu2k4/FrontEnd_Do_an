@@ -137,6 +137,9 @@ class ManageClinic extends Component {
                             </div>
                         </div>
                         <div className="col-12">
+                            <span><FormattedMessage id="admin.manage-clinic.description" /></span>
+                        </div>
+                        <div className="col-12">
                             <MdEditor
                                 style={{ height: '300px' }}
                                 renderHTML={text => mdParser.render(text)}

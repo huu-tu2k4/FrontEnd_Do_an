@@ -112,6 +112,7 @@
             "select-clinic": "Chọn phòng khám"
         },
         "manage-specialty": {
+            "description": "Mô tả về chuyên khoa",
             "title": "Quản lý chuyên khoa",
             "name-vi": "Tên chuyên khoa (Tiếng Việt)",
             "name-en": "Tên chuyên khoa (Tiếng Anh)",
@@ -121,6 +122,7 @@
             "title": "Quản lý phòng khám",
             "name": "Tên phòng khám",
             "address": "Địa chỉ phòng khám",
+            "description": "Mô tả về phòng khám",
             "save": "Lưu phòng khám"
         },
         "manage-handbook": {

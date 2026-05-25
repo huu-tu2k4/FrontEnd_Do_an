@@ -349,7 +349,6 @@ class UserRedux extends Component {
                                                 value={email}
                                                 onChange={(event) => this.onChangeInput(event, 'email')}
                                                 error={this.state.errors.email}
-                                                required
                                             />
                                         </div>                                        
                                     </div>
@@ -399,7 +398,6 @@ class UserRedux extends Component {
                                             value={phoneNumber}
                                             onChange={(event) => this.onChangeInput(event, 'phoneNumber')}
                                             error={this.state.errors.phoneNumber}
-                                            required
                                         />
                                     </div>
                                     <div className="form-group col-md-8">

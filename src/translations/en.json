@@ -111,6 +111,7 @@
             "select-clinic": "Select Clinic"
         },
         "manage-specialty": {
+            "description": "Description of the specialty",
             "title": "Manage Specialty",
             "name-vi": "Specialty Name (Vietnamese)",
             "name-en": "Specialty Name (English)",
@@ -120,6 +121,7 @@
             "title": "Manage Clinic",
             "name": "Clinic Name",
             "address": "Clinic Address",
+            "description": "Description of the clinic",
             "save": "Save Clinic"
         },
         "manage-handbook": {
