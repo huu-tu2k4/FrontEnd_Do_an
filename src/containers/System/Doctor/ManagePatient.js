@@ -157,6 +157,7 @@ class ManagePatient extends Component {
                                 <tbody>
                                     {dataPatient && dataPatient.length > 0 ?
                                         dataPatient.map((item, index) => {
+                                            console.log('check item: ', item);
                                             return (
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
@@ -170,7 +171,7 @@ class ManagePatient extends Component {
                                                         language === LANGUAGE.VI ? item.patientData.genderData.valueVi : item.patientData.genderData.valueEn
                                                         }</td>
                                                     <td>{item.patientData.email}</td>
-                                                    <td>{item.patientData.phone}</td>
+                                                    <td>{item.patientData.phoneNumber}</td>
                                                     <td>
                                                         <button
                                                             className="btn btn-primary icon-btn"

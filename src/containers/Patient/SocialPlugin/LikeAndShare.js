@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { LANGUAGE } from "../../../utils";
 const process = require('process');
-require('dotenv').config();
+// dotenv is not needed in client bundle; CRA provides process.env at build time
 
 class LikeAndShare extends Component {
 

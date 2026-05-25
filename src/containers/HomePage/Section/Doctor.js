@@ -55,9 +55,53 @@ class Doctor extends Component {
                                 const displayName = (language === LANGUAGE.VI) ? nameVi : nameEn;
                                 const position = (language === LANGUAGE.VI) ? (positionData.valueVi || positionData.value || '') : (positionData.valueEn || positionData.value || '');
                                 let imageBase64 = '';
-                                if(item.image) {
-                                    imageBase64 = new Buffer(item.image, 'base64').toString('binary');
-                                }
+                                const buildImageUrl = (img) => {
+                                    if (!img) return '';
+                                    // If already a data URL or an absolute/relative URL, use it directly
+                                    if (typeof img === 'string') {
+                                        const s = img.trim();
+                                        if (s.startsWith('data:') || s.startsWith('http') || s.startsWith('/')) return s;
+                                        // base64 string (only chars in base64 alphabet)
+                                        if (/^[A-Za-z0-9+/=\s]+$/.test(s)) return `data:image/jpeg;base64,${s}`;
+                                        return s;
+                                    }
+                                    // If it's an object like { type: 'Buffer', data: [...] }
+                                    if (img.data && Array.isArray(img.data)) {
+                                        try {
+                                            const uint8 = new Uint8Array(img.data);
+                                            // Try to decode as UTF-8 text first (some backends send a data URL string as bytes)
+                                            try {
+                                                if (typeof TextDecoder !== 'undefined') {
+                                                    const text = new TextDecoder().decode(uint8);
+                                                    if (text && typeof text === 'string' && text.trim().startsWith('data:')) {
+                                                        return text.trim();
+                                                    }
+                                                }
+                                            } catch (e) {}
+
+                                            // Fallback: build a binary string and base64-encode it
+                                            let binary = '';
+                                            for (let i = 0; i < uint8.length; i++) {
+                                                binary += String.fromCharCode(uint8[i]);
+                                            }
+                                            const b64 = typeof btoa === 'function' ? btoa(binary) : '';
+                                            return b64 ? `data:image/jpeg;base64,${b64}` : '';
+                                        } catch (e) {
+                                            return '';
+                                        }
+                                    }
+                                    return '';
+                                };
+
+                                // Debug: log raw image payload and constructed URL for troubleshooting
+                                try {
+                                    console.log('Doctor image raw:', item.image);
+                                } catch (e) {}
+                                const built = buildImageUrl(item.image);
+                                try {
+                                    console.log('Doctor image built (preview):', built ? built.slice(0, 100) : built);
+                                } catch (e) {}
+                                imageBase64 = built;
                                 return (
                                     <div className="section-customize" key={index} onClick={() => this.handleViewDetailDoctor(item)}>
                                         <div className="customize-border">
