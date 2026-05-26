@@ -23,7 +23,7 @@ class ManageHandbook extends Component {
             descriptionMarkdown: '',
             previewImgURL: '',
             specialties: [],
-            selectedSpecialty: ''
+            selectedSpecialty: null
         }
     }
 
@@ -71,13 +71,13 @@ class ManageHandbook extends Component {
             descriptionHTML: this.state.descriptionHTML,
             descriptionMarkdown: this.state.descriptionMarkdown
             ,
-            specialtyId: this.state.selectedSpecialty
+            specialtyId: this.state.selectedSpecialty ? this.state.selectedSpecialty.value : ''
         };
         let res = await createHandbook(payload);
         if (res && res.errCode === 0) {
             toast.success('Tạo Handbook thành công');
             this.setState({
-                nameVi: '', nameEn: '', imageBase64: '', descriptionHTML: '', descriptionMarkdown: '', previewImgURL: '', selectedSpecialty: ''
+                nameVi: '', nameEn: '', imageBase64: '', descriptionHTML: '', descriptionMarkdown: '', previewImgURL: '', selectedSpecialty: null
             });
         } else {
             toast.error('Tạo Handbook thất bại');
@@ -108,7 +108,7 @@ class ManageHandbook extends Component {
                         </select> */}
                         <Select
                             value={this.state.selectedSpecialty}
-                            onChange={(e) => this.setState({ selectedSpecialty: e.target.value })}
+                            onChange={(option) => this.setState({ selectedSpecialty: option })}
                             options={this.state.specialties.map(sp => ({ value: sp.id, label: this.props.language === 'vi' ? sp.nameVi : sp.nameEn }))}
                             placeholder={<FormattedMessage id="admin.manage-handbook.select-specialty" />}
                         />
