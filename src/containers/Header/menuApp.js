@@ -1,6 +1,6 @@
 export const adminMenu = [
     { //quản lý người dùng
-        name: 'menu.admin.manage-user',
+        name: 'menu.admin.user',
         menus: [
             {
                 name: 'menu.admin.crud-redux', link: '/system/user-redux'
@@ -11,12 +11,12 @@ export const adminMenu = [
                 //     { name: 'menu.system.system-administrator.user-manage', link: '/system/user-manage' },
                 //     { name: 'menu.system.system-administrator.user-redux', link: '/system/user-redux' },
                 // ]
-            },
-            { //quản lý lịch khám của bác sĩ
-                
-                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
-                    
             }
+            // { //quản lý lịch khám của bác sĩ
+                
+            //     name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
+                    
+            // }
             // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },
         ]
     },

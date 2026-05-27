@@ -71,7 +71,6 @@ class ManageClinic extends Component {
         })
     }
     handleSaveNewClinic = async () => {
-        console.log('check state: ', this.state);
         let res = await createNewClinic({
             name: this.state.name,
             address: this.state.address,

@@ -71,7 +71,6 @@ class ManageSpecialty extends Component {
         })
     }
     handleSaveNewSpecialty = async () => {
-        console.log('check state: ', this.state);
         let res = await createNewSpecialtyService({
             nameVi: this.state.nameVi,
             nameEn: this.state.nameEn,

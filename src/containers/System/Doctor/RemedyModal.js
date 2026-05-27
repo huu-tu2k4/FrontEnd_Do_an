@@ -34,7 +34,6 @@ class RemedyModal extends Component {
         }
         if(this.props.dataModal !== prevProps.dataModal) {
             let { dataModal } = this.props;
-            console.log('check dataModal: ', dataModal);
             this.setState({
                 patientName: this.buildNamePatient(dataModal),
                 patientEmail: _.get(dataModal, 'patientData.email', ''),

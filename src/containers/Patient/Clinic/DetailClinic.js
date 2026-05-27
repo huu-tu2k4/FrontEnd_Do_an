@@ -31,7 +31,6 @@ class DetailClinic extends Component {
 
             if(res && res.errCode === 0 && res.data) {
                 let data = res.data;
-                console.log('check data clinic: ', data);
                 let arrDoctorId = [];
                 if(data && data.doctorClinic) {
                     data.doctorClinic.forEach(item => {
@@ -72,7 +71,6 @@ class DetailClinic extends Component {
                 .trim();
         }
         let snippet = rawDesc && rawDesc.length > 250 ? rawDesc.substring(0, 250) + '...' : rawDesc;
-        console.log('check state: ', this.state);
         return (
             <div className='detail-clinic-container'>
                 <HomeHeader />

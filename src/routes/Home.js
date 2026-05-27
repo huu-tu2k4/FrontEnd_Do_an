@@ -6,7 +6,6 @@ import { USER_ROLE } from '../utils/constant';
 class Home extends Component {
 
     render() {
-        console.log('check props: ', this.props);
         const { isLoggedIn, userInfo } = this.props;
         let linkToRedirect = '/home';
         if (isLoggedIn) {

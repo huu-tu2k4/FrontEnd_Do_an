@@ -127,7 +127,6 @@ class ManageDoctor extends Component {
             }
             else if(type === 'CLINIC') {
                 inputData.map((item, index) => {
-                    console.log('check item clinic: ', item);
                     let object = {};
                     let label = item.name;
                     object.label = label;

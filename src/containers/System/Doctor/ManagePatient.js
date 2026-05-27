@@ -74,7 +74,6 @@ class ManagePatient extends Component {
                 moment.unix(+dataTime.date / 1000).format('dddd - DD/MM/YYYY') :
                 moment.unix(+dataTime.date / 1000).locale('en').format('ddd - MM/DD/YYYY');
             date = date.charAt(0).toUpperCase() + date.slice(1);
-            console.log(`${timeDisplay} - ${date}`);
             return `${timeDisplay} - ${date}`;
         } else {
             return '';
@@ -93,7 +92,8 @@ class ManagePatient extends Component {
                 date: new Date(this.state.currentDate).getTime(),
                 language: this.props.language,
                 doctorName: doctorName,
-                timeString: this.buildTimeBooking(item)
+                timeString: this.buildTimeBooking(item),
+                patientName: this.props.language === LANGUAGE.VI ? item.patientData.lastName + ' ' + item.patientData.firstName : item.patientData.firstName + ' ' + item.patientData.lastName
             });
             if(res && res.errCode === 0) {
                 toast.success(this.props.intl.formatMessage({ id: 'manage-patient.cancel-success' }) || 'Cancel appointment successfully!');
@@ -200,7 +200,6 @@ class ManagePatient extends Component {
                                 <tbody>
                                     {dataPatient && dataPatient.length > 0 ?
                                         dataPatient.map((item, index) => {
-                                            console.log('check item: ', item);
                                             return (
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
