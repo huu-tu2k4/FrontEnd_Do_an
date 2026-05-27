@@ -180,6 +180,7 @@
         "close": "Đóng",
         "send-remedy": "Gửi hóa đơn",
         "remedy-image": "Hình ảnh hóa đơn",
+        "cancel-success": "Hủy lịch khám thành công!",
         "table": {
             "id": "ID",
             "index": "STT",
@@ -225,5 +226,32 @@
             "doctor": "Bác sĩ",
             "specialty": "Chuyên khoa"
         }
+    },
+    "about": {
+        "title": "Truyền thông nói gì về các web đặt lịch khám bệnh trực tuyến",
+        "description": "ForHealth là nền tảng công nghệ giúp người bệnh dễ dàng đặt lịch khám và kết nối với các bác sĩ chuyên môn. Với sứ mệnh mang lại trải nghiệm chăm sóc sức khỏe tốt nhất, ForHealth luôn nỗ lực để trở thành người bạn đồng hành tin cậy của người dân Việt Nam."
+    },
+    "footer": {
+        "contact": "Liên hệ: ",
+        "contact_link": "Liên hệ với tôi tại đây."
+    },
+    "clinic": {
+        "allClinic": "Tất cả phòng khám"
+    },
+    "aiChatbot": {
+        "initialGreeting": "Xin chào! Tôi là Trợ lý AI của For Health. Hãy mô tả triệu chứng để tôi gợi ý chuyên khoa phù hợp nhất cho bạn.",
+        "floatingTitle": "Trợ lý AI",
+        "floatingSubtitle": "Hỗ trợ 24/7",
+        "headerTitle": "Trợ lý AI For Health",
+        "headerSubtitle": "Gợi ý chuyên khoa",
+        "close": "Đóng",
+        "analyzing": "Đang phân tích triệu chứng...",
+        "placeholder": "Mô tả triệu chứng của bạn...",
+        "sendButton": "Gửi",
+        "unknown": "Tôi không hiểu rõ, bạn có thể mô tả chi tiết triệu chứng hơn được không?",
+        "error": "Xin lỗi, hiện tại tôi đang gặp vấn đề. Vui lòng thử lại sau!",
+        "adviceDefault": "Bạn nên đi khám sớm để được chẩn đoán và điều trị kịp thời.",
+        "mainSpecialtyLabel": "Chuyên khoa nên khám:",
+        "adviceLabel": "Lời khuyên:"
     }
 }

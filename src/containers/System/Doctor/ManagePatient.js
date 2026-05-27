@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormattedMessage, injectIntl } from 'react-intl';
 import DatePicker from '../../../components/Input/DatePicker';
-import { getAllPatientForDoctor, getDetailInforDoctor } from '../../../services/userService';
+import { getAllPatientForDoctor, getDetailInforDoctor, postSendRemedy, postCancelAppointment } from '../../../services/userService';
 import moment from 'moment';
 import { LANGUAGE } from '../../../utils';
 import RemedyModal from './RemedyModal';
-import { postSendRemedy } from '../../../services/userService';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 // replaced react-loading-overlay with a global portal overlay
@@ -64,6 +63,50 @@ class ManagePatient extends Component {
             isOpenRemedyModal: true,
             dataModal: item
         });
+    }
+    buildTimeBooking = (dataTime) => {
+        let { language } = this.props;
+        if(dataTime && !_.isEmpty(dataTime)) {
+            let timeVi = dataTime.timeTypeDataPatient.valueVi;
+            let timeEn = dataTime.timeTypeDataPatient.valueEn;
+            let timeDisplay = language === LANGUAGE.VI ? timeVi : timeEn;
+            let date = language === LANGUAGE.VI ?
+                moment.unix(+dataTime.date / 1000).format('dddd - DD/MM/YYYY') :
+                moment.unix(+dataTime.date / 1000).locale('en').format('ddd - MM/DD/YYYY');
+            date = date.charAt(0).toUpperCase() + date.slice(1);
+            console.log(`${timeDisplay} - ${date}`);
+            return `${timeDisplay} - ${date}`;
+        } else {
+            return '';
+        }
+    }
+
+    handleBtnCancel = async (item) => {
+        this.setState({ isShowLoading: true });
+        try {
+            let doctorName = await this.buildNameDoctor(item);
+            let res = await postCancelAppointment({
+                email: item.patientData.email,
+                doctorId: item.doctorId,
+                patientId: item.patientId,
+                timeType: item.timeType,
+                date: new Date(this.state.currentDate).getTime(),
+                language: this.props.language,
+                doctorName: doctorName,
+                timeString: this.buildTimeBooking(item)
+            });
+            if(res && res.errCode === 0) {
+                toast.success(this.props.intl.formatMessage({ id: 'manage-patient.cancel-success' }) || 'Cancel appointment successfully!');
+                await this.getDataPatient();
+            } else {
+                toast.error(this.props.intl.formatMessage({ id: 'manage-patient.cancel-failed' }) || 'Cancel appointment failed.');
+                console.log('cancel res: ', res);
+            }
+        } catch (e) {
+            toast.error('Something went wrong...');
+            console.error(e);
+        }
+        this.setState({ isShowLoading: false });
     }
 
     buildNameDoctor = async (dataModal) => {
@@ -180,13 +223,14 @@ class ManagePatient extends Component {
                                                             onClick={() => this.handleBtnConfirm(item)}
                                                         ><i className="fas fa-check" aria-hidden="true"></i></button>
                                                         
-                                                        {/* <button
+                                                        <button
                                                             className="btn btn-danger icon-btn"
                                                             title={intl.formatMessage({ id: 'manage-patient.cancel' })}
                                                             aria-label={intl.formatMessage({ id: 'manage-patient.cancel' })}
+                                                            onClick={() => this.handleBtnCancel(item)}
                                                         ><i className="fas fa-times" aria-hidden="true"></i></button>
 
-                                                        <button
+                                                        {/* <button
                                                             className="btn btn-warning icon-btn"
                                                             title={intl.formatMessage({ id: 'manage-patient.send-invoice' })}
                                                             aria-label={intl.formatMessage({ id: 'manage-patient.send-invoice' })}

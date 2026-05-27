@@ -179,6 +179,7 @@
         "close": "Close",
         "remedy-image": "Remedy Invoice Image",
         "send-remedy": "Send Remedy Invoice",
+        "cancel-success": "Cancel appointment successfully!",
         "table": {
             "id": "ID",
             "index": "Index",
@@ -224,5 +225,32 @@
             "doctor": "Doctor",
             "specialty": "Specialty"
         }
+    },
+    "about": {
+        "title": "What the media says about online doctor appointment websites",
+        "description": "ForHealth is a technology platform that helps patients easily book appointments and connect with specialized doctors. With the mission of providing the best healthcare experience, ForHealth always strives to become a trusted companion for the people of Vietnam."
+    },
+    "footer": {
+        "contact": "Contact: ",
+        "contact_link": "Contact me here."
+    },
+    "clinic": {
+        "allClinic": "All Clinics"
+    },
+    "aiChatbot": {
+        "initialGreeting": "Hello! I'm For Health AI Assistant. Describe your symptoms and I'll suggest the most suitable specialty.",
+        "floatingTitle": "AI Assistant",
+        "floatingSubtitle": "24/7 Support",
+        "headerTitle": "For Health AI Assistant",
+        "headerSubtitle": "Specialty suggestions",
+        "close": "Close",
+        "analyzing": "Analyzing symptoms...",
+        "placeholder": "Describe your symptoms...",
+        "sendButton": "Send",
+        "unknown": "I don't understand, could you describe your symptoms in more detail?",
+        "error": "Sorry, I'm having trouble right now. Please try again later!",
+        "adviceDefault": "You should see a doctor soon for diagnosis and timely treatment.",
+        "mainSpecialtyLabel": "Suggested specialty:",
+        "adviceLabel": "Advice:"
     }
 }

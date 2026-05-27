@@ -5,6 +5,7 @@ import HomeHeader from '../../HomePage/HomeHeader';
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 import '../Specialty/DetailSpecialty.scss';
 
@@ -35,7 +36,7 @@ class AllClinics extends Component {
             <div className="handbook-list-page">
                 <HomeHeader />
                 <div className="container mt-3">
-                    <h2>Tất cả cơ sở y tế</h2>
+                    <h2><FormattedMessage id="clinic.allClinic" /></h2>
                     <div className="row">
                         {clinics && clinics.length > 0 && clinics.map((item) => (
                             <div className="col-md-4" key={item.id}>

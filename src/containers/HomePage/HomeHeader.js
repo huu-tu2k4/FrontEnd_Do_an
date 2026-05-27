@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './HomeHeader.scss';
-import logo from '../../assets/logo_v3.png';
+import logo from '../../assets/anhlogo.png';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGE, path } from '../../utils/constant';
 import { changeLanguageApp } from '../../store/actions/appActions';
@@ -119,7 +119,7 @@ class HomeHeader extends Component {
                                         <li onClick={() => { this.props.history.push(path.SPECIALTIES); this.closeMenu(); }}><FormattedMessage id="home_header.specialty" /></li>
                                         <li onClick={() => { this.props.history.push(path.CLINICS); this.closeMenu(); }}><FormattedMessage id="home_header.medical_examination" /></li>
                                         <li onClick={() => { this.props.history.push(path.DOCTORS); this.closeMenu(); }}><FormattedMessage id="home_header.doctor" /></li>
-                                        <li onClick={() => { this.props.history.push(path.HANDBOOK); this.closeMenu(); }}><FormattedMessage id="section.handbook" /></li>
+                                        <li onClick={() => { this.props.history.push(path.HANDBOOKS); this.closeMenu(); }}><FormattedMessage id="section.handbook" /></li>
                                     </ul>
                                 </div>
                             )}
@@ -260,7 +260,7 @@ class HomeHeader extends Component {
                                         <FormattedMessage id="section.outstanding-doctor" />
                                     </div>
                                 </div>
-                                <div className="option-child" onClick={() => this.props.history.push(path.HANDBOOK)}>
+                                <div className="option-child" onClick={() => this.props.history.push(path.HANDBOOKS)}>
                                     <div className="icon-child">
                                         <i className="fas fa-book"></i>
                                     </div>

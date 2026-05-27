@@ -11,23 +11,18 @@ class About extends Component {
         return (
             <div className="section-share section-about">
                 <div className="section-about-header">
-                    Truyền thông nói về BookingCare
+                    <FormattedMessage id="about.title" />
                 </div>
                 <div className="section-about-content">
                     <div className="content-left">
-                        <iframe 
-                            width="100%" 
-                            height="400px" 
-                            src="https://www.youtube.com/embed/k92iJuxWwRE" title="🏆[PVS Finals 2026 P1] Ngày 6: AL, TE, FCE, TDT, FL, WDE, VC, UNC, SBTC,..." 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            referrerPolicy="strict-origin-when-cross-origin" 
-                            allowFullScreen
-                        ></iframe>
+                        <iframe width="560" height="315" 
+                        src="https://www.youtube.com/embed/1sHF_Fa9-0E?si=gTXolQ3gTQyE9mB4" 
+                        title="Truyền thông nói gì về các web đặt lịch khám bệnh trực tuyến" 
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div className="content-right">
                         <p>
-                            BookingCare là nền tảng công nghệ giúp người bệnh dễ dàng đặt lịch khám và kết nối với các bác sĩ chuyên môn. Với sứ mệnh mang lại trải nghiệm chăm sóc sức khỏe tốt nhất, BookingCare luôn nỗ lực để trở thành người bạn đồng hành tin cậy của người dân Việt Nam.
+                            <FormattedMessage id="about.description" />
                         </p>
 
                     </div>

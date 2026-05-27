@@ -92,6 +92,9 @@ const getAllPatientForDoctor = (data) => {
 const postSendRemedy = (data) => {
     return axios.post('/api/send-remedy', data);
 }
+const postCancelAppointment = (data) => {
+    return axios.post('/api/cancel-appointment', data);
+}
 const aiSuggestSpecialty = (symptoms) => {
     return axios.post('/api/suggest-specialty', { symptoms });
 }
@@ -135,6 +138,7 @@ export {
     getDetailClinicById,
     getAllPatientForDoctor,
     postSendRemedy,
+    postCancelAppointment,
     editBulkScheduleDoctorService,
     aiSuggestSpecialty,
     getAllhandbooks,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { aiSuggestSpecialty } from '../services/userService';
 import iconAi from '../assets/icon-ai.png';
 import './AIChatbot.scss';
@@ -8,12 +9,13 @@ class AIChatbot extends Component {
 
     constructor(props) {
         super(props);
+        const { intl } = props;
         this.state = {
             isOpen: false,
             messages: [
                 {
                     type: 'bot',
-                    text: 'Xin chào! Tôi là Trợ lý AI của Booking Care. Hãy mô tả triệu chứng để tôi gợi ý chuyên khoa phù hợp nhất cho bạn.'
+                    text: intl ? intl.formatMessage({ id: 'aiChatbot.initialGreeting' }) : 'Xin chào!'
                 }
             ],
             inputMessage: '',
@@ -40,16 +42,17 @@ class AIChatbot extends Component {
         try {
             const response = await aiSuggestSpecialty(inputMessage.trim());
 
+            const { intl } = this.props;
             let botMessage = { type: 'bot', isStructured: true };
 
             if (response && response.errCode === 0 && response.data) {
                 const data = response.data;
-                
-                botMessage.mainSpecialty = data.suggestedSpecialties?.[0]?.name || "Nội khoa";
+
+                botMessage.mainSpecialty = data.suggestedSpecialties?.[0]?.name || intl.formatMessage({ id: 'aiChatbot.mainSpecialtyLabel' });
                 botMessage.reason = data.suggestedSpecialties?.[0]?.reason || "";
-                botMessage.advice = data.advice || "Bạn nên đi khám sớm để được chẩn đoán và điều trị kịp thời.";
+                botMessage.advice = data.advice || intl.formatMessage({ id: 'aiChatbot.adviceDefault' });
             } else {
-                botMessage.text = "Tôi không hiểu rõ, bạn có thể mô tả chi tiết triệu chứng hơn được không?";
+                botMessage.text = intl.formatMessage({ id: 'aiChatbot.unknown' });
                 botMessage.isStructured = false;
             }
 
@@ -60,10 +63,11 @@ class AIChatbot extends Component {
 
         } catch (err) {
             console.error(err);
+            const { intl } = this.props;
             this.setState(prev => ({
                 messages: [...prev.messages, {
                     type: 'bot',
-                    text: 'Xin lỗi, hiện tại tôi đang gặp vấn đề. Vui lòng thử lại sau!',
+                    text: intl ? intl.formatMessage({ id: 'aiChatbot.error' }) : 'Xin lỗi, hiện tại tôi đang gặp vấn đề.',
                     isStructured: false
                 }],
                 loading: false
@@ -79,6 +83,7 @@ class AIChatbot extends Component {
 
     render() {
         const { isOpen, messages, inputMessage, loading } = this.state;
+        const { intl } = this.props;
 
         return (
             <div className="ai-chatbot-container">
@@ -88,12 +93,12 @@ class AIChatbot extends Component {
                         <div className="ai-avatar">
                             <img
                                 src={iconAi}
-                                alt="AI Assistant"
+                                alt={intl ? intl.formatMessage({ id: 'aiChatbot.floatingTitle' }) : 'AI Assistant'}
                             />
                         </div>
                         <div className="ai-info">
-                            <h4>Trợ lý AI</h4>
-                            <p>Hỗ trợ 24/7</p>
+                            <h4><FormattedMessage id="aiChatbot.floatingTitle" /></h4>
+                            <p><FormattedMessage id="aiChatbot.floatingSubtitle" /></p>
                         </div>
                     </div>
                 </div>
@@ -110,11 +115,11 @@ class AIChatbot extends Component {
                                     />
                                 </div>
                                 <div>
-                                    <div className="font-semibold">Trợ lý AI Booking Care</div>
-                                    <div className="text-xs opacity-75">Gợi ý chuyên khoa</div>
+                                    <div className="font-semibold"><FormattedMessage id="aiChatbot.headerTitle" /></div>
+                                    <div className="text-xs opacity-75"><FormattedMessage id="aiChatbot.headerSubtitle" /></div>
                                 </div>
                             </div>
-                            <div className="close-btn" onClick={this.toggleChat}>×</div>
+                            <div className="close-btn" onClick={this.toggleChat} title={intl ? intl.formatMessage({ id: 'aiChatbot.close' }) : 'Close'}>×</div>
                         </div>
 
                         <div className="chat-body">
@@ -125,7 +130,7 @@ class AIChatbot extends Component {
                                     ) : msg.isStructured ? (
                                         <>
                                             <div className="main-specialty">
-                                                <strong>🏥 Chuyên khoa nên khám:</strong><br />
+                                                <strong>🏥 <FormattedMessage id="aiChatbot.mainSpecialtyLabel" /></strong><br />
                                                 <span className="specialty-name">{msg.mainSpecialty}</span>
                                             </div>
 
@@ -137,7 +142,7 @@ class AIChatbot extends Component {
 
                                             {msg.advice && (
                                                 <div className="advice mt-4">
-                                                    <strong>💡 Lời khuyên:</strong><br />
+                                                    <strong>💡 <FormattedMessage id="aiChatbot.adviceLabel" /></strong><br />
                                                     {msg.advice}
                                                 </div>
                                             )}
@@ -149,7 +154,7 @@ class AIChatbot extends Component {
                             ))}
 
                             {loading && (
-                                <div className="message bot">Đang phân tích triệu chứng...</div>
+                                <div className="message bot"><FormattedMessage id="aiChatbot.analyzing" /></div>
                             )}
                         </div>
 
@@ -160,13 +165,13 @@ class AIChatbot extends Component {
                                     value={inputMessage}
                                     onChange={(e) => this.setState({ inputMessage: e.target.value })}
                                     onKeyPress={this.handleKeyPress}
-                                    placeholder="Mô tả triệu chứng của bạn..."
+                                    placeholder={intl ? intl.formatMessage({ id: 'aiChatbot.placeholder' }) : 'Mô tả triệu chứng của bạn...'}
                                 />
                                 <button
                                     onClick={this.handleSendMessage}
                                     disabled={loading || !inputMessage.trim()}
                                 >
-                                    Gửi
+                                    <FormattedMessage id="aiChatbot.sendButton" />
                                 </button>
                             </div>
                         </div>
@@ -181,4 +186,4 @@ const mapStateToProps = state => ({
     language: state.app.language
 });
 
-export default connect(mapStateToProps, null)(AIChatbot);
+export default connect(mapStateToProps)(injectIntl(AIChatbot));
