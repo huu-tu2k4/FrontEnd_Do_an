@@ -185,71 +185,64 @@ class ManagePatient extends Component {
                             <FormattedMessage id="manage-patient.patient-list" />: {moment(new Date(this.state.currentDate)).format('DD/MM/YYYY')}
                         </div>
                         <div className="col-12 table-manage-patient">
-                            <table id="customers">
-                                <thead>
-                                    <tr>
-                                        <th><FormattedMessage id="manage-patient.table.index" /></th>
-                                        <th><FormattedMessage id="manage-patient.table.time" /></th>
-                                        <th><FormattedMessage id="manage-patient.table.name" /></th>
-                                        <th><FormattedMessage id="manage-patient.table.gender" /></th>
-                                        <th><FormattedMessage id="manage-patient.table.email" /></th>
-                                        <th><FormattedMessage id="manage-patient.table.phone" /></th>
-                                        <th><FormattedMessage id="manage-patient.table.action" /></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {dataPatient && dataPatient.length > 0 ?
-                                        dataPatient.map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>{index + 1}</td>
-                                                    <td>{
-                                                        language === LANGUAGE.VI ? item.timeTypeDataPatient.valueVi : item.timeTypeDataPatient.valueEn
-                                                        }</td>
-                                                    <td>{
-                                                        language === LANGUAGE.VI ? item.patientData.lastName + ' ' + item.patientData.firstName : item.patientData.firstName + ' ' + item.patientData.lastName
-                                                        }</td>
-                                                    <td>{
-                                                        language === LANGUAGE.VI ? item.patientData.genderData.valueVi : item.patientData.genderData.valueEn
-                                                        }</td>
-                                                    <td>{item.patientData.email}</td>
-                                                    <td>{item.patientData.phoneNumber}</td>
-                                                    <td>
-                                                        <button
-                                                            className="btn btn-primary icon-btn"
-                                                            title={intl.formatMessage({ id: 'manage-patient.confirm-and-send-remedy' })}
-                                                            aria-label={intl.formatMessage({ id: 'manage-patient.confirm-and-send-remedy' })}
-                                                            onClick={() => this.handleBtnConfirm(item)}
-                                                        ><i className="fas fa-check" aria-hidden="true"></i></button>
-                                                        
-                                                        <button
-                                                            className="btn btn-danger icon-btn"
-                                                            title={intl.formatMessage({ id: 'manage-patient.cancel' })}
-                                                            aria-label={intl.formatMessage({ id: 'manage-patient.cancel' })}
-                                                            onClick={() => this.handleBtnCancel(item)}
-                                                        ><i className="fas fa-times" aria-hidden="true"></i></button>
+                            <div className="table-wrapper">
+                                <table className="user-table">
+                                    <thead>
+                                        <tr>
+                                            <th><FormattedMessage id="manage-patient.table.index" /></th>
+                                            <th><FormattedMessage id="manage-patient.table.time" /></th>
+                                            <th><FormattedMessage id="manage-patient.table.name" /></th>
+                                            <th><FormattedMessage id="manage-patient.table.gender" /></th>
+                                            <th><FormattedMessage id="manage-patient.table.email" /></th>
+                                            <th><FormattedMessage id="manage-patient.table.phone" /></th>
+                                            <th><FormattedMessage id="manage-patient.table.action" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {dataPatient && dataPatient.length > 0 ?
+                                            dataPatient.map((item, index) => {
+                                                const timeLabel = language === LANGUAGE.VI ? item.timeTypeDataPatient.valueVi : item.timeTypeDataPatient.valueEn;
+                                                const nameLabel = language === LANGUAGE.VI ? `${item.patientData.lastName} ${item.patientData.firstName}` : `${item.patientData.firstName} ${item.patientData.lastName}`;
+                                                const genderLabel = language === LANGUAGE.VI ? item.patientData.genderData.valueVi : item.patientData.genderData.valueEn;
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td className="td-muted">{timeLabel}</td>
+                                                        <td>{nameLabel}</td>
+                                                        <td><span className="badge">{genderLabel}</span></td>
+                                                        <td>{item.patientData.email}</td>
+                                                        <td>{item.patientData.phoneNumber}</td>
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-primary icon-btn"
+                                                                title={intl.formatMessage({ id: 'manage-patient.confirm-and-send-remedy' })}
+                                                                aria-label={intl.formatMessage({ id: 'manage-patient.confirm-and-send-remedy' })}
+                                                                onClick={() => this.handleBtnConfirm(item)}
+                                                            ><i className="fas fa-check" aria-hidden="true"></i></button>
+                                                            
+                                                            <button
+                                                                className="btn btn-danger icon-btn"
+                                                                title={intl.formatMessage({ id: 'manage-patient.cancel' })}
+                                                                aria-label={intl.formatMessage({ id: 'manage-patient.cancel' })}
+                                                                onClick={() => this.handleBtnCancel(item)}
+                                                            ><i className="fas fa-times" aria-hidden="true"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
 
-                                                        {/* <button
-                                                            className="btn btn-warning icon-btn"
-                                                            title={intl.formatMessage({ id: 'manage-patient.send-invoice' })}
-                                                            aria-label={intl.formatMessage({ id: 'manage-patient.send-invoice' })}
-                                                        ><i className="fas fa-envelope" aria-hidden="true"></i></button> */}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })
-
-                                        : <tr><td colSpan="7" style={{textAlign: "center"}}><FormattedMessage id="manage-patient.no-data" /></td></tr>
-                                    }
-                                </tbody>
-                            </table>
+                                            : <tr><td colSpan="7" style={{textAlign: "center"}}><FormattedMessage id="manage-patient.no-data" /></td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 <RemedyModal
-                        isOpen={this.state.isOpenRemedyModal}
-                        dataModal={this.state.dataModal}
-                        closeRemedyModal={() => this.setState({ isOpenRemedyModal: false })}
-                        sendRemedy={this.sendRemedy}
+                    isOpen={this.state.isOpenRemedyModal}
+                    dataModal={this.state.dataModal}
+                    closeRemedyModal={() => this.setState({ isOpenRemedyModal: false })}
+                    sendRemedy={this.sendRemedy}
                 />
             </>
         )

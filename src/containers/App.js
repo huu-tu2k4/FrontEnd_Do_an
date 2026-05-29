@@ -26,6 +26,7 @@ import DetailHandbook from './Patient/Handbook/DetailHandbook';
 import AllSpecialties from './Patient/Specialty/AllSpecialties';
 import AllClinics from './Patient/Clinic/AllClinics';
 import AllDoctors from './Patient/Doctor/AllDoctors';
+import Profile from './Profile/Profile';
 
 import { CustomToastCloseButton } from '../components/CustomToast';
 import CustomScrollbars from '../components/CustomScrollbars'
@@ -72,6 +73,7 @@ class App extends Component {
                                     <Route path={path.DOCTORS} component={AllDoctors} />
                                     <Route path={path.DETAIL_HANDBOOK} component={DetailHandbook} />
                                     <Route path={path.HANDBOOKS} component={AllHandbook} />
+                                    <Route path={path.PROFILE} component={userIsAuthenticated(Profile)} />
                                 </Switch>
                             </CustomScrollbars>
                         </div>

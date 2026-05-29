@@ -9,7 +9,7 @@
         }
 
     }
-    .priview-image {
+    .preview-image {
         display: inline-block;
         border-radius: 5px;
         cursor: pointer;
@@ -17,7 +17,7 @@
         overflow: hidden;
     }
 
-    .priview-image img {
+    .preview-image img {
         display: block;
         /* show image at its intrinsic size but avoid overflowing layout */
         max-width: 100%;

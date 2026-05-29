@@ -58,6 +58,7 @@
     }
     ,
     "user": {
+        "list_users": "Danh sách người dùng",
         "select-role": "Chọn vai trò",
         "select-position": "Chọn chức vụ",
         "create_title": "Tạo người dùng",
@@ -237,6 +238,23 @@
     },
     "clinic": {
         "allClinic": "Tất cả phòng khám"
+    },
+    "profile": {
+        "title": "Hồ sơ của tôi",
+        "email": "Email",
+        "firstName": "Tên",
+        "lastName": "Họ",
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ",
+        "position": "Chức vụ",
+        "gender": "Giới tính",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác",
+        "save": "Lưu",
+        "validation_name_required": "Tên và họ là bắt buộc",
+        "update_success": "Cập nhật hồ sơ thành công",
+        "update_failed": "Cập nhật hồ sơ thất bại"
     },
     "aiChatbot": {
         "initialGreeting": "Xin chào! Tôi là Trợ lý AI của For Health. Hãy mô tả triệu chứng để tôi gợi ý chuyên khoa phù hợp nhất cho bạn.",

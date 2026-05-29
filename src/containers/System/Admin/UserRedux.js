@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { getAllCodeService } from '../../../services/userService';
-import* as actions from '../../../store/actions/index';
+import * as actions from '../../../store/actions/index';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import ValidatedInput from '../../../components/Input/ValidatedInput';
@@ -278,14 +278,40 @@ class UserRedux extends Component {
     }
 
     handleEditUserFromParent = (user) => {
-        let imageBase64 = '';
-        if (user.image) {
-            if (typeof user.image === 'string' && user.image.startsWith('data:')) {
-                imageBase64 = user.image;
-            } else {
-                imageBase64 = `data:image/jpeg;base64,${user.image}`;
+        const buildImageUrl = (img) => {
+            if (!img) return '';
+            if (typeof img === 'string') {
+                const s = img.trim();
+                if (s.startsWith('data:') || s.startsWith('http') || s.startsWith('/')) return s;
+                if (/^[A-Za-z0-9+/=\s]+$/.test(s)) return `data:image/jpeg;base64,${s}`;
+                return s;
             }
-        }
+            if (img.data && Array.isArray(img.data)) {
+                try {
+                    const uint8 = new Uint8Array(img.data);
+                    try {
+                        if (typeof TextDecoder !== 'undefined') {
+                            const text = new TextDecoder().decode(uint8);
+                            if (text && typeof text === 'string' && text.trim().startsWith('data:')) {
+                                return text.trim();
+                            }
+                        }
+                    } catch (e) {}
+
+                    let binary = '';
+                    for (let i = 0; i < uint8.length; i++) {
+                        binary += String.fromCharCode(uint8[i]);
+                    }
+                    const b64 = typeof btoa === 'function' ? btoa(binary) : '';
+                    return b64 ? `data:image/jpeg;base64,${b64}` : '';
+                } catch (e) {
+                    return '';
+                }
+            }
+            return '';
+        };
+
+        const imageBase64 = buildImageUrl(user.image);
         this.setState({
             email: user.email,
             password: 'hardcode',
@@ -298,7 +324,8 @@ class UserRedux extends Component {
             role: user.roleId,
             previewImgURL: imageBase64,
             action: CRUD_ACTIONS.EDIT,
-            userEditId: user.id
+            userEditId: user.id,
+            avatar: ''
         });
     }
 
@@ -486,7 +513,7 @@ class UserRedux extends Component {
                                                 <i className="fas fa-upload"></i>
                                             </label>
                                             <div 
-                                                className="priview-image"
+                                                className="preview-image"
                                                 onClick={() => this.openPreviewImg()}
                                             >
                                                 {this.state.previewImgURL && (
@@ -511,6 +538,9 @@ class UserRedux extends Component {
                                         : 
                                         (<FormattedMessage id="user.edit" />)
                                     }</button>
+                                </div>
+                                <div className="col-md-12 mb-3">
+                                    <span><FormattedMessage id="user.list_users" /></span>
                                 </div>
                                 <div className="col-md-12 mb-5">
                                     <TableManageUser 

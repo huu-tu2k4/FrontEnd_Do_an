@@ -14,6 +14,7 @@ export const path = {
     DOCTOR: '/doctor',
     DETAIL_DOCTOR: '/detail-doctor/:id',
     VERIFY_EMAIL_BOOKING: '/verify-booking',
+    PROFILE: '/profile',
 };
 
 export const LANGUAGE = {

@@ -57,6 +57,7 @@
         }
     },
     "user": {
+        "list_users": "List of users",
         "select-role": "Select role",
         "select-position": "Select position",
         "create_title": "Create User",
@@ -236,6 +237,23 @@
     },
     "clinic": {
         "allClinic": "All Clinics"
+    },
+    "profile": {
+        "title": "My Profile",
+        "email": "Email",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "phone": "Phone",
+        "address": "Address",
+        "position": "Position",
+        "gender": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other",
+        "save": "Save",
+        "validation_name_required": "First name and last name are required",
+        "update_success": "Profile updated",
+        "update_failed": "Failed to update profile"
     },
     "aiChatbot": {
         "initialGreeting": "Hello! I'm For Health AI Assistant. Describe your symptoms and I'll suggest the most suitable specialty.",
