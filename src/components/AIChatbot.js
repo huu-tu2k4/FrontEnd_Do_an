@@ -130,7 +130,7 @@ class AIChatbot extends Component {
                                     ) : msg.isStructured ? (
                                         <>
                                             <div className="main-specialty">
-                                                <strong>🏥 <FormattedMessage id="aiChatbot.mainSpecialtyLabel" /></strong><br />
+                                                <strong><FormattedMessage id="aiChatbot.mainSpecialtyLabel" /></strong><br />
                                                 <span className="specialty-name">{msg.mainSpecialty}</span>
                                             </div>
 
@@ -142,7 +142,7 @@ class AIChatbot extends Component {
 
                                             {msg.advice && (
                                                 <div className="advice mt-4">
-                                                    <strong>💡 <FormattedMessage id="aiChatbot.adviceLabel" /></strong><br />
+                                                    <strong><FormattedMessage id="aiChatbot.adviceLabel" /></strong><br />
                                                     {msg.advice}
                                                 </div>
                                             )}
