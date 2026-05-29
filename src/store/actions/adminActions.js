@@ -142,13 +142,15 @@ export const createNewUser = (data) => {
         }
     }
 }
-export const fetchAllUsers = () => {
+export const fetchAllUsers = (page = 1, limit = 10, q = '') => {
     return async (dispatch, getState) => {
         try {
             dispatch({ type: actionTypes.FETCH_ALL_USERS_START });
-            let res = await getAllUsers('ALL');
+            let res = await getAllUsers('ALL', page, limit, q);
             if (res && res.errCode === 0) {
-                dispatch({ type: actionTypes.FETCH_ALL_USERS_SUCCESS, users: res.users.reverse() });
+                const users = Array.isArray(res.users) ? res.users.reverse() : [];
+                const total = res.total !== undefined ? res.total : users.length;
+                dispatch({ type: actionTypes.FETCH_ALL_USERS_SUCCESS, users, total });
             }
             else {
                 dispatch({ type: actionTypes.FETCH_ALL_USERS_FAILED });

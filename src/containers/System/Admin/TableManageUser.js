@@ -20,20 +20,63 @@ class TableManageUser extends Component {
     constructor(props){
         super(props);
         this.state = {
-            listUsers: []
+            listUsers: [],
+            currentPage: 1,
+            itemsPerPage: 10,
+            itemsPerPageOptions: [5, 10, 20]
         }
     }
 
     componentDidMount() {
-        this.props.fetchAllUsers();
+        const { currentPage, itemsPerPage } = this.state;
+        this.props.fetchAllUsers(currentPage, itemsPerPage, this.props.filterQuery || '');
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.listUsers !== this.props.listUsers) {
-            this.setState({
-                listUsers: this.props.listUsers
-            })
+            this.setState({ listUsers: this.props.listUsers });
         }
+        // if filter query changed, reload first page
+        if (prevProps.filterQuery !== this.props.filterQuery) {
+            this.setState({ currentPage: 1 }, () => {
+                const { itemsPerPage } = this.state;
+                this.props.fetchAllUsers(1, itemsPerPage, this.props.filterQuery || '');
+            });
+        }
+        // if pagination changed externally, sync
+        if (prevProps.totalUsers !== this.props.totalUsers && this.state.currentPage > Math.ceil((this.props.totalUsers || 0) / this.state.itemsPerPage)) {
+            this.setState({ currentPage: 1 });
+        }
+    }
+
+    handleChangePage = (page) => {
+        const { itemsPerPage } = this.state;
+        this.setState({ currentPage: page }, () => {
+            this.props.fetchAllUsers(page, itemsPerPage, this.props.filterQuery || '');
+        });
+    }
+
+    handlePrev = () => {
+        this.setState((state) => ({ currentPage: Math.max(1, state.currentPage - 1) }), () => {
+            const { currentPage, itemsPerPage } = this.state;
+            this.props.fetchAllUsers(currentPage, itemsPerPage, this.props.filterQuery || '');
+        });
+    }
+
+    handleNext = () => {
+        const { currentPage, itemsPerPage } = this.state;
+        const total = Math.max(1, Math.ceil((this.props.totalUsers || 0) / itemsPerPage));
+        const nextPage = Math.min(total, currentPage + 1);
+        this.setState({ currentPage: nextPage }, () => {
+            this.props.fetchAllUsers(this.state.currentPage, itemsPerPage, this.props.filterQuery || '');
+        });
+    }
+
+    handleChangeItemsPerPage = (e) => {
+        const itemsPerPage = parseInt(e.target.value, 10) || 10;
+        this.setState({ itemsPerPage, currentPage: 1 }, () => {
+            this.props.fetchAllUsers(1, itemsPerPage, this.props.filterQuery || '');
+        });
     }
 
     handleUpdateUser = (user) => {
@@ -46,6 +89,10 @@ class TableManageUser extends Component {
     
     render() {
         let language = this.props.language;
+        const { currentPage, itemsPerPage, itemsPerPageOptions } = this.state;
+        const usersToShow = this.props.listUsers || [];
+        const totalItems = this.props.totalUsers || 0;
+        const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
         return (
             <React.Fragment>
                 <div className="table-wrapper">
@@ -63,7 +110,7 @@ class TableManageUser extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            { (this.props.listUsers || []).map((item) => {
+                            { usersToShow.map((item) => {
                                 const roleKey = (item.roleId || (item.roleData && item.roleData.keyMap) || '').toString();
                                 const roleLabel = language === LANGUAGE.VI ? (item.roleData && item.roleData.valueVi) : (item.roleData && item.roleData.valueEn);
                                 const roleBadgeMap = {
@@ -99,6 +146,29 @@ class TableManageUser extends Component {
                             })}
                         </tbody>
                     </table>
+                    <div className="pagination-wrapper">
+                                <div className="pagination-meta">
+                            <label>
+                                <span>Hiển thị </span>
+                                <select value={itemsPerPage} onChange={this.handleChangeItemsPerPage}>
+                                    {itemsPerPageOptions.map(opt => (
+                                        <option key={opt} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                <span> / tổng {totalItems} mục</span>
+                            </label>
+                        </div>
+                        <div className="pagination-controls">
+                            <button type="button" onClick={this.handlePrev} disabled={currentPage <= 1} aria-label="Previous page">←</button>
+                            {[...Array(totalPages)].map((_, i) => {
+                                const page = i + 1;
+                                return (
+                                    <button key={page} type="button" className={page === currentPage ? 'active' : ''} onClick={() => this.handleChangePage(page)}>{page}</button>
+                                )
+                            })}
+                            <button type="button" onClick={this.handleNext} disabled={currentPage >= totalPages} aria-label="Next page">→</button>
+                        </div>
+                    </div>
                 </div>
             </React.Fragment>
         );
@@ -109,13 +179,14 @@ class TableManageUser extends Component {
 const mapStateToProps = state => {
     return {
         listUsers: state.admin.users,
+        totalUsers: state.admin.totalUsers,
         language: state.app.language
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllUsers: () => dispatch(actions.fetchAllUsers()),
+        fetchAllUsers: (page, limit, q) => dispatch(actions.fetchAllUsers(page, limit, q)),
         deleteUser: (userId) => dispatch(actions.deleteUser(userId))
     };
 };

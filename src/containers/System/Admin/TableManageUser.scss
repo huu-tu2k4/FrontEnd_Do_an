@@ -155,3 +155,48 @@ table.user-table {
 	.btn-edit, .btn-delete { width: 30px; height: 30px; }
 }
 
+/* Pagination styles */
+.pagination-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 8px;
+	gap: 8px;
+	background: transparent;
+}
+
+.pagination-meta {
+	font-size: 13px;
+	color: $text-main;
+}
+.pagination-meta label { display: inline-flex; align-items: center; gap: 8px; }
+.pagination-meta select { padding: 6px 8px; border-radius: 6px; border: 1px solid $border; background: #fff; }
+
+.pagination-controls {
+	display: inline-flex;
+	gap: 6px;
+	align-items: center;
+}
+.pagination-controls button {
+	padding: 6px 10px;
+	border-radius: 6px;
+	border: 1px solid $border;
+	background: #fff;
+	cursor: pointer;
+	color: $text-main;
+	min-width: 36px;
+}
+.pagination-controls button:hover { background: $bg-hover; }
+.pagination-controls button:disabled { opacity: 0.55; cursor: not-allowed; }
+.pagination-controls button.active {
+	background: $primary;
+	color: #fff;
+	border-color: $primary-dark;
+}
+
+@media (max-width: 520px) {
+	.pagination-wrapper { flex-direction: column; align-items: stretch; }
+	.pagination-controls { justify-content: center; }
+}
+

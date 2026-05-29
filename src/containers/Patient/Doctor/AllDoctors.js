@@ -19,25 +19,59 @@ class AllDoctors extends Component {
     }
 
     async componentDidMount() {
-        let res = await getAllDoctors();
-        if (res && res.data) {
-            this.setState({ doctors: res.data });
+        await this.fetchDoctors('');
+    }
+
+    fetchDoctors = async (q) => {
+        try {
+            const res = await getAllDoctors(q);
+            if (res && res.data) {
+                this.setState({ doctors: res.data });
+            }
+        } catch (e) {
+            console.error('fetchDoctors error', e);
         }
     }
 
+    handleSearchChange = (e) => {
+        const q = e.target.value;
+        this.setState({ searchQuery: q });
+        if (this.searchTimeout) clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => this.fetchDoctors(q), 300);
+    }
+
     render() {
-        const { doctors } = this.state;
+        const { doctors, searchQuery = '' } = this.state;
         const { language } = this.props;
         return (
             <div className="detail-clinic-container">
                 <HomeHeader />
                 <div className="detail-clinic-body">
                     <div>
-                        {language === LANGUAGE.VI ?
-                            <div className="title">Danh sách bác sĩ</div>
-                            :
-                            <div className="title">List of Doctors</div>
-                        }
+                        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, marginBottom:12}}>
+                            {language === LANGUAGE.VI ?
+                                <div className="title">Danh sách bác sĩ</div>
+                                :
+                                <div className="title">List of Doctors</div>
+                            }
+                            <div style={{position:'relative', display:'flex', alignItems:'center', width:'100%', justifyContent:'flex-end'}}>
+                                <input
+                                    className="list-search"
+                                    placeholder={language === LANGUAGE.VI ? 'Tìm theo tên...' : 'Search by name...'}
+                                    value={searchQuery || ''}
+                                    onChange={this.handleSearchChange}
+                                    style={{padding:8, borderRadius:6, border:'1px solid #e2e8f0', maxWidth:360, paddingRight:48}}
+                                />
+                                <div style={{position:'absolute', right:8, display:'flex', alignItems:'center', gap:8}}>
+                                    {searchQuery ? (
+                                        <button type="button" className="btn btn-sm btn-light" aria-label="Clear search" onClick={() => { this.setState({ searchQuery: '' }); if (this.searchTimeout) clearTimeout(this.searchTimeout); this.fetchDoctors(''); }}>
+                                            ×
+                                        </button>
+                                    ) : null}
+                                    <i className="fas fa-search" aria-hidden="true" style={{color:'#6b7280'}} />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {doctors && doctors.length > 0 && doctors.map((item, index) => {
                         return (

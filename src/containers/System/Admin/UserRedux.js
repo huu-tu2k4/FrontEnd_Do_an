@@ -29,6 +29,7 @@ class UserRedux extends Component {
 
             // form fields
             email: '',
+            searchQuery: '',
             password: '',
             firstName: '',
             lastName: '',
@@ -46,6 +47,8 @@ class UserRedux extends Component {
             },
             action: CRUD_ACTIONS.CREATE
         };
+        this.searchTimeout = null;
+        this.state.initialLoading = true;
     }
 
     componentDidMount = async () => {
@@ -93,6 +96,10 @@ class UserRedux extends Component {
                 avatar: '',
                 previewImgURL: ''
             })
+        }
+        // Turn off initial loading overlay after first user-fetch completes
+        if (this.state.initialLoading && prevProps.isLoadingUsers && !this.props.isLoadingUsers) {
+            this.setState({ initialLoading: false });
         }
     }
 
@@ -346,7 +353,7 @@ class UserRedux extends Component {
 
         return (
             <React.Fragment>
-                <GlobalLoadingOverlay active={loadingActive} text={loadingText} />
+                <GlobalLoadingOverlay active={this.state.initialLoading || isSavingUser} text={loadingText} />
                 <div className="user-redux-container">
                     <div className="m-u-title">
                         <FormattedMessage id="menu.admin.user-redux" />
@@ -540,12 +547,30 @@ class UserRedux extends Component {
                                     }</button>
                                 </div>
                                 <div className="col-md-12 mb-3">
-                                    <span><FormattedMessage id="user.list_users" /></span>
+                                    <div style={{display:'flex', alignItems:'center', gap:12}}>
+                                        <span><FormattedMessage id="user.list_users" /></span>
+                                        <input
+                                            className="form-control"
+                                            style={{maxWidth:360, marginLeft: 'auto'}}
+                                            placeholder={this.props.language === 'vi' ? 'Tìm theo tên, email hoặc số điện thoại' : 'Search by name, email or phone'}
+                                            value={this.state.searchQuery || ''}
+                                            onChange={(e) => {
+                                                const q = e.target.value;
+                                                this.setState({ searchQuery: q });
+                                                if (this.searchTimeout) clearTimeout(this.searchTimeout);
+                                                this.searchTimeout = setTimeout(() => {
+                                                    // trigger server-side search, reset to page 1
+                                                    if (this.props.fetchAllUsers) this.props.fetchAllUsers(1, 10, q);
+                                                }, 300);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="col-md-12 mb-5">
                                     <TableManageUser 
                                         action={this.state.action}
                                         handleEditUserFromParent={this.handleEditUserFromParent}
+                                        filterQuery={this.state.searchQuery}
                                     />
                                 </div>
                             </form>
@@ -584,7 +609,7 @@ const mapDispatchToProps = dispatch => {
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
         createNewUser: (data) => dispatch(actions.createNewUser(data)),
-        fetchAllUsers: () => dispatch(actions.fetchAllUsers()),
+        fetchAllUsers: (page, limit, q) => dispatch(actions.fetchAllUsers(page, limit, q)),
         updateUser: (data) => dispatch(actions.editUser(data)),
     };
 };

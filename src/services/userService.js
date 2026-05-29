@@ -8,8 +8,15 @@ const handleLoginApi = (userEmail, userPassword) => {
     });
 }
 
-const getAllUsers = (inputId) => {
-    return axios.get(`/api/get-all-users?id=${inputId}`);
+const getAllUsers = (inputId, page, limit, q) => {
+    let url = `/api/get-all-users?id=${inputId}`;
+    if (page !== undefined && limit !== undefined) {
+        url += `&page=${page}&limit=${limit}`;
+    }
+    if (q !== undefined && q !== null && String(q).trim() !== '') {
+        url += `&q=${encodeURIComponent(q)}`;
+    }
+    return axios.get(url);
 }
 
 const createNewUserService = (data) => {
@@ -34,8 +41,10 @@ const getAllCodeService = (inputType) => {
 const getTopDoctorHomeService = (limit) => {
     return axios.get(`/api/top-doctor-home?limit=${limit}`);
 }
-const getAllDoctors = () => {
-    return axios.get(`/api/get-all-doctors`);
+const getAllDoctors = (q) => {
+    let url = `/api/get-all-doctors`;
+    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    return axios.get(url);
 }
 const saveDetailDoctorService = (data) => {
     return axios.post('/api/save-infor-doctors', data);
@@ -71,8 +80,10 @@ const postVerifyBookAppointment = (data) => {
 const createNewSpecialtyService = (data) => {
     return axios.post('/api/create-new-specialty', data);
 }
-const getAllSpecialty = () => {
-    return axios.get('/api/get-specialty');
+const getAllSpecialty = (q) => {
+    let url = '/api/get-specialty';
+    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    return axios.get(url);
 }
 const getDetailSpecialtyById = (data) => {
     return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`);
@@ -80,8 +91,10 @@ const getDetailSpecialtyById = (data) => {
 const createNewClinic = (data) => {
     return axios.post('/api/create-new-clinic', data);
 }
-const getAllClinic = () => {
-    return axios.get('/api/get-clinic');
+const getAllClinic = (q) => {
+    let url = '/api/get-clinic';
+    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    return axios.get(url);
 }
 const getDetailClinicById = (data) => {
     return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`);
@@ -98,8 +111,10 @@ const postCancelAppointment = (data) => {
 const aiSuggestSpecialty = (symptoms) => {
     return axios.post('/api/suggest-specialty', { symptoms });
 }
-const getAllhandbooks = () => {
-    return axios.get('/api/handbook/categories');
+const getAllhandbooks = (q) => {
+    let url = '/api/handbook/categories';
+    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    return axios.get(url);
 }
 const getHandbookById = (id) => {
     return axios.get(`/api/handbook/categories/${id}`);

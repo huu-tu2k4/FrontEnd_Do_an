@@ -8,6 +8,7 @@ const initialState = {
     roles: [],
     positions: [],
     users: [],
+    totalUsers: 0,
     topDoctors: [],
     isLoadingTopDoctor: false,
     allDoctors: [],
@@ -62,12 +63,14 @@ const adminReducer = (state = initialState, action) => {
         case actionTypes.FETCH_ALL_USERS_SUCCESS:
             let copyStateUsers = { ...state };
             copyStateUsers.users = action.users;
+            copyStateUsers.totalUsers = action.total || 0;
             copyStateUsers.isLoadingUsers = false;
             return {
                 ...copyStateUsers
             }
         case actionTypes.FETCH_ALL_USERS_FAILED:
             state.users = [];
+            state.totalUsers = 0;
             state.isLoadingUsers = false;
             return {
                 ...state

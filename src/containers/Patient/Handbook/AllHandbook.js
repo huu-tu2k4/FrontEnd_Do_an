@@ -18,7 +18,25 @@ class AllHandbook extends Component {
     }
 
     componentDidMount() {
-        this.handleGetAllHandbooks();
+        this.fetchHandbooks('');
+    }
+
+    fetchHandbooks = async (q) => {
+        try {
+            const res = await getAllhandbooks(q);
+            if (res && res.errCode === 0) {
+                this.setState({ handbooks: res.data ? res.data : [] });
+            }
+        } catch (e) {
+            console.error('fetchHandbooks error', e);
+        }
+    }
+
+    handleSearchChange = (e) => {
+        const q = e.target.value;
+        this.setState({ searchQuery: q });
+        if (this.searchTimeout) clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => this.fetchHandbooks(q), 300);
     }
 
     handleGetAllHandbooks = async () => {
@@ -41,14 +59,33 @@ class AllHandbook extends Component {
     }
 
     render() {
-        const { handbooks } = this.state;
+        const { handbooks, searchQuery = '' } = this.state;
         const { language } = this.props;
 
         return (
             <div className="handbook-list-page">
                 <HomeHeader />
                 <div className="container mt-3">
-                    <h2><FormattedMessage id="section.handbook" /></h2>
+                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, marginBottom:12}}>
+                        <h2><FormattedMessage id="section.handbook" /></h2>
+                        <div style={{position:'relative', display:'flex', alignItems:'center', width:'100%', justifyContent:'flex-end'}}>
+                            <input
+                                className="list-search"
+                                placeholder={language === 'vi' ? 'Tìm theo tiêu đề...' : 'Search by title...'}
+                                value={searchQuery || ''}
+                                onChange={this.handleSearchChange}
+                                style={{padding:8, borderRadius:6, border:'1px solid #e2e8f0', maxWidth:360, paddingRight:48}}
+                            />
+                            <div style={{position:'absolute', right:8, display:'flex', alignItems:'center', gap:8}}>
+                                {searchQuery ? (
+                                    <button type="button" className="btn btn-sm btn-light" aria-label="Clear search" onClick={() => { this.setState({ searchQuery: '' }); if (this.searchTimeout) clearTimeout(this.searchTimeout); this.fetchHandbooks(''); }}>
+                                        ×
+                                    </button>
+                                ) : null}
+                                <i className="fas fa-search" aria-hidden="true" style={{color:'#6b7280'}} />
+                            </div>
+                        </div>
+                    </div>
                     
                     <div className="row">
                         {handbooks && handbooks.length > 0 ? (
