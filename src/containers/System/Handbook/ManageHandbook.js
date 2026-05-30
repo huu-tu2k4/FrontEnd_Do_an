@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
-import { CommonUtils } from '../../../utils';
+import { CommonUtils, LANGUAGE } from '../../../utils';
+import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import { getAllSpecialty, createHandbook } from '../../../services/userService';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
@@ -24,6 +25,8 @@ class ManageHandbook extends Component {
             previewImgURL: '',
             specialties: [],
             selectedSpecialty: null
+            ,
+            saveLoading: false
         }
     }
 
@@ -64,30 +67,42 @@ class ManageHandbook extends Component {
     }
 
     handleSaveNewHandbook = async () => {
-        const payload = {
-            nameVi: this.state.nameVi,
-            nameEn: this.state.nameEn,
-            imageBase64: this.state.imageBase64,
-            descriptionHTML: this.state.descriptionHTML,
-            descriptionMarkdown: this.state.descriptionMarkdown
-            ,
-            specialtyId: this.state.selectedSpecialty ? this.state.selectedSpecialty.value : ''
-        };
-        let res = await createHandbook(payload);
-        if (res && res.errCode === 0) {
-            toast.success('Tạo Handbook thành công');
-            this.setState({
-                nameVi: '', nameEn: '', imageBase64: '', descriptionHTML: '', descriptionMarkdown: '', previewImgURL: '', selectedSpecialty: null
-            });
-        } else {
+        this.setState({ saveLoading: true });
+        try {
+            const payload = {
+                nameVi: this.state.nameVi,
+                nameEn: this.state.nameEn,
+                imageBase64: this.state.imageBase64,
+                descriptionHTML: this.state.descriptionHTML,
+                descriptionMarkdown: this.state.descriptionMarkdown,
+                specialtyId: this.state.selectedSpecialty ? this.state.selectedSpecialty.value : ''
+            };
+            let res = await createHandbook(payload);
+            if (res && res.errCode === 0) {
+                toast.success('Tạo Handbook thành công');
+                this.setState({
+                    nameVi: '', nameEn: '', imageBase64: '', descriptionHTML: '', descriptionMarkdown: '', previewImgURL: '', selectedSpecialty: null
+                });
+            } else {
+                toast.error('Tạo Handbook thất bại');
+                console.log('handbook create res:', res);
+            }
+            return res;
+        }
+        catch (e) {
+            console.log('Error creating handbook:', e);
             toast.error('Tạo Handbook thất bại');
-            console.log('handbook create res:', res);
+            return { errCode: -1, errMessage: 'Error creating handbook' };
+        }
+        finally {
+            this.setState({ saveLoading: false });
         }
     }
 
     render() {
         return (
             <div className="manage-handbook-container">
+                <GlobalLoadingOverlay active={this.state.saveLoading} text={this.props.language === LANGUAGE.VI ? 'Đang lưu...' : 'Saving...'} />
                 <div className="mh-title"><FormattedMessage id="admin.manage-handbook.title" /></div>
                 <div className="all-new-handbook row">
                     <div className="col-6 form-group">

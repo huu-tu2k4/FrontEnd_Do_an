@@ -1,12 +1,12 @@
 {
     "home_header": {
-        "specialty": "CHUYÊN KHOA",
+        "specialty": "Chuyên khoa",
         "language": "Ngôn ngữ",
         "english": "Tiếng Anh",
         "vietnamese": "Tiếng Việt",
         "logout": "Đăng xuất",
         "find_doctor_by_specialty": "Tìm bác sĩ theo chuyên khoa",
-        "medical_examination": "KHÁM BỆNH",
+        "medical_examination": "Cơ sở y tế",
         "select_hospital_clinic": "Chọn bệnh viện phòng khám",
         "doctor": "Bác sĩ",
         "find_good_doctor": "Tìm bác sĩ giỏi",
@@ -145,11 +145,15 @@
             "address": "Địa chỉ",
             "action": "Hành động",
             "edit": "Sửa",
-            "delete": "Xóa"
+            "delete": "Xóa",
+            "confirm-delete": "Bạn có chắc muốn xóa người dùng {name}?"
         }
     },
     "common": {
-        "warning": "Cảnh báo"
+        "warning": "Cảnh báo",
+        "confirm": "Xác nhận",
+        "close": "Đóng",
+        "accept": "Chấp nhận"
     },
     "validation": {
         "invalid_email": "Email không hợp lệ",
@@ -172,6 +176,7 @@
     "manage-patient": {
         "title": "Quản lý bệnh nhân đã đặt lịch khám",
         "select-date": "Chọn ngày",
+        "confirm-cancel": "Bạn thật sự muốn hủy lịch hẹn chứ?",
         "confirm-and-send-remedy": "Xác nhận và gửi hóa đơn",
         "cancel": "Hủy",
         "patient-list": "Danh sách bệnh nhân",
@@ -238,6 +243,13 @@
     },
     "clinic": {
         "allClinic": "Tất cả phòng khám"
+    },
+    "specialty": {
+        "allSpecialty": "Tất cả chuyên khoa"
+    },
+    "pagination": {
+        "showing": "Hiển thị",
+        "total": "/ tổng {count} mục"
     },
     "profile": {
         "title": "Hồ sơ của tôi",

@@ -74,7 +74,6 @@ class Profile extends Component {
             // remove all non-ASCII characters
             value = value.replace(/[^\x00-\x7F]/g, '');
         }
-
         this.setState(prev => ({
             ...prev,
             [field]: value,
@@ -246,6 +245,7 @@ class Profile extends Component {
                             <select value={this.state.gender} name="genderId" className="form-control" onChange={(event) => this.onChangeInput(event, 'gender')}>
                                 {
                                     genders && genders.length > 0 && genders.map((gender, index) => {
+                                        console.log('check gender: ', gender);
                                         return (
                                             <option key={gender.keyMap || index} value={gender.keyMap}>
                                                 {this.props.language === 'vi' ? gender.valueVi : gender.valueEn}

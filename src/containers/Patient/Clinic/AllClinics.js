@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { getAllClinic } from '../../../services/userService';
-import HomeHeader from '../../HomePage/HomeHeader';
-import { Link } from 'react-router-dom';
-import { path } from '../../../utils';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+
+import { getAllClinic } from '../../../services/userService';
+import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
+import HomeHeader from '../../HomePage/HomeHeader';
+import { LANGUAGE } from '../../../utils';
 
 import '../Specialty/DetailSpecialty.scss';
 
@@ -14,81 +15,144 @@ class AllClinics extends Component {
         super(props);
         this.state = {
             clinics: [],
-            searchQuery: ''
+            searchQuery: '',
+            loading: false
+        };
+        this.searchTimeout = null;
+    }
+
+    componentDidMount() {
+        this.fetchClinics('');
+    }
+
+    componentWillUnmount() {
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
         }
     }
 
-    async componentDidMount() {
-        await this.fetchClinics('');
-    }
+    fetchClinics = async (q = '') => {
+        this.setState({ loading: true });
 
-    fetchClinics = async (q) => {
         try {
             const res = await getAllClinic(q);
-            if (res && res.data) this.setState({ clinics: res.data });
-        } catch (e) { console.error('fetchClinics error', e); }
-    }
+            if (res && res.errCode === 0) {
+                this.setState({
+                    clinics: res.data || []
+                });
+            }
+        } catch (e) {
+            console.error('fetchClinics error:', e);
+        } finally {
+            this.setState({ loading: false });
+        }
+    };
 
     handleSearchChange = (e) => {
         const q = e.target.value;
         this.setState({ searchQuery: q });
+
         if (this.searchTimeout) clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => this.fetchClinics(q), 300);
-    }
+
+        this.searchTimeout = setTimeout(() => {
+            this.fetchClinics(q);
+        }, 500);
+    };
+
+    handleClearSearch = () => {
+        this.setState({ searchQuery: '' });
+        if (this.searchTimeout) clearTimeout(this.searchTimeout);
+        this.fetchClinics('');
+    };
 
     handleViewDetail = (item) => {
-        if (this.props.history) {
-            this.props.history.push(`/detail-clinic/${item.id}`);
-        }
-    }
+        this.props.history.push(`/detail-clinic/${item.id}`);
+    };
 
     render() {
-        const { clinics, searchQuery = '' } = this.state;
+        const { clinics, searchQuery, loading } = this.state;
+        const { language } = this.props;
+
         return (
             <div className="handbook-list-page">
                 <HomeHeader />
+
                 <div className="container mt-3">
-                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, marginBottom:12}}>
-                        <h2><FormattedMessage id="clinic.allClinic" /></h2>
-                        <div style={{position:'relative', display:'flex', alignItems:'center', width:'100%', justifyContent:'flex-end'}}>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h2>
+                            <FormattedMessage id="clinic.allClinic" />
+                        </h2>
+
+                        <div className="position-relative" style={{ width: '100%', maxWidth: '360px' }}>
                             <input
                                 className="list-search"
-                                placeholder={'Tìm theo cơ sở y tế...'}
-                                value={searchQuery || ''}
+                                placeholder={language === LANGUAGE.VI ? 'Tìm theo cơ sở y tế...' : 'Search by clinic...'}
+                                value={searchQuery}
                                 onChange={this.handleSearchChange}
-                                style={{padding:8, borderRadius:6, border:'1px solid #e2e8f0', maxWidth:360, paddingRight:48}}
+                                style={{
+                                    padding: '8px 48px 8px 16px',
+                                    borderRadius: '6px',
+                                    border: '1px solid #e2e8f0',
+                                    width: '100%'
+                                }}
                             />
-                            <div style={{position:'absolute', right:8, display:'flex', alignItems:'center', gap:8}}>
-                                {searchQuery ? (
-                                    <button type="button" className="btn btn-sm btn-light" aria-label="Clear search" onClick={() => { this.setState({ searchQuery: '' }); if (this.searchTimeout) clearTimeout(this.searchTimeout); this.fetchClinics(''); }}>
+
+                            <div style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                {searchQuery && (
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-link p-0 text-muted"
+                                        onClick={this.handleClearSearch}
+                                        aria-label="Clear search"
+                                        style={{ lineHeight: 1, display: 'inline-flex', alignItems: 'center' }}
+                                    >
                                         ×
                                     </button>
-                                ) : null}
-                                <i className="fas fa-search" aria-hidden="true" style={{color:'#6b7280'}} />
+                                )}
+                                <i className="fas fa-search" style={{ color: '#6b7280', lineHeight: 1, display: 'block' }} />
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        {(clinics || []).map((item) => (
-                            <div className="col-md-4" key={item.id}>
-                                <div
-                                    className="handbook-card"
-                                    onClick={() => this.handleViewDetail(item)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <div className="thumb" style={{ backgroundImage: `url(${item.image})` }}></div>
-                                    <h4>{item.name}</h4>
-                                    <span className="btn btn-link">Xem chi tiết</span>
+
+                    <div style={{ position: 'relative' }}>
+                        <SectionLoadingOverlay 
+                            active={loading} 
+                            text={language === LANGUAGE.VI ? 'Đang tải...' : 'Loading...'} 
+                        />
+
+                        <div className="row">
+                            {clinics.length > 0 ? (
+                                clinics.map((item) => (
+                                    <div className="col-md-4 mb-4" key={item.id}>
+                                        <div
+                                            className="handbook-card"
+                                            onClick={() => this.handleViewDetail(item)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <div 
+                                                className="thumb" 
+                                                style={{ backgroundImage: `url(${item.image})` }}
+                                            />
+                                            <h4>{item.name}</h4>
+                                            <span className="btn btn-link">Xem chi tiết</span>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="col-12 text-center py-5">
+                                    <p>Không có cơ sở y tế nào.</p>
                                 </div>
-                            </div>
-                        ))}
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-const mapStateToProps = state => ({ language: state.app.language });
+const mapStateToProps = state => ({
+    language: state.app.language
+});
 
 export default withRouter(connect(mapStateToProps)(AllClinics));

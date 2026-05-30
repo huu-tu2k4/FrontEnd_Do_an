@@ -5,117 +5,151 @@ import { withRouter } from 'react-router';
 
 import HomeHeader from '../../HomePage/HomeHeader';
 import { getAllhandbooks } from '../../../services/userService';
+import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
+import { LANGUAGE } from '../../../utils';
 
 import './AllHandbook.scss';
 
 class AllHandbook extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            handbooks: []
-        }
+            handbooks: [],
+            loading: false,
+            searchQuery: ''
+        };
+        this.searchTimeout = null;
     }
 
     componentDidMount() {
         this.fetchHandbooks('');
     }
 
-    fetchHandbooks = async (q) => {
+    componentWillUnmount() {
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
+    }
+
+    fetchHandbooks = async (q = '') => {
+        this.setState({ loading: true });
+
         try {
             const res = await getAllhandbooks(q);
             if (res && res.errCode === 0) {
-                this.setState({ handbooks: res.data ? res.data : [] });
+                this.setState({
+                    handbooks: res.data || []
+                });
             }
         } catch (e) {
-            console.error('fetchHandbooks error', e);
+            console.error('fetchHandbooks error:', e);
+        } finally {
+            this.setState({ loading: false });
         }
-    }
+    };
 
     handleSearchChange = (e) => {
         const q = e.target.value;
         this.setState({ searchQuery: q });
-        if (this.searchTimeout) clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => this.fetchHandbooks(q), 300);
-    }
 
-    handleGetAllHandbooks = async () => {
-        try {
-            const res = await getAllhandbooks();
-            if (res && res.errCode === 0) {
-                this.setState({
-                    handbooks: res.data ? res.data : []
-                });
-            }
-        } catch (e) {
-            console.error('Fetch handbooks error', e);
-        }
-    }
+        if (this.searchTimeout) clearTimeout(this.searchTimeout);
+
+        this.searchTimeout = setTimeout(() => {
+            this.fetchHandbooks(q);
+        }, 500);
+    };
+
+    handleClearSearch = () => {
+        this.setState({ searchQuery: '' });
+        if (this.searchTimeout) clearTimeout(this.searchTimeout);
+        this.fetchHandbooks('');
+    };
 
     handleViewDetailHandbook = (item) => {
-        if (this.props.history) {
-            this.props.history.push(`/detail-handbook/${item.id}`);
-        }
-    }
+        this.props.history.push(`/detail-handbook/${item.id}`);
+    };
 
     render() {
-        const { handbooks, searchQuery = '' } = this.state;
+        const { handbooks, searchQuery, loading } = this.state;
         const { language } = this.props;
 
         return (
             <div className="handbook-list-page">
                 <HomeHeader />
+
                 <div className="container mt-3">
-                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, marginBottom:12}}>
-                        <h2><FormattedMessage id="section.handbook" /></h2>
-                        <div style={{position:'relative', display:'flex', alignItems:'center', width:'100%', justifyContent:'flex-end'}}>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h2>
+                            <FormattedMessage id="section.handbook" />
+                        </h2>
+
+                        <div className="position-relative" style={{ width: '100%', maxWidth: '360px' }}>
                             <input
                                 className="list-search"
-                                placeholder={language === 'vi' ? 'Tìm theo tiêu đề...' : 'Search by title...'}
-                                value={searchQuery || ''}
+                                placeholder={language === LANGUAGE.VI ? 'Tìm theo tiêu đề...' : 'Search by title...'}
+                                value={searchQuery}
                                 onChange={this.handleSearchChange}
-                                style={{padding:8, borderRadius:6, border:'1px solid #e2e8f0', maxWidth:360, paddingRight:48}}
+                                style={{
+                                    padding: '8px 48px 8px 16px',
+                                    borderRadius: '6px',
+                                    border: '1px solid #e2e8f0',
+                                    width: '100%'
+                                }}
                             />
-                            <div style={{position:'absolute', right:8, display:'flex', alignItems:'center', gap:8}}>
-                                {searchQuery ? (
-                                    <button type="button" className="btn btn-sm btn-light" aria-label="Clear search" onClick={() => { this.setState({ searchQuery: '' }); if (this.searchTimeout) clearTimeout(this.searchTimeout); this.fetchHandbooks(''); }}>
+
+                            <div style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                {searchQuery && (
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-link p-0 text-muted"
+                                        onClick={this.handleClearSearch}
+                                        aria-label="Clear search"
+                                        style={{ lineHeight: 1, display: 'inline-flex', alignItems: 'center' }}
+                                    >
                                         ×
                                     </button>
-                                ) : null}
-                                <i className="fas fa-search" aria-hidden="true" style={{color:'#6b7280'}} />
+                                )}
+                                <i className="fas fa-search" style={{ color: '#6b7280', lineHeight: 1, display: 'block' }} />
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="row">
-                        {handbooks && handbooks.length > 0 ? (
-                            handbooks.map((item) => (
-                                <div className="col-md-4" key={item.id}>
-                                    <div 
-                                        className="handbook-card"
-                                        onClick={() => this.handleViewDetailHandbook(item)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        <div 
-                                            className="thumb" 
-                                            style={{ backgroundImage: `url(${item.image})` }}
-                                        ></div>
-                                        <h4>
-                                            {language === 'vi' ? item.nameVi : item.nameEn}
-                                        </h4>
-                                        <span className="btn btn-link">Xem chi tiết</span>
+
+                    <div style={{ position: 'relative' }}>
+                        <SectionLoadingOverlay 
+                            active={loading} 
+                            text={language === LANGUAGE.VI ? 'Đang tải...' : 'Loading...'} 
+                        />
+
+                        <div className="row">
+                            {handbooks.length > 0 ? (
+                                handbooks.map((item) => (
+                                    <div className="col-md-4 mb-4" key={item.id}>
+                                        <div
+                                            className="handbook-card"
+                                            onClick={() => this.handleViewDetailHandbook(item)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <div
+                                                className="thumb"
+                                                style={{ backgroundImage: `url(${item.image})` }}
+                                            />
+                                            <h4>
+                                                {language === LANGUAGE.VI ? item.nameVi : item.nameEn}
+                                            </h4>
+                                            <span className="btn btn-link">Xem chi tiết</span>
+                                        </div>
                                     </div>
+                                ))
+                            ) : (
+                                <div className="col-12 text-center py-5">
+                                    <p>Không có cẩm nang nào.</p>
                                 </div>
-                            ))
-                        ) : (
-                            <div className="col-12 text-center">
-                                <p>Không có cẩm nang nào.</p>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -123,6 +157,4 @@ const mapStateToProps = state => ({
     language: state.app.language
 });
 
-const mapDispatchToProps = dispatch => ({});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AllHandbook));
+export default withRouter(connect(mapStateToProps)(AllHandbook));

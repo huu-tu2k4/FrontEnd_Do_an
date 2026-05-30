@@ -1,16 +1,16 @@
 {
     "home_header": {
-        "specialty": "SPECIALTY",
+        "specialty": "Specialty",
         "language": "Language",
         "english": "English",
         "vietnamese": "Vietnamese",
         "logout": "Logout",
         "find_doctor_by_specialty": "Find Doctor by Specialty",
-        "medical_examination": "MEDICAL EXAMINATION",
+        "medical_examination": "Medical Examination",
         "select_hospital_clinic": "Select Hospital/Clinic",
-        "doctor": "DOCTOR",
+        "doctor": "Doctor",
         "find_good_doctor": "Find Good Doctor",
-        "package": "PACKAGE",
+        "package": "Health Package",
         "full_body_checkup": "Full Body Checkup",
         "support": "Support",
         "wellcome": "Welcome, "
@@ -144,11 +144,15 @@
             "address": "Address",
             "action": "Action",
             "edit": "Edit",
-            "delete": "Delete"
+            "delete": "Delete",
+            "confirm-delete": "Are you sure you want to delete {name}?"
         }
     },
     "common": {
-        "warning": "Warning"
+        "warning": "Warning",
+        "confirm": "Confirm",
+        "close": "Close",
+        "accept": "Accept"
     },
     "validation": {
         "invalid_email": "Invalid email address",
@@ -171,6 +175,7 @@
     "manage-patient": {
         "title": "Manage Booked Patients",
         "select-date": "Select Date",
+        "confirm-cancel": "Are you sure you want to cancel this appointment?",
         "confirm-and-send-remedy": "Confirm and Send Remedy",
         "cancel": "Cancel",
         "patient-list": "Patient List",
@@ -237,6 +242,13 @@
     },
     "clinic": {
         "allClinic": "All Clinics"
+    },
+    "specialty": {
+        "allSpecialty": "All Specialties"
+    },
+    "pagination": {
+        "showing": "Showing",
+        "total": "/ total {count} items"
     },
     "profile": {
         "title": "My Profile",

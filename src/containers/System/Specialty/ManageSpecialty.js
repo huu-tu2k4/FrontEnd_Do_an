@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
-import { CommonUtils } from '../../../utils';
+import { CommonUtils, LANGUAGE } from '../../../utils';
+import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import { createNewSpecialtyService } from '../../../services/userService';
 import { toast } from 'react-toastify';
 
@@ -23,6 +24,8 @@ class ManageSpecialty extends Component {
             previewImgURL: '',
             previewWidth: null,
             previewHeight: null
+            ,
+            saveLoading: false
         }
     }
 
@@ -71,29 +74,41 @@ class ManageSpecialty extends Component {
         })
     }
     handleSaveNewSpecialty = async () => {
-        let res = await createNewSpecialtyService({
-            nameVi: this.state.nameVi,
-            nameEn: this.state.nameEn,
-            imageBase64: this.state.imageBase64,
-            descriptionHTML: this.state.descriptionHTML,
-            descriptionMarkdown: this.state.descriptionMarkdown
-        });
-        if(res && res.errCode === 0) {
-            toast.success('Create new specialty succeed!');
-            this.setState({
-                nameVi: '',
-                nameEn: '',
-                imageBase64: '',
-                descriptionHTML: '',
-                descriptionMarkdown: '',
-                previewImgURL: '',
-                previewWidth: null,
-                previewHeight: null
-            })
+        this.setState({ saveLoading: true });
+        try {
+            let res = await createNewSpecialtyService({
+                nameVi: this.state.nameVi,
+                nameEn: this.state.nameEn,
+                imageBase64: this.state.imageBase64,
+                descriptionHTML: this.state.descriptionHTML,
+                descriptionMarkdown: this.state.descriptionMarkdown
+            });
+            if(res && res.errCode === 0) {
+                toast.success('Create new specialty succeed!');
+                this.setState({
+                    nameVi: '',
+                    nameEn: '',
+                    imageBase64: '',
+                    descriptionHTML: '',
+                    descriptionMarkdown: '',
+                    previewImgURL: '',
+                    previewWidth: null,
+                    previewHeight: null
+                })
+            }
+            else {
+                toast.error('Create new specialty failed!');
+                console.log('check res: ', res);
+            }
+            return res;
         }
-        else {
+        catch (e) {
+            console.log('Error creating specialty:', e);
             toast.error('Create new specialty failed!');
-            console.log('check res: ', res);
+            return { errCode: -1, errMessage: 'Error creating specialty' };
+        }
+        finally {
+            this.setState({ saveLoading: false });
         }
     }
 
@@ -102,6 +117,7 @@ class ManageSpecialty extends Component {
         return (
             <div>
                 <div className="manage-specialty-container">
+                    <GlobalLoadingOverlay active={this.state.saveLoading} text={this.props.language === LANGUAGE.VI ? 'Đang lưu...' : 'Saving...'} />
                     <div className="ms-title"><FormattedMessage id="admin.manage-specialty.title" /></div>
                     <div className="all-new-specialty row">
                         <div className="col-6 form-group">

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import Slider from 'react-slick';
 import { getAllhandbooks } from '../../../services/userService';
+import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import { withRouter } from 'react-router';
 
 
@@ -12,7 +13,8 @@ class Handbook extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            handbooks: []
+            handbooks: [],
+            loading: false
         }
     }
 
@@ -21,15 +23,16 @@ class Handbook extends Component {
     }
 
     handleGetAllHandbooks = async () => {
+        this.setState({ loading: true });
         try {
             const res = await getAllhandbooks();
             if (res && res.errCode === 0) {
-                this.setState({
-                    handbooks: res.data ? res.data : []
-                });
+                this.setState({ handbooks: res.data ? res.data : [] });
             }
         } catch (e) {
             console.error('Fetch handbooks error', e);
+        } finally {
+            this.setState({ loading: false });
         }
     }
 
@@ -55,7 +58,8 @@ class Handbook extends Component {
                             <FormattedMessage id="section.see-more" />
                         </button>
                     </div>
-                    <div className="section-body">
+                    <div className="section-body" style={{ position: 'relative' }}>
+                        <SectionLoadingOverlay active={this.state.loading} text={this.props.language === 'vi' ? 'Đang tải...' : 'Loading...'} />
                         <Slider {...this.props.settings}>
                             {handbooks && handbooks.length > 0 &&
                                 handbooks.map((item, index) => {

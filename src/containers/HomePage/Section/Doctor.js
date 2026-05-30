@@ -5,6 +5,7 @@ import Slider from 'react-slick';
 import * as actions from '../../../store/actions';
 import { LANGUAGE } from '../../../utils';
 import { withRouter } from 'react-router';
+import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 // import { path } from '../utils'
 
 class Doctor extends Component {
@@ -43,7 +44,8 @@ class Doctor extends Component {
                         <span className="title-section"><FormattedMessage id="section.outstanding-doctor" /></span>
                         <button className="btn-section" onClick={() => this.props.history.push('/doctors')}><FormattedMessage id="section.see-more" /></button>
                     </div>
-                    <div className="section-body">
+                    <div className="section-body" style={{ position: 'relative' }}>
+                        <SectionLoadingOverlay active={this.props.isLoadingTopDoctors} text={this.props.language === LANGUAGE.VI ? 'Đang tải...' : 'Loading...'} />
                         <Slider {...this.props.settings}>
                             {arrDoctors && arrDoctors.length > 0 && arrDoctors.map((item, index) => {
                                 if (!item) return null;

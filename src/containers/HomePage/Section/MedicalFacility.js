@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import Slider from 'react-slick';
 import { getAllClinic } from '../../../services/userService';
+import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import { withRouter } from 'react-router';
 
 class MedicalFacility extends Component {
@@ -10,16 +11,22 @@ class MedicalFacility extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataClinics: []
+            dataClinics: [],
+            loading: false
         }
     }
 
     async componentDidMount() {
-        let res = await getAllClinic();
-        if (res && res.data) {
-            this.setState({
-                dataClinics: res.data
-            });
+        this.setState({ loading: true });
+        try {
+            let res = await getAllClinic();
+            if (res && res.data) {
+                this.setState({ dataClinics: res.data });
+            }
+        } catch (e) {
+            console.error('Fetch clinics error', e);
+        } finally {
+            this.setState({ loading: false });
         }
     }
 
@@ -41,7 +48,8 @@ class MedicalFacility extends Component {
                         <span className="title-section"><FormattedMessage id="section.medical-facility" /></span>
                         <button className="btn-section" onClick={() => this.props.history.push('/clinics')}><FormattedMessage id="section.see-more" /></button>
                     </div>
-                    <div className="section-body">
+                    <div className="section-body" style={{ position: 'relative' }}>
+                        <SectionLoadingOverlay active={this.state.loading} text={this.props.language === 'vi' ? 'Đang tải...' : 'Loading...'} />
                         <Slider {...this.props.settings}>
                             {this.state.dataClinics.map((item, index) => {
                                 return (

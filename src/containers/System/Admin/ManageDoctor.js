@@ -7,6 +7,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import './ManageDoctor.scss';
 import Select from 'react-select';
+import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import {CRUD_ACTIONS, LANGUAGE} from '../../../utils';
 import { getDetailInforDoctor } from '../../../services/userService';
 
@@ -42,6 +43,7 @@ class ManageDoctor extends Component {
             note: '',
             clinicId: '',
             specialtyId: '',
+            saveLoading: false,
             
         }
     }
@@ -167,38 +169,49 @@ class ManageDoctor extends Component {
 
     handleSaveContentMarkdown = async () => {
         let { hasOldData } = this.state;
-        let res = await this.props.saveDetailDoctor({
-            contentHTML: this.state.contentHTML,
-            contentMarkdown: this.state.contentMarkdown,
-            description: this.state.description,
-            doctorId: this.state.selectedDoctor.value,
-            action: hasOldData === true ? CRUD_ACTIONS.EDIT : CRUD_ACTIONS.CREATE,
+        this.setState({ saveLoading: true });
+        try {
+            let res = await this.props.saveDetailDoctor({
+                contentHTML: this.state.contentHTML,
+                contentMarkdown: this.state.contentMarkdown,
+                description: this.state.description,
+                doctorId: this.state.selectedDoctor.value,
+                action: hasOldData === true ? CRUD_ACTIONS.EDIT : CRUD_ACTIONS.CREATE,
 
-            selectedPrice: this.state.selectedPrice ? this.state.selectedPrice.value : '',
-            selectedPayment: this.state.selectedPayment ? this.state.selectedPayment.value : '',
-            selectedProvince: this.state.selectedProvince ? this.state.selectedProvince.value : '',
-            nameClinic: this.state.nameClinic,
-            addressClinic: this.state.addressClinic,
-            note: this.state.note,
-            clinicId: this.state.selectedClinic && this.state.selectedClinic.value ? this.state.selectedClinic.value : '',
-            specialtyId: this.state.selectedSpecialty && this.state.selectedSpecialty.value ? this.state.selectedSpecialty.value : ''
-        })
-        if(res && res.errCode === 0) {
-            // this.setState({
-            //     contentHTML: '',
-            //     contentMarkdown: '',
-            //     description: '',
-            //     selectedDoctor: '',
-            //     hasOldData: false,
-            //     selectedPrice: '',
-            //     selectedPayment: '',
-            //     selectedProvince: '',
-            //     nameClinic: '',
-            //     addressClinic: '',
-            //     note: '',
-            //     selectedClinic: '',
-            //     selectedSpecialty: ''
-            // })
+                selectedPrice: this.state.selectedPrice ? this.state.selectedPrice.value : '',
+                selectedPayment: this.state.selectedPayment ? this.state.selectedPayment.value : '',
+                selectedProvince: this.state.selectedProvince ? this.state.selectedProvince.value : '',
+                nameClinic: this.state.nameClinic,
+                addressClinic: this.state.addressClinic,
+                note: this.state.note,
+                clinicId: this.state.selectedClinic && this.state.selectedClinic.value ? this.state.selectedClinic.value : '',
+                specialtyId: this.state.selectedSpecialty && this.state.selectedSpecialty.value ? this.state.selectedSpecialty.value : ''
+            })
+            if(res && res.errCode === 0) {
+                this.setState({
+                    contentHTML: '',
+                    contentMarkdown: '',
+                    description: '',
+                    selectedDoctor: '',
+                    hasOldData: false,
+                    selectedPrice: '',
+                    selectedPayment: '',
+                    selectedProvince: '',
+                    nameClinic: '',
+                    addressClinic: '',
+                    note: '',
+                    selectedClinic: '',
+                    selectedSpecialty: ''
+                })
+            }
+            return res;
+        }
+        catch (e) {
+            console.log('Error saving doctor details:', e);
+            return { errCode: -1, errMessage: 'Error saving doctor details' };
+        }
+        finally {
+            this.setState({ saveLoading: false });
         }
     }
 
@@ -265,6 +278,7 @@ class ManageDoctor extends Component {
         let {listPayment, listPrice, listProvince} = this.state;
         return (
             <div className="manage-doctor-container">
+                <GlobalLoadingOverlay active={this.state.saveLoading} text={this.props.language === LANGUAGE.VI ? 'Đang lưu...' : 'Saving...'} />
                 <div className="manage-doctor-title">{hasOldData === true ? <FormattedMessage id="admin.manage-doctor.edit_title" /> : <FormattedMessage id="admin.manage-doctor.create_title" />}</div>
                 <div className="more-infor">
                     <div className="content-left form-group">

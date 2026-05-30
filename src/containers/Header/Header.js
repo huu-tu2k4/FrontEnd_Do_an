@@ -145,6 +145,7 @@ class Header extends Component {
     render() {
         const { language, userInfo } = this.props;
         const { menuApp, isLanguageMenuOpen, isUserMenuOpen, isMobileMenuOpen } = this.state;
+        const currentPath = (this.props.location && this.props.location.pathname) || '';
         const avatarUrl = this.buildImageUrl(userInfo && userInfo.image);
 
         // flatten menuApp (sections -> menus)
@@ -171,12 +172,19 @@ class Header extends Component {
                         </button>
                         {this.state.isMenuOpen && (
                             <div className="menu-list">
-                                {flatMenus.map((menu, index) => (
-                                    <button key={index} className="menu-item" onClick={() => { this.handleNavigate(menu.link); this.setState({ isMenuOpen: false }); }}>
-                                        {menu.icon && <i className={menu.icon}></i>}
-                                        <span><FormattedMessage id={menu.name} /></span>
-                                    </button>
-                                ))}
+                                {flatMenus.map((menu, index) => {
+                                    const isActive = menu.link && currentPath === menu.link;
+                                    return (
+                                        <button
+                                            key={index}
+                                            className={`menu-item ${isActive ? 'active' : ''}`}
+                                            onClick={() => { this.handleNavigate(menu.link); this.setState({ isMenuOpen: false }); }}
+                                        >
+                                            {menu.icon && <i className={menu.icon}></i>}
+                                            <span><FormattedMessage id={menu.name} /></span>
+                                        </button>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
@@ -273,16 +281,19 @@ class Header extends Component {
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
                     <nav className="header-nav mobile-nav">
-                        {flatMenus.map((menu, index) => (
-                            <button
-                                key={index}
-                                className="nav-item"
-                                onClick={() => { this.handleNavigate(menu.link); this.setState({ isMobileMenuOpen: false }); }}
-                            >
-                                {menu.icon && <i className={menu.icon}></i>}
-                                <span><FormattedMessage id={menu.name} /></span>
-                            </button>
-                        ))}
+                        {flatMenus.map((menu, index) => {
+                            const isActive = menu.link && currentPath === menu.link;
+                            return (
+                                <button
+                                    key={index}
+                                    className={`nav-item ${isActive ? 'active' : ''}`}
+                                    onClick={() => { this.handleNavigate(menu.link); this.setState({ isMobileMenuOpen: false }); }}
+                                >
+                                    {menu.icon && <i className={menu.icon}></i>}
+                                    <span><FormattedMessage id={menu.name} /></span>
+                                </button>
+                            );
+                        })}
                     </nav>
                 )}
             </header>

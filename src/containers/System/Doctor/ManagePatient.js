@@ -6,6 +6,7 @@ import { getAllPatientForDoctor, getDetailInforDoctor, postSendRemedy, postCance
 import moment from 'moment';
 import { LANGUAGE } from '../../../utils';
 import RemedyModal from './RemedyModal';
+import * as actions from '../../../store/actions';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 // replaced react-loading-overlay with a global portal overlay
@@ -70,6 +71,17 @@ class ManagePatient extends Component {
             isOpenRemedyModal: true,
             dataModal: item
         });
+    }
+    handleCancelWithConfirm = (item) => {
+        const { intl } = this.props;
+        console.log('ManagePatient: opening ConfirmModal with item:', item);
+        this.props.setContentOfConfirmModal({
+            isOpen: true,
+            messageId: 'manage-patient.confirm-cancel',
+            handleFunc: (data) => this.handleBtnCancel(data),
+            dataFunc: item
+        });
+        console.log('ManagePatient: dispatched setContentOfConfirmModal');
     }
     buildTimeBooking = (dataTime) => {
         let { language } = this.props;
@@ -247,7 +259,7 @@ class ManagePatient extends Component {
                                                             className="btn btn-danger icon-btn"
                                                             title={intl.formatMessage({ id: 'manage-patient.cancel' })}
                                                             aria-label={intl.formatMessage({ id: 'manage-patient.cancel' })}
-                                                            onClick={() => this.handleBtnCancel(item)}
+                                                            onClick={() => this.handleCancelWithConfirm(item)}
                                                         ><i className="fas fa-times" aria-hidden="true"></i></button>
                                                     </td>
                                                 </tr>
@@ -281,7 +293,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+        setContentOfConfirmModal: (contentOfConfirmModal) => dispatch(actions.setContentOfConfirmModal(contentOfConfirmModal))
     };
 };
 

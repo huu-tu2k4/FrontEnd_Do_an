@@ -464,6 +464,11 @@ $shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
             cursor: pointer;
 
             &:hover { background: $bg-hover; color: $primary-color; }
+            &.active {
+                background-color: $bg-hover;
+                color: $primary-color;
+                font-weight: 600;
+            }
         }
     }
 }

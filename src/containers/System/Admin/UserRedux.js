@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import LanguageUtils from '../../../utils/LanguageUtils';
 import {CRUD_ACTIONS, CommonUtils} from '../../../utils';
 import TableManageUser from "./TableManageUser";
+import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 
 import './UserRedux.scss';
@@ -139,11 +140,6 @@ class UserRedux extends Component {
 
     handleSaveUser = async () => {
         const { email, password, phoneNumber } = this.state;
-        // if (!this.validatePhoneNumber(phoneNumber)) {
-        //     ToastUtil.warn('common.warning', 'validation.invalid_phone');
-        //     return;
-        // }
-
         // reset errors
         this.setState({ errors: { email: '', password: '', phoneNumber: '' } });
         if (!this.checkValidateInput()) {
@@ -166,7 +162,6 @@ class UserRedux extends Component {
             return;
         }
         if(this.state.action === CRUD_ACTIONS.CREATE) {
-            // handle create user
             const res = await this.props.createNewUser({
                 email: this.state.email,
                 password: this.state.password,
@@ -238,9 +233,6 @@ class UserRedux extends Component {
                 break;
             }
         }
-        // setTimeout(() => {
-        //     this.props.fetchAllUsers();
-        // }, 1000);
         return isValid;
     }
 
@@ -350,10 +342,11 @@ class UserRedux extends Component {
             gender, position, role, avatar} = this.state;
         const loadingActive = isLoadingGender || isLoadingUsers || isSavingUser;
         const loadingText = isSavingUser ? (LanguageUtils.getMessageByKey('common.saving', this.props.language) || 'Saving...') : (LanguageUtils.getMessageByKey('common.loading', this.props.language) || 'Loading...');
+        const tableLoadingText = (LanguageUtils.getMessageByKey('common.loading', this.props.language) || 'Loading...');
 
         return (
             <React.Fragment>
-                <GlobalLoadingOverlay active={this.state.initialLoading || isSavingUser} text={loadingText} />
+                <GlobalLoadingOverlay active={isSavingUser} text={LanguageUtils.getMessageByKey('common.saving', this.props.language) || 'Saving...'} />
                 <div className="user-redux-container">
                     <div className="m-u-title">
                         <FormattedMessage id="menu.admin.user-redux" />
@@ -549,24 +542,30 @@ class UserRedux extends Component {
                                 <div className="col-md-12 mb-3">
                                     <div style={{display:'flex', alignItems:'center', gap:12}}>
                                         <span><FormattedMessage id="user.list_users" /></span>
-                                        <input
-                                            className="form-control"
-                                            style={{maxWidth:360, marginLeft: 'auto'}}
-                                            placeholder={this.props.language === 'vi' ? 'Tìm theo tên, email hoặc số điện thoại' : 'Search by name, email or phone'}
-                                            value={this.state.searchQuery || ''}
-                                            onChange={(e) => {
-                                                const q = e.target.value;
-                                                this.setState({ searchQuery: q });
-                                                if (this.searchTimeout) clearTimeout(this.searchTimeout);
-                                                this.searchTimeout = setTimeout(() => {
-                                                    // trigger server-side search, reset to page 1
-                                                    if (this.props.fetchAllUsers) this.props.fetchAllUsers(1, 10, q);
-                                                }, 300);
-                                            }}
-                                        />
+                                        <div className="search-input-wrapper" style={{minWidth:360, marginLeft: 'auto'}}>
+                                            <input
+                                                className="form-control"
+                                                placeholder={this.props.language === 'vi' ? 'Tìm theo tên, email hoặc số điện thoại' : 'Search by name, email or phone'}
+                                                value={this.state.searchQuery || ''}
+                                                onChange={(e) => {
+                                                    const q = e.target.value;
+                                                    this.setState({ searchQuery: q });
+                                                    if (this.searchTimeout) clearTimeout(this.searchTimeout);
+                                                    this.searchTimeout = setTimeout(() => {
+                                                        // trigger server-side search, reset to page 1
+                                                        if (this.props.fetchAllUsers) this.props.fetchAllUsers(1, 10, q);
+                                                    }, 500);
+                                                }}
+                                            />
+                                            <i className="fas fa-search search-icon" aria-hidden="true"></i>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-md-12 mb-5">
+                                <div className="col-md-12 mb-5" style={{ position: 'relative' }}>
+                                    <SectionLoadingOverlay
+                                        active={this.state.initialLoading || isLoadingUsers}
+                                        text={tableLoadingText}
+                                    />
                                     <TableManageUser 
                                         action={this.state.action}
                                         handleEditUserFromParent={this.handleEditUserFromParent}

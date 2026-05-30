@@ -30,6 +30,7 @@ import Profile from './Profile/Profile';
 
 import { CustomToastCloseButton } from '../components/CustomToast';
 import CustomScrollbars from '../components/CustomScrollbars'
+import ConfirmModal from '../components/ConfirmModal';
 
 class App extends Component {
 
@@ -89,6 +90,7 @@ class App extends Component {
                             draggable
                             pauseOnHover
                         />
+                        <ConfirmModal />
                     </div>
                 </Router>
             </Fragment>

@@ -7,7 +7,7 @@ import Doctor from './Section/Doctor';
 import Handbook from './Section/Handbook';
 import About from './Section/About';
 import HomeFooter from './HomeFooter';
-import GlobalLoadingOverlay from '../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
+// Section components handle their own loading overlays now; no global overlay here
 import AIChatbot from '../../components/AIChatbot';
 
 import 'slick-carousel/slick/slick.css';
@@ -26,7 +26,6 @@ class HomePage extends Component {
         };
         return (
             <div>
-                <GlobalLoadingOverlay active={this.props.isLoadingTopDoctors} text={'Loading...'} />
                 <HomeHeader isShowBanner={true} />
                 <AIChatbot />
                 <Specialty settings={settings} />

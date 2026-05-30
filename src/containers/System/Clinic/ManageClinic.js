@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
-import { CommonUtils } from '../../../utils';
+import { CommonUtils, LANGUAGE } from '../../../utils';
+import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import { toast } from 'react-toastify';
 import { createNewClinic } from '../../../services/userService';
 
@@ -23,6 +24,8 @@ class ManageClinic extends Component {
             previewImgURL: '',
             previewWidth: null,
             previewHeight: null
+            ,
+            saveLoading: false
         }
     }
 
@@ -71,29 +74,41 @@ class ManageClinic extends Component {
         })
     }
     handleSaveNewClinic = async () => {
-        let res = await createNewClinic({
-            name: this.state.name,
-            address: this.state.address,
-            imageBase64: this.state.imageBase64,
-            descriptionHTML: this.state.descriptionHTML,
-            descriptionMarkdown: this.state.descriptionMarkdown
-        });
-        if(res && res.errCode === 0) {
-            toast.success('Create new clinic succeed!');
-            this.setState({
-                name: '',
-                address: '',
-                imageBase64: '',
-                descriptionHTML: '',
-                descriptionMarkdown: '',
-                previewImgURL: '',
-                previewWidth: null,
-                previewHeight: null
-            })
+        this.setState({ saveLoading: true });
+        try {
+            let res = await createNewClinic({
+                name: this.state.name,
+                address: this.state.address,
+                imageBase64: this.state.imageBase64,
+                descriptionHTML: this.state.descriptionHTML,
+                descriptionMarkdown: this.state.descriptionMarkdown
+            });
+            if(res && res.errCode === 0) {
+                toast.success('Create new clinic succeed!');
+                this.setState({
+                    name: '',
+                    address: '',
+                    imageBase64: '',
+                    descriptionHTML: '',
+                    descriptionMarkdown: '',
+                    previewImgURL: '',
+                    previewWidth: null,
+                    previewHeight: null
+                })
+            }
+            else {
+                toast.error('Create new clinic failed!');
+                console.log('check res: ', res);
+            }
+            return res;
         }
-        else {
+        catch (e) {
+            console.log('Error creating clinic:', e);
             toast.error('Create new clinic failed!');
-            console.log('check res: ', res);
+            return { errCode: -1, errMessage: 'Error creating clinic' };
+        }
+        finally {
+            this.setState({ saveLoading: false });
         }
     }
 
@@ -101,7 +116,8 @@ class ManageClinic extends Component {
         
         return (
             <div>
-                <div className="manage-clinic-container">
+                    <div className="manage-clinic-container">
+                        <GlobalLoadingOverlay active={this.state.saveLoading} text={this.props.language === LANGUAGE.VI ? 'Đang lưu...' : 'Saving...'} />
                     <div className="mc-title"><FormattedMessage id="admin.manage-clinic.title" /></div>
                     <div className="all-new-clinic row">
                         <div className="col-6 form-group">

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 import MarkdownIt from 'markdown-it';
@@ -86,6 +86,18 @@ class TableManageUser extends Component {
     handleDeleteUser = (userId) => {
         this.props.deleteUser(userId);
     }
+
+    handleDeleteWithConfirm = (item) => {
+        // open global ConfirmModal via Redux
+        const nameLabel = this.props.language === LANGUAGE.VI ? `${item.lastName} ${item.firstName}` : `${item.firstName} ${item.lastName}`;
+        this.props.setContentOfConfirmModal({
+            isOpen: true,
+            messageId: 'admin.tableManageUser.confirm-delete',
+            values: { name: nameLabel },
+            handleFunc: (data) => this.props.deleteUser(data),
+            dataFunc: item.id
+        });
+    }
     
     render() {
         let language = this.props.language;
@@ -99,14 +111,14 @@ class TableManageUser extends Component {
                     <table className="user-table">
                         <thead>
                             <tr>
-                                <th><FormattedMessage id="user.email" defaultMessage="Email"/></th>
-                                <th><FormattedMessage id="user.lastName" defaultMessage="Họ"/></th>
-                                <th><FormattedMessage id="user.firstName" defaultMessage="Tên"/></th>
-                                <th><FormattedMessage id="user.role" defaultMessage="Vai trò"/></th>
-                                <th><FormattedMessage id="user.position" defaultMessage="Chức vụ"/></th>
-                                <th><FormattedMessage id="user.phoneNumber" defaultMessage="Số điện thoại"/></th>
-                                <th><FormattedMessage id="user.address" defaultMessage="Địa chỉ"/></th>
-                                <th><FormattedMessage id="user.action" defaultMessage="Hành động"/></th>
+                                <th><FormattedMessage id="user.email"/></th>
+                                <th><FormattedMessage id="user.lastName"/></th>
+                                <th><FormattedMessage id="user.firstName"/></th>
+                                <th><FormattedMessage id="user.role"/></th>
+                                <th><FormattedMessage id="user.position"/></th>
+                                <th><FormattedMessage id="user.phoneNumber"/></th>
+                                <th><FormattedMessage id="user.address"/></th>
+                                <th><FormattedMessage id="user.action"/></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -134,10 +146,20 @@ class TableManageUser extends Component {
                                         <td>{item.phoneNumber}</td>
                                         <td className="td-muted">{item.address}</td>
                                         <td>
-                                            <button type="button" className="btn-edit" title="Chỉnh sửa" aria-label="Chỉnh sửa" onClick={() => onEdit(item)}>
+                                            <button
+                                                type="button"
+                                                className="btn-edit"
+                                                title={this.props.intl.formatMessage({ id: 'admin.tableManageUser.edit'})}
+                                                aria-label={this.props.intl.formatMessage({ id: 'admin.tableManageUser.edit'})}
+                                                onClick={() => onEdit(item)}>
                                                 <i className="fas fa-pencil-alt" />
                                             </button>
-                                            <button type="button" className="btn-delete" title="Xóa" aria-label="Xóa" onClick={() => onDelete(item.id)}>
+                                            <button
+                                                type="button"
+                                                className="btn-delete"
+                                                title={this.props.intl.formatMessage({ id: 'admin.tableManageUser.delete'})}
+                                                aria-label={this.props.intl.formatMessage({ id: 'admin.tableManageUser.delete'})}
+                                                onClick={() => this.handleDeleteWithConfirm(item)}>
                                                 <i className="fas fa-trash-alt" />
                                             </button>
                                         </td>
@@ -147,15 +169,15 @@ class TableManageUser extends Component {
                         </tbody>
                     </table>
                     <div className="pagination-wrapper">
-                                <div className="pagination-meta">
+                        <div className="pagination-meta">
                             <label>
-                                <span>Hiển thị </span>
+                                <span><FormattedMessage id="pagination.showing" /> </span>
                                 <select value={itemsPerPage} onChange={this.handleChangeItemsPerPage}>
                                     {itemsPerPageOptions.map(opt => (
                                         <option key={opt} value={opt}>{opt}</option>
                                     ))}
                                 </select>
-                                <span> / tổng {totalItems} mục</span>
+                                <span> <FormattedMessage id="pagination.total" values={{ count: totalItems }} /></span>
                             </label>
                         </div>
                         <div className="pagination-controls">
@@ -188,7 +210,8 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllUsers: (page, limit, q) => dispatch(actions.fetchAllUsers(page, limit, q)),
         deleteUser: (userId) => dispatch(actions.deleteUser(userId))
+        ,setContentOfConfirmModal: (contentOfConfirmModal) => dispatch(actions.setContentOfConfirmModal(contentOfConfirmModal))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableManageUser);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TableManageUser));
