@@ -192,10 +192,10 @@ class Header extends Component {
                     {/* Logo and Brand */}
                     <div className="header-brand">
                         <div className="brand-logo">
-                            <img src={logo} alt="ForHealth" />
+                            <img src={logo} alt="BookingCare" />
                         </div>
                         <div className="brand-text">
-                            <span className="brand-name">ForHealth</span>
+                            <span className="brand-name">BookingCare</span>
                             <span className="brand-subtitle">
                                 {language === LANGUAGE.VI ? 'Quản trị' : 'Admin Portal'}
                             </span>

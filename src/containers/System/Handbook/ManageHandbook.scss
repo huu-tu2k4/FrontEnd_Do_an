@@ -22,3 +22,27 @@
     max-height: 120px;
     margin-left: 12px;
 }
+
+/* Shared user-table styles */
+$primary: #4f46e5;
+$text-main: #1e293b;
+$border: #e2e8f0;
+$bg-header: #1e293b;
+$bg-row-alt: #f8fafc;
+$bg-hover: #eef2ff;
+$radius: 10px;
+
+.table-wrapper { width:100%; overflow-x:auto; border-radius:$radius; box-shadow:0 4px 24px rgba(0,0,0,0.06); background:#fff; padding:8px; }
+table.user-table { width:100%; border-collapse:collapse; font-size:14px; font-family:"Segoe UI", sans-serif;
+    thead { background:$bg-header; th { padding:12px 16px; color:#fff; font-weight:600; text-transform:uppercase; } }
+    tbody { tr { border-bottom:1px solid $border; transition:background 0.15s; &:nth-child(even){background:$bg-row-alt;} &:hover{background:$bg-hover;} td{ padding:12px 16px; color:$text-main; vertical-align:middle; } } }
+    .btn-edit { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:8px; background:#e0e7ff; color:$primary; border:none; }
+    .btn-edit:hover { background:$primary; color:#fff; }
+}
+
+/* Modal styles */
+.custom-modal-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; z-index:9999; }
+.custom-modal { width:90%; max-width:900px; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.2); }
+.custom-modal .modal-header { padding:12px 16px; border-bottom:1px solid $border; }
+.custom-modal .modal-body { padding:16px; }
+.custom-modal .modal-footer { padding:12px 16px; border-top:1px solid $border; display:flex; gap:8px; justify-content:flex-end; }

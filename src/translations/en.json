@@ -116,14 +116,39 @@
             "title": "Manage Specialty",
             "name-vi": "Specialty Name (Vietnamese)",
             "name-en": "Specialty Name (English)",
-            "save": "Save Specialty"
+            "save": "Save Specialty",
+            "list": "List of Specialties",
+            "search": "Search Specialties",
+            "add-new": "Add New Specialty",
+            "table": {
+                "index": "STT",
+                "nameVi": "Name (VI)",
+                "nameEn": "Name (EN)",
+                "image": "Image",
+                "actions": "Actions"
+            }
         },
         "manage-clinic": {
             "title": "Manage Clinic",
             "name": "Clinic Name",
             "address": "Clinic Address",
             "description": "Description of the clinic",
-            "save": "Save Clinic"
+            "save": "Save Clinic",
+            "update-success": "Update successful!",
+            "create-success": "Creation successful!",
+            "create-failed": "Creation failed!",
+            "list-title": "List of Clinics",
+            "search-placeholder": "Search clinics",
+            "add-new": "Add New Clinic",
+            "table": {
+                "index": "STT",
+                "name": "Clinic Name",
+                "address": "Address",
+                "image": "Image",
+                "actions": "Actions",
+                "edit": "Edit"
+            },
+            "edit-modal-title": "Edit Clinic"
         },
         "manage-handbook": {
             "title": "Manage Health Handbook",
@@ -133,7 +158,17 @@
             "content": "Detailed content of the handbook",
             "save": "Save Handbook",
             "specialty": "Related Specialty",
-            "select-specialty": "Select Specialty (if any)"
+            "select-specialty": "Select Specialty (if any)",
+            "list": "List of Health Handbooks",
+            "search": "Search Health Handbooks",
+            "add-new": "Add New Health Handbook",
+            "table": {
+                "index": "STT",
+                "titleVi": "Title (VI)",
+                "titleEn": "Title (EN)",
+                "specialty": "Specialty",
+                "actions": "Actions"
+            }
         }
         ,
         "tableManageUser": {
@@ -234,7 +269,7 @@
     },
     "about": {
         "title": "What the media says about online doctor appointment websites",
-        "description": "ForHealth is a technology platform that helps patients easily book appointments and connect with specialized doctors. With the mission of providing the best healthcare experience, ForHealth always strives to become a trusted companion for the people of Vietnam."
+        "description": "BookingCare is a technology platform that helps patients easily book appointments and connect with specialized doctors. With the mission of providing the best healthcare experience, BookingCare always strives to become a trusted companion for the people of Vietnam."
     },
     "footer": {
         "contact": "Contact: ",
@@ -268,10 +303,10 @@
         "update_failed": "Failed to update profile"
     },
     "aiChatbot": {
-        "initialGreeting": "Hello! I'm For Health AI Assistant. Describe your symptoms and I'll suggest the most suitable specialty.",
+        "initialGreeting": "Hello! I'm Booking-Care AI Assistant. Describe your symptoms and I'll suggest the most suitable specialty.",
         "floatingTitle": "AI Assistant",
         "floatingSubtitle": "24/7 Support",
-        "headerTitle": "For Health AI Assistant",
+        "headerTitle": "Booking-Care AI Assistant",
         "headerSubtitle": "Specialty suggestions",
         "close": "Close",
         "analyzing": "Analyzing symptoms...",
@@ -282,5 +317,10 @@
         "adviceDefault": "You should see a doctor soon for diagnosis and timely treatment.",
         "mainSpecialtyLabel": "Suggested specialty:",
         "adviceLabel": "Advice:"
+    },
+    "button": {
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "save-changes": "Save Changes"
     }
 }

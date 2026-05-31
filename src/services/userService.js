@@ -80,9 +80,15 @@ const postVerifyBookAppointment = (data) => {
 const createNewSpecialtyService = (data) => {
     return axios.post('/api/create-new-specialty', data);
 }
-const getAllSpecialty = (q) => {
+const updateSpecialty = (id, data) => {
+    return axios.put(`/api/specialty/${id}`, data);
+}
+const getAllSpecialty = (q, page, limit) => {
     let url = '/api/get-specialty';
-    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    const params = [];
+    if (q !== undefined && q !== null && String(q).trim() !== '') params.push(`q=${encodeURIComponent(q)}`);
+    if (page !== undefined && limit !== undefined) params.push(`page=${page}&limit=${limit}`);
+    if (params.length) url += `?${params.join('&')}`;
     return axios.get(url);
 }
 const getDetailSpecialtyById = (data) => {
@@ -91,9 +97,15 @@ const getDetailSpecialtyById = (data) => {
 const createNewClinic = (data) => {
     return axios.post('/api/create-new-clinic', data);
 }
-const getAllClinic = (q) => {
+const updateClinic = (id, data) => {
+    return axios.put(`/api/clinic/${id}`, data);
+}
+const getAllClinic = (q, page, limit) => {
     let url = '/api/get-clinic';
-    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    const params = [];
+    if (q !== undefined && q !== null && String(q).trim() !== '') params.push(`q=${encodeURIComponent(q)}`);
+    if (page !== undefined && limit !== undefined) params.push(`page=${page}&limit=${limit}`);
+    if (params.length) url += `?${params.join('&')}`;
     return axios.get(url);
 }
 const getDetailClinicById = (data) => {
@@ -111,9 +123,12 @@ const postCancelAppointment = (data) => {
 const aiSuggestSpecialty = (symptoms) => {
     return axios.post('/api/suggest-specialty', { symptoms });
 }
-const getAllhandbooks = (q) => {
+const getAllhandbooks = (q, page, limit) => {
     let url = '/api/handbook/categories';
-    if (q !== undefined && q !== null) url += `?q=${encodeURIComponent(q)}`;
+    const params = [];
+    if (q !== undefined && q !== null && String(q).trim() !== '') params.push(`q=${encodeURIComponent(q)}`);
+    if (page !== undefined && limit !== undefined) params.push(`page=${page}&limit=${limit}`);
+    if (params.length) url += `?${params.join('&')}`;
     return axios.get(url);
 }
 const getHandbookById = (id) => {
@@ -148,9 +163,11 @@ export {
     createNewSpecialtyService,
     getAllSpecialty,
     getDetailSpecialtyById,
+    updateSpecialty,
     createNewClinic,
     getAllClinic,
     getDetailClinicById,
+    updateClinic,
     getAllPatientForDoctor,
     postSendRemedy,
     postCancelAppointment,

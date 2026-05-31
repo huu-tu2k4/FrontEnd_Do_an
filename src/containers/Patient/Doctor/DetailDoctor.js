@@ -11,18 +11,18 @@ class DetailDoctor extends Component {
 
     constructor(props) {
         super(props);
+        const idFromRoute = props.match && props.match.params && props.match.params.id ? props.match.params.id : -1;
         this.state = {
             detailDoctor: {},
             nameDoctor: '',
-            currentId: -1,
+            currentId: idFromRoute,
             selectedDate: null
         }
     }
 
     componentDidMount() {
-        if(this.props.match && this.props.match.params && this.props.match.params.id) {
-            let id = this.props.match.params.id;
-            this.setState({ currentId: id });
+        const id = this.state.currentId;
+        if (id && id !== -1) {
             this.props.fetchDetailDoctor(id);
         }
     }

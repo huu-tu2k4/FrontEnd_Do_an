@@ -17,3 +17,105 @@
     }
 
 }
+
+/* Shared table styles copied from Admin TableManageUser */
+$primary: #4f46e5;
+$primary-dark: #3730a3;
+$danger: #ef4444;
+$danger-dark: #dc2626;
+$text-main: #1e293b;
+$text-muted: #64748b;
+$border: #e2e8f0;
+$bg-header: #1e293b;
+$bg-row-alt: #f8fafc;
+$bg-hover: #eef2ff;
+$radius: 10px;
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: $radius;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+table.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: "Segoe UI", sans-serif;
+    background: #fff;
+
+    thead {
+        background: $bg-header;
+
+        th {
+            padding: 14px 16px;
+            color: #fff;
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+            letter-spacing: 0.03em;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    }
+
+    tbody {
+        tr {
+            border-bottom: 1px solid $border;
+            transition: background 0.15s;
+
+            &:nth-child(even) { background: $bg-row-alt; }
+            &:hover { background: $bg-hover; }
+
+            td { padding: 12px 16px; color: $text-main; vertical-align: middle; }
+        }
+    }
+
+    .badge { display:inline-block; padding:3px 8px; border-radius:999px; background:#eef2ff; color:$primary; font-weight:600; font-size:13px; }
+
+    .btn-edit,
+    .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+        font-size: 14px;
+    }
+    .btn-edit { background: #e0e7ff; color: $primary; margin-right: 6px; }
+    .btn-edit:hover { background: $primary; color: #fff; }
+    .btn-delete { background: #fee2e2; color: $danger; }
+    .btn-delete:hover { background: $danger; color: #fff; }
+}
+
+@media (max-width: 720px) {
+    table.user-table thead th, table.user-table tbody td { padding: 10px 12px; font-size: 13px; }
+    .btn-edit, .btn-delete { width: 30px; height: 30px; }
+}
+
+/* Modal styles for create/edit */
+.custom-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.custom-modal {
+    width: 90%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.custom-modal .modal-header { padding: 12px 16px; border-bottom: 1px solid $border; }
+.custom-modal .modal-body { padding: 16px; }
+.custom-modal .modal-footer { padding: 12px 16px; border-top: 1px solid $border; display:flex; gap:8px; justify-content:flex-end; }

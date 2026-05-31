@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './HomeHeader.scss';
-import logo from '../../assets/anhlogo.png';
+import logo from '../../assets/logo-bookingcare.png';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGE, path } from '../../utils/constant';
 import { changeLanguageApp } from '../../store/actions/appActions';

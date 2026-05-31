@@ -43,7 +43,7 @@
             "crud": "CRUD người dùng",
             "crud-redux": "Quản lý người dùng",
             "clinic": "Phòng khám",
-            "manage-clinic": "Quản lý phòng khám",
+            "manage-clinic": "Quản lý cơ sở y tế",
             "specialty": "Chuyên khoa",
             "manage-specialty": "Quản lý chuyên khoa",
             "handbook": "Cẩm nang",
@@ -103,28 +103,53 @@
             "select-payment": "Chọn phương thức",
             "province": "Tỉnh thành làm việc",
             "select-province": "Chọn tỉnh thành",
-            "clinic_name": "Tên Phòng Khám",
-            "clinic_address": "Địa chỉ phòng khám",
+            "clinic_name": "Tên Cơ Sở Y Tế",
+            "clinic_address": "Địa chỉ cơ sở y tế",
             "note": "Ghi Chú",
             "content": "Nội dung giới thiệu bác sĩ",
             "specialty": "Chuyên khoa",
             "select-specialty": "Chọn chuyên khoa",
-            "clinic": "Phòng khám",
-            "select-clinic": "Chọn phòng khám"
+            "clinic": "Cơ sở y tế",
+            "select-clinic": "Chọn cơ sở y tế"
         },
         "manage-specialty": {
             "description": "Mô tả về chuyên khoa",
             "title": "Quản lý chuyên khoa",
             "name-vi": "Tên chuyên khoa (Tiếng Việt)",
             "name-en": "Tên chuyên khoa (Tiếng Anh)",
-            "save": "Lưu chuyên khoa"
+            "save": "Lưu chuyên khoa",
+            "list": "Danh sách chuyên khoa",
+            "search": "Tìm kiếm chuyên khoa",
+            "add-new": "Thêm chuyên khoa mới",
+            "table": {
+                "index": "STT",
+                "nameVi": "Tên (VI)",
+                "nameEn": "Tên (EN)",
+                "image": "Ảnh",
+                "actions": "Hành động"
+            }
         },
         "manage-clinic": {
-            "title": "Quản lý phòng khám",
-            "name": "Tên phòng khám",
-            "address": "Địa chỉ phòng khám",
-            "description": "Mô tả về phòng khám",
-            "save": "Lưu phòng khám"
+            "title": "Quản lý cơ sở y tế",
+            "name": "Tên cơ sở y tế",
+            "address": "Địa chỉ cơ sở y tế",
+            "description": "Mô tả về cơ sở y tế",
+            "save": "Lưu cơ sở y tế",
+            "update-success": "Cập nhật thành công!",
+            "create-success": "Tạo mới thành công!",
+            "create-failed": "Tạo mới thất bại!",
+            "list-title": "Danh sách cơ sở y tế",
+            "search-placeholder": "Tìm kiếm cơ sở y tế",
+            "add-new": "Thêm cơ sở y tế mới",
+            "table": {
+                "index": "STT",
+                "name": "Tên cơ sở y tế",
+                "address": "Địa chỉ",
+                "image": "Ảnh",
+                "actions": "Hành động",
+                "edit": "Sửa"
+            },
+            "edit-modal-title": "Chỉnh sửa cơ sở y tế"
         },
         "manage-handbook": {
             "title": "Quản lý cẩm nang sức khỏe",
@@ -134,7 +159,17 @@
             "content": "Nội dung chi tiết của cẩm nang",
             "save": "Lưu cẩm nang",
             "specialty": "Chuyên khoa liên quan",
-            "select-specialty": "Chọn chuyên khoa (nếu có)"
+            "select-specialty": "Chọn chuyên khoa (nếu có)",
+            "list": "Danh sách cẩm nang",
+            "search": "Tìm kiếm cẩm nang",
+            "add-new": "Thêm cẩm nang mới",
+            "table": {
+                "index": "STT",
+                "titleVi": "Tiêu đề (VI)",
+                "titleEn": "Tiêu đề (EN)",
+                "specialty": "Chuyên khoa",
+                "actions": "Hành động"
+            }
         }
         ,
         "tableManageUser": {
@@ -235,7 +270,7 @@
     },
     "about": {
         "title": "Truyền thông nói gì về các web đặt lịch khám bệnh trực tuyến",
-        "description": "ForHealth là nền tảng công nghệ giúp người bệnh dễ dàng đặt lịch khám và kết nối với các bác sĩ chuyên môn. Với sứ mệnh mang lại trải nghiệm chăm sóc sức khỏe tốt nhất, ForHealth luôn nỗ lực để trở thành người bạn đồng hành tin cậy của người dân Việt Nam."
+        "description": "BookingCare là nền tảng công nghệ giúp người bệnh dễ dàng đặt lịch khám và kết nối với các bác sĩ chuyên môn. Với sứ mệnh mang lại trải nghiệm chăm sóc sức khỏe tốt nhất, BookingCare luôn nỗ lực để trở thành người bạn đồng hành tin cậy của người dân Việt Nam."
     },
     "footer": {
         "contact": "Liên hệ: ",
@@ -269,10 +304,10 @@
         "update_failed": "Cập nhật hồ sơ thất bại"
     },
     "aiChatbot": {
-        "initialGreeting": "Xin chào! Tôi là Trợ lý AI của For Health. Hãy mô tả triệu chứng để tôi gợi ý chuyên khoa phù hợp nhất cho bạn.",
+        "initialGreeting": "Xin chào! Tôi là Trợ lý AI của Booking-Care. Hãy mô tả triệu chứng để tôi gợi ý chuyên khoa phù hợp nhất cho bạn.",
         "floatingTitle": "Trợ lý AI",
         "floatingSubtitle": "Hỗ trợ 24/7",
-        "headerTitle": "Trợ lý AI For Health",
+        "headerTitle": "Trợ lý AI Booking-Care",
         "headerSubtitle": "Gợi ý chuyên khoa",
         "close": "Đóng",
         "analyzing": "Đang phân tích triệu chứng...",
@@ -283,5 +318,10 @@
         "adviceDefault": "Bạn nên đi khám sớm để được chẩn đoán và điều trị kịp thời.",
         "mainSpecialtyLabel": "Chuyên khoa nên khám:",
         "adviceLabel": "Lời khuyên:"
+    },
+    "button": {
+        "edit": "Sửa",
+        "cancel": "Hủy",
+        "save-changes": "Lưu thay đổi"
     }
 }
