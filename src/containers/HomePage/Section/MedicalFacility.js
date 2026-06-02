@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import Slider from 'react-slick';
-import { getAllClinic } from '../../../services/userService';
+import { fetchAllClinics } from '../../../store/actions/adminActions';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import { withRouter } from 'react-router';
 
@@ -10,24 +10,11 @@ class MedicalFacility extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            dataClinics: [],
-            loading: false
-        }
+        this.state = {}
     }
 
     async componentDidMount() {
-        this.setState({ loading: true });
-        try {
-            let res = await getAllClinic();
-            if (res && res.data) {
-                this.setState({ dataClinics: res.data });
-            }
-        } catch (e) {
-            console.error('Fetch clinics error', e);
-        } finally {
-            this.setState({ loading: false });
-        }
+        this.props.fetchAllClinics();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -49,9 +36,9 @@ class MedicalFacility extends Component {
                         <button className="btn-section" onClick={() => this.props.history.push('/clinics')}><FormattedMessage id="section.see-more" /></button>
                     </div>
                     <div className="section-body" style={{ position: 'relative' }}>
-                        <SectionLoadingOverlay active={this.state.loading} text={this.props.language === 'vi' ? 'Đang tải...' : 'Loading...'} />
+                        <SectionLoadingOverlay active={this.props.isLoadingClinics} text={this.props.language === 'vi' ? 'Đang tải...' : 'Loading...'} />
                         <Slider {...this.props.settings}>
-                            {this.state.dataClinics.map((item, index) => {
+                            {(this.props.clinics || []).map((item, index) => {
                                 return (
                                     <div className="section-customize medical-facility-item" key={index} onClick={() => this.handleViewDetailClinic(item)}>
                                         
@@ -86,4 +73,15 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MedicalFacility));
+const mapDispatch = {
+    fetchAllClinics
+};
+
+const mapState = state => ({
+    isLoggedIn: state.user.isLoggedIn,
+    language: state.app.language,
+    clinics: state.admin.clinics,
+    isLoadingClinics: state.admin.isLoadingClinics
+});
+
+export default withRouter(connect(mapState, mapDispatch)(MedicalFacility));

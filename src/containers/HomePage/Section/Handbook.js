@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { FormattedMessage } from 'react-intl';
 import Slider from 'react-slick';
-import { getAllhandbooks } from '../../../services/userService';
+import { fetchAllHandbooks } from '../../../store/actions/adminActions';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import { withRouter } from 'react-router';
 
@@ -12,29 +12,13 @@ class Handbook extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            handbooks: [],
-            loading: false
-        }
+        this.state = {}
     }
 
     componentDidMount() {
-        this.handleGetAllHandbooks();
+        this.props.fetchAllHandbooks();
     }
-
-    handleGetAllHandbooks = async () => {
-        this.setState({ loading: true });
-        try {
-            const res = await getAllhandbooks();
-            if (res && res.errCode === 0) {
-                this.setState({ handbooks: res.data ? res.data : [] });
-            }
-        } catch (e) {
-            console.error('Fetch handbooks error', e);
-        } finally {
-            this.setState({ loading: false });
-        }
-    }
+    
 
     handleViewDetailHandbook = (item) => {
         if (this.props.history) {
@@ -43,7 +27,7 @@ class Handbook extends Component {
     }
 
     render() {
-        let { handbooks } = this.state;
+        let { handbooks } = this.props;
         let { language } = this.props;
 
         return (
@@ -59,7 +43,7 @@ class Handbook extends Component {
                         </button>
                     </div>
                     <div className="section-body" style={{ position: 'relative' }}>
-                        <SectionLoadingOverlay active={this.state.loading} text={this.props.language === 'vi' ? 'Đang tải...' : 'Loading...'} />
+                        <SectionLoadingOverlay active={this.props.isLoadingHandbooks} text={this.props.language === 'vi' ? 'Đang tải...' : 'Loading...'} />
                         <Slider {...this.props.settings}>
                             {handbooks && handbooks.length > 0 &&
                                 handbooks.map((item, index) => {
@@ -94,7 +78,9 @@ class Handbook extends Component {
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        language: state.app.language
+        language: state.app.language,
+        handbooks: state.admin.handbooks,
+        isLoadingHandbooks: state.admin.isLoadingHandbooks
     };
 };
 
@@ -102,4 +88,8 @@ const mapDispatchToProps = dispatch => {
     return {};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Handbook));
+const mapDispatch = {
+    fetchAllHandbooks
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatch)(Handbook));

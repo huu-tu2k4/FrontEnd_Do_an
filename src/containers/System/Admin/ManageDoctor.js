@@ -10,7 +10,6 @@ import Select from 'react-select';
 import GlobalLoadingOverlay from '../../../components/GlobalLoadingOverlay/GlobalLoadingOverlay';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import {CRUD_ACTIONS, LANGUAGE} from '../../../utils';
-import { getDetailInforDoctor } from '../../../services/userService';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -19,7 +18,6 @@ class ManageDoctor extends Component {
     constructor(props){
         super(props);
         this.state = {
-            //save to markdown table
             contentMarkdown: '',
             contentHTML: '',
             selectedDoctor: '',
@@ -27,15 +25,12 @@ class ManageDoctor extends Component {
             hasOldData: false,
             listDoctors: [],
 
-            //save to doctor_infor table
             listPrice: [],
             listPayment: [],
             listProvince: [],
             listClinic: [],
             listSpecialty: [],
-            listClinic: [],
-            // loading for the doctor info section (price/payment/clinic/etc.)
-            loadingDoctorInfo: true,
+
             selectedPrice: '',
             selectedPayment: '',
             selectedProvince: '',
@@ -96,15 +91,6 @@ class ManageDoctor extends Component {
             })
         }
 
-        // hide section loader when doctors and required data are available
-        if ((prevProps.listDoctors !== this.props.listDoctors || prevProps.listDataRequiredDoctorInfor !== this.props.listDataRequiredDoctorInfor)) {
-            const hasDoctors = this.props.listDoctors && this.props.listDoctors.length > 0;
-            const req = this.props.listDataRequiredDoctorInfor;
-            const hasRequired = req && ((req.price && req.price.length > 0) || (req.payment && req.payment.length > 0) || (req.province && req.province.length > 0) || (req.specialty && req.specialty.length > 0) || (req.clinic && req.clinic.length > 0));
-            if (hasDoctors && hasRequired && this.state.loadingDoctorInfo) {
-                this.setState({ loadingDoctorInfo: false });
-            }
-        }
     }
 
     buildDataInputSelect = (inputData, type) => {
@@ -231,7 +217,7 @@ class ManageDoctor extends Component {
     handleChangeSelectedDoctor = async (selectedDoctor) => {
         this.setState({ selectedDoctor: selectedDoctor });
 
-        let res = await getDetailInforDoctor(selectedDoctor.value);
+        let res = await this.props.fetchDetailDoctor(selectedDoctor.value);
         console.log('check res: ', res);
         if(res && res.errCode === 0 && res.data && res.data.markdownData && res.data.markdownData.contentMarkdown) {
             let markdown = res.data.markdownData;
@@ -313,7 +299,7 @@ class ManageDoctor extends Component {
                     </div>
                 </div>
                 <div className="row doctor-infor-extra" style={{ position: 'relative' }}>
-                    <SectionLoadingOverlay active={this.state.loadingDoctorInfo} text={this.props.language === LANGUAGE.VI ? 'Đang tải...' : 'Loading...'} />
+                    <SectionLoadingOverlay active={this.props.isLoadingRequiredDoctorInfor} text={this.props.language === LANGUAGE.VI ? 'Đang tải...' : 'Loading...'} />
                     <div className="col-4 form-group">
                         <label><FormattedMessage id="admin.manage-doctor.price" />(*)</label>
                         <Select
@@ -411,7 +397,9 @@ const mapStateToProps = state => {
     return {
         language: state.app.language,
         listDoctors: state.admin.allDoctors,
-        listDataRequiredDoctorInfor: state.admin.allDataRequiredDoctorInfor
+        listDataRequiredDoctorInfor: state.admin.allDataRequiredDoctorInfor,
+        isLoadingRequiredDoctorInfor: state.admin.isLoadingRequiredDoctorInfor,
+        detailDoctor: state.user.detailDoctor,
     };
 };
 
@@ -419,9 +407,8 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
         getRequiredDoctorInfor: () => dispatch(actions.getRequiredDoctorInfor()),
-        // getDoctorPayment: () => dispatch(actions.getDoctorPayment()),
-        // getDoctorProvince: () => dispatch(actions.getDoctorProvince()),
-        saveDetailDoctor: (data) => dispatch(actions.saveDetailDoctor(data))
+        saveDetailDoctor: (data) => dispatch(actions.saveDetailDoctor(data)),
+        fetchDetailDoctor: (id) => dispatch(actions.fetchDetailDoctor(id))
     };
 };
 

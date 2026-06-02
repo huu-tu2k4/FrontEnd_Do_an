@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
-import { getAllClinic } from '../../../services/userService';
+import { fetchAllClinics } from '../../../store/actions/adminActions';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import HomeHeader from '../../HomePage/HomeHeader';
 import { LANGUAGE } from '../../../utils';
@@ -14,15 +14,13 @@ class AllClinics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clinics: [],
-            searchQuery: '',
-            loading: false
+            searchQuery: ''
         };
         this.searchTimeout = null;
     }
 
     componentDidMount() {
-        this.fetchClinics('');
+        this.props.fetchAllClinics('');
     }
 
     componentWillUnmount() {
@@ -31,21 +29,9 @@ class AllClinics extends Component {
         }
     }
 
-    fetchClinics = async (q = '') => {
-        this.setState({ loading: true });
-
-        try {
-            const res = await getAllClinic(q);
-            if (res && res.errCode === 0) {
-                this.setState({
-                    clinics: res.data || []
-                });
-            }
-        } catch (e) {
-            console.error('fetchClinics error:', e);
-        } finally {
-            this.setState({ loading: false });
-        }
+    fetchClinics = (q = '') => {
+        // keep method for debounced search but delegate to Redux
+        this.props.fetchAllClinics(q);
     };
 
     handleSearchChange = (e) => {
@@ -70,7 +56,9 @@ class AllClinics extends Component {
     };
 
     render() {
-        const { clinics, searchQuery, loading } = this.state;
+        const { searchQuery } = this.state;
+        const clinics = this.props.clinics || [];
+        const loading = this.props.isLoadingClinics;
         const { language } = this.props;
 
         return (
@@ -152,7 +140,13 @@ class AllClinics extends Component {
 }
 
 const mapStateToProps = state => ({
-    language: state.app.language
+    language: state.app.language,
+    clinics: state.admin.clinics,
+    isLoadingClinics: state.admin.isLoadingClinics
 });
 
-export default withRouter(connect(mapStateToProps)(AllClinics));
+const mapDispatch = {
+    fetchAllClinics
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatch)(AllClinics));

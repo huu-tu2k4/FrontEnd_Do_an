@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
-import { getAllSpecialty } from '../../../services/userService';
+import { fetchAllSpecialties } from '../../../store/actions/adminActions';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import HomeHeader from '../../HomePage/HomeHeader';
 import { LANGUAGE } from '../../../utils';
@@ -14,15 +14,13 @@ class AllSpecialties extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            specialties: [],
-            searchQuery: '',
-            loading: false
+            searchQuery: ''
         };
         this.searchTimeout = null;
     }
 
     componentDidMount() {
-        this.fetchSpecialties('');
+        this.props.fetchAllSpecialties('');
     }
 
     componentWillUnmount() {
@@ -31,21 +29,8 @@ class AllSpecialties extends Component {
         }
     }
 
-    fetchSpecialties = async (q = '') => {
-        this.setState({ loading: true });
-
-        try {
-            const res = await getAllSpecialty(q);
-            if (res && res.errCode === 0) {
-                this.setState({
-                    specialties: res.data || []
-                });
-            }
-        } catch (e) {
-            console.error('fetchSpecialties error:', e);
-        } finally {
-            this.setState({ loading: false });
-        }
+    fetchSpecialties = (q = '') => {
+        this.props.fetchAllSpecialties(q);
     };
 
     handleSearchChange = (e) => {
@@ -70,7 +55,9 @@ class AllSpecialties extends Component {
     };
 
     render() {
-        const { specialties, searchQuery, loading } = this.state;
+        const { searchQuery } = this.state;
+        const specialties = this.props.specialties || [];
+        const loading = this.props.isLoadingSpecialties;
         const { language } = this.props;
 
         return (
@@ -157,4 +144,14 @@ const mapStateToProps = state => ({
     language: state.app.language
 });
 
-export default withRouter(connect(mapStateToProps)(AllSpecialties));
+const mapState = state => ({
+    language: state.app.language,
+    specialties: state.admin.specialties,
+    isLoadingSpecialties: state.admin.isLoadingSpecialties
+});
+
+const mapDispatch = {
+    fetchAllSpecialties
+};
+
+export default withRouter(connect(mapState, mapDispatch)(AllSpecialties));

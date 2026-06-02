@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router';
 
 import HomeHeader from '../../HomePage/HomeHeader';
-import { getAllhandbooks } from '../../../services/userService';
+import { fetchAllHandbooks } from '../../../store/actions/adminActions';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import { LANGUAGE } from '../../../utils';
 
@@ -14,15 +14,13 @@ class AllHandbook extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            handbooks: [],
-            loading: false,
             searchQuery: ''
         };
         this.searchTimeout = null;
     }
 
     componentDidMount() {
-        this.fetchHandbooks('');
+        this.props.fetchAllHandbooks('');
     }
 
     componentWillUnmount() {
@@ -31,21 +29,8 @@ class AllHandbook extends Component {
         }
     }
 
-    fetchHandbooks = async (q = '') => {
-        this.setState({ loading: true });
-
-        try {
-            const res = await getAllhandbooks(q);
-            if (res && res.errCode === 0) {
-                this.setState({
-                    handbooks: res.data || []
-                });
-            }
-        } catch (e) {
-            console.error('fetchHandbooks error:', e);
-        } finally {
-            this.setState({ loading: false });
-        }
+    fetchHandbooks = (q = '') => {
+        this.props.fetchAllHandbooks(q);
     };
 
     handleSearchChange = (e) => {
@@ -70,7 +55,9 @@ class AllHandbook extends Component {
     };
 
     render() {
-        const { handbooks, searchQuery, loading } = this.state;
+        const { searchQuery } = this.state;
+        const handbooks = this.props.handbooks || [];
+        const loading = this.props.isLoadingHandbooks;
         const { language } = this.props;
 
         return (
@@ -157,4 +144,14 @@ const mapStateToProps = state => ({
     language: state.app.language
 });
 
-export default withRouter(connect(mapStateToProps)(AllHandbook));
+const mapState = state => ({
+    language: state.app.language,
+    handbooks: state.admin.handbooks,
+    isLoadingHandbooks: state.admin.isLoadingHandbooks
+});
+
+const mapDispatch = {
+    fetchAllHandbooks
+};
+
+export default withRouter(connect(mapState, mapDispatch)(AllHandbook));

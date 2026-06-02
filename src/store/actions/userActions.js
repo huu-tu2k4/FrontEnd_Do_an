@@ -42,6 +42,7 @@ export const fetchDetailDoctor = (id) => {
             } else {
                 dispatch(fetchDetailDoctorFailed());
             }
+            return res;
         } catch (e) {
             console.log('fetchDetailDoctor error: ', e);
             dispatch(fetchDetailDoctorFailed());

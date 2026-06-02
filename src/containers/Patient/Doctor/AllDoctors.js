@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { getAllDoctors } from '../../../services/userService';
+import { fetchAllDoctorsWithQuery } from '../../../store/actions/adminActions';
 import SectionLoadingOverlay from '../../../components/SectionLoadingOverlay/SectionLoadingOverlay';
 import { LANGUAGE } from '../../../utils';
 import HomeHeader from '../../HomePage/HomeHeader';
@@ -15,8 +15,8 @@ class AllDoctors extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            doctors: [],
-            loading: false
+            loading: false,
+            searchQuery: ''
         }
     }
 
@@ -27,10 +27,7 @@ class AllDoctors extends Component {
     fetchDoctors = async (q) => {
         this.setState({ loading: true });
         try {
-            const res = await getAllDoctors(q);
-            if (res && res.data) {
-                this.setState({ doctors: res.data });
-            }
+            await this.props.fetchAllDoctorsWithQuery(q);
         } catch (e) {
             console.error('fetchDoctors error', e);
         } finally {
@@ -46,7 +43,8 @@ class AllDoctors extends Component {
     }
 
     render() {
-        const { doctors, searchQuery = '' } = this.state;
+        const { searchQuery = '' } = this.state;
+        const doctors = this.props.allDoctors || [];
         const { language } = this.props;
         return (
             <div className="detail-clinic-container">
@@ -109,6 +107,13 @@ class AllDoctors extends Component {
     }
 }
 
-const mapStateToProps = state => ({ language: state.app.language });
+const mapStateToProps = state => ({
+    language: state.app.language,
+    allDoctors: state.admin.allDoctors
+});
 
-export default withRouter(connect(mapStateToProps)(AllDoctors));
+const mapDispatch = {
+    fetchAllDoctorsWithQuery
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatch)(AllDoctors));

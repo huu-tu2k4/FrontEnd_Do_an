@@ -12,6 +12,13 @@ const initialState = {
     topDoctors: [],
     isLoadingTopDoctor: false,
     allDoctors: [],
+    specialties: [],
+    clinics: [],
+    handbooks: [],
+    isLoadingSpecialties: false,
+    isLoadingClinics: false,
+    isLoadingHandbooks: false,
+    isLoadingRequiredDoctorInfor: false,
     allScheduleTime: [],
     allDataRequiredDoctorInfor: [],
 }
@@ -116,6 +123,44 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...copyStateAllCodeScheduleTime
             }
+        case actionTypes.FETCH_ALL_SPECIALTIES_START:
+            state.isLoadingSpecialties = true;
+            return { ...state };
+        case actionTypes.FETCH_ALL_SPECIALTIES_SUCCESS:
+            let copyStateSpecialties = { ...state };
+            copyStateSpecialties.specialties = action.data;
+            copyStateSpecialties.isLoadingSpecialties = false;
+            return { ...copyStateSpecialties };
+        case actionTypes.FETCH_ALL_SPECIALTIES_FAILED:
+            state.specialties = [];
+            state.isLoadingSpecialties = false;
+            return { ...state };
+
+        case actionTypes.FETCH_ALL_CLINICS_START:
+            state.isLoadingClinics = true;
+            return { ...state };
+        case actionTypes.FETCH_ALL_CLINICS_SUCCESS:
+            let copyStateClinics = { ...state };
+            copyStateClinics.clinics = action.data;
+            copyStateClinics.isLoadingClinics = false;
+            return { ...copyStateClinics };
+        case actionTypes.FETCH_ALL_CLINICS_FAILED:
+            state.clinics = [];
+            state.isLoadingClinics = false;
+            return { ...state };
+
+        case actionTypes.FETCH_ALL_HANDBOOKS_START:
+            state.isLoadingHandbooks = true;
+            return { ...state };
+        case actionTypes.FETCH_ALL_HANDBOOKS_SUCCESS:
+            let copyStateHandbooks = { ...state };
+            copyStateHandbooks.handbooks = action.data;
+            copyStateHandbooks.isLoadingHandbooks = false;
+            return { ...copyStateHandbooks };
+        case actionTypes.FETCH_ALL_HANDBOOKS_FAILED:
+            state.handbooks = [];
+            state.isLoadingHandbooks = false;
+            return { ...state };
         case actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILED:
             state.allScheduleTime = [];
             return {
@@ -124,14 +169,19 @@ const adminReducer = (state = initialState, action) => {
         case actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_SUCCESS:
             let copyStateRequiredDoctorInfor = { ...state };
             copyStateRequiredDoctorInfor.allDataRequiredDoctorInfor = action.data;
+            copyStateRequiredDoctorInfor.isLoadingRequiredDoctorInfor = false;
             return {
                 ...copyStateRequiredDoctorInfor
             }
         case actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_FAILED:
             state.allDataRequiredDoctorInfor = [];
+            state.isLoadingRequiredDoctorInfor = false;
             return {
                 ...state
             }
+        case actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_START:
+            state.isLoadingRequiredDoctorInfor = true;
+            return { ...state };
         case actionTypes.CREATE_USER_START:
             state.isSavingUser = true;
             return { ...state }

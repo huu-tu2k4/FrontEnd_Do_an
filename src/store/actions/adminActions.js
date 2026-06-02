@@ -9,7 +9,8 @@ import { getAllCodeService,
         saveDetailDoctorService,
         saveBulkScheduleDoctorService,
         getAllSpecialty,
-        getAllClinic
+        getAllClinic,
+        getAllhandbooks
         } from '../../services/userService';
 import { toast } from 'react-toastify';
 import LanguageUtils from '../../utils/LanguageUtils';
@@ -36,6 +37,7 @@ export const fetchGenderStart = () => {
 }
 export const getRequiredDoctorInfor = () => {
     return async (dispatch, getState) => {
+        dispatch({ type: actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_START });
         try {
             let resPrice = await getAllCodeService('PRICE');
             let resPayment = await getAllCodeService('PAYMENT');
@@ -244,17 +246,96 @@ export const fetchTopDoctor = () => {
 
 export const fetchAllDoctors = () => {
     return async (dispatch, getState) => {
+        return (async () => {
+            try {
+                let res = await getAllDoctors();
+                // console.log('fetchAllDoctors response: ', res);
+                if (res && res.errCode === 0) {
+                    dispatch({ type: actionTypes.FETCH_ALL_DOCTORS_SUCCESS, data: res.data });
+                } else {
+                    dispatch({ type: actionTypes.FETCH_ALL_DOCTORS_FAILED });
+                }
+                return res;
+            } catch (e) {
+                dispatch({ type: actionTypes.FETCH_ALL_DOCTORS_FAILED });
+                console.log('Error fetching all doctors:', e);
+                return { errCode: -1 };
+            }
+        })();
+    }
+}
+
+export const fetchAllDoctorsWithQuery = (q = '') => {
+    return async (dispatch, getState) => {
         try {
-            let res = await getAllDoctors();
-            // console.log('fetchAllDoctors response: ', res);
+            let res = await getAllDoctors(q);
             if (res && res.errCode === 0) {
                 dispatch({ type: actionTypes.FETCH_ALL_DOCTORS_SUCCESS, data: res.data });
             } else {
                 dispatch({ type: actionTypes.FETCH_ALL_DOCTORS_FAILED });
             }
+            return res;
         } catch (e) {
             dispatch({ type: actionTypes.FETCH_ALL_DOCTORS_FAILED });
-            console.log('Error fetching all doctors:', e);
+            console.log('Error fetching all doctors with query:', e);
+            return { errCode: -1 };
+        }
+    }
+}
+
+export const fetchAllSpecialties = (q = '') => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.FETCH_ALL_SPECIALTIES_START });
+            let res = await getAllSpecialty(q);
+            if (res && res.errCode === 0) {
+                dispatch({ type: actionTypes.FETCH_ALL_SPECIALTIES_SUCCESS, data: res.data });
+            } else {
+                dispatch({ type: actionTypes.FETCH_ALL_SPECIALTIES_FAILED });
+            }
+            return res;
+        } catch (e) {
+            dispatch({ type: actionTypes.FETCH_ALL_SPECIALTIES_FAILED });
+            console.log('Error fetching specialties:', e);
+            return { errCode: -1 };
+        }
+    }
+}
+
+export const fetchAllClinics = (q = '') => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.FETCH_ALL_CLINICS_START });
+            let res = await getAllClinic(q);
+            if (res && res.errCode === 0) {
+                dispatch({ type: actionTypes.FETCH_ALL_CLINICS_SUCCESS, data: res.data });
+            } else {
+                dispatch({ type: actionTypes.FETCH_ALL_CLINICS_FAILED });
+            }
+            return res;
+        } catch (e) {
+            dispatch({ type: actionTypes.FETCH_ALL_CLINICS_FAILED });
+            console.log('Error fetching clinics:', e);
+            return { errCode: -1 };
+        }
+    }
+}
+
+export const fetchAllHandbooks = (q = '') => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.FETCH_ALL_HANDBOOKS_START });
+            let res = await getAllhandbooks(q);
+            if (res && res.errCode === 0) {
+                dispatch({ type: actionTypes.FETCH_ALL_HANDBOOKS_SUCCESS, data: res.data });
+            } else {
+                dispatch({ type: actionTypes.FETCH_ALL_HANDBOOKS_FAILED });
+            }
+            return res;
+        } catch (e) {
+            dispatch({ type: actionTypes.FETCH_ALL_HANDBOOKS_FAILED });
+            console.log('Error fetching handbooks:', e);
+            return { errCode: -1 };
         }
     }
 }
