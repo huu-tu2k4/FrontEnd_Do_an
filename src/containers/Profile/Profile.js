@@ -38,16 +38,34 @@ class Profile extends Component {
             this.loadFromProps();
         }
         if (prevProps.genderRedux !== this.props.genderRedux) {
+            const genders = this.props.genderRedux || [];
+            // preserve existing gender in state if present, otherwise try userInfo, otherwise default to first option
+            let genderValue = this.state.gender;
+            if (!genderValue) {
+                const userGender = (this.props.userInfo && (this.props.userInfo.gender || this.props.userInfo.genderId)) || '';
+                if (userGender) genderValue = userGender;
+                else if (genders && genders.length > 0) genderValue = genders[0].keyMap;
+                else genderValue = '';
+            }
             this.setState({
-                genderArr: this.props.genderRedux
-            })
+                genderArr: genders,
+                gender: genderValue
+            });
         }
         if (prevProps.positionRedux !== this.props.positionRedux) {
-            let arr = this.props.positionRedux;
+            const arr = this.props.positionRedux || [];
+            // preserve existing position in state if present, otherwise try userInfo, otherwise default to first option
+            let positionValue = this.state.position;
+            if (!positionValue) {
+                const userPos = (this.props.userInfo && (this.props.userInfo.positionId || this.props.userInfo.position)) || '';
+                if (userPos) positionValue = userPos;
+                else if (arr && arr.length > 0) positionValue = arr[0].keyMap;
+                else positionValue = '';
+            }
             this.setState({
                 positionArr: arr,
-                position: arr && arr.length > 0 ? arr[0].keyMap : ''
-            })
+                position: positionValue
+            });
         }
     }
 
