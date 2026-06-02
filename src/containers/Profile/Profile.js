@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { userLoginSuccess } from '../../store/actions/userActions';
 import _ from 'lodash';
 import * as actions from '../../store/actions';
+import Select from 'react-select';
 
 class Profile extends Component {
     constructor(props) {
@@ -34,37 +35,22 @@ class Profile extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        // Chỉ load lại khi userInfo thay đổi
         if (prevProps.userInfo !== this.props.userInfo) {
             this.loadFromProps();
         }
+
+        // Xử lý gender khi data load xong
         if (prevProps.genderRedux !== this.props.genderRedux) {
-            const genders = this.props.genderRedux || [];
-            // preserve existing gender in state if present, otherwise try userInfo, otherwise default to first option
-            let genderValue = this.state.gender;
-            if (!genderValue) {
-                const userGender = (this.props.userInfo && (this.props.userInfo.gender || this.props.userInfo.genderId)) || '';
-                if (userGender) genderValue = userGender;
-                else if (genders && genders.length > 0) genderValue = genders[0].keyMap;
-                else genderValue = '';
-            }
             this.setState({
-                genderArr: genders,
-                gender: genderValue
+                genderArr: this.props.genderRedux || []
             });
         }
+
+        // Xử lý position khi data load xong
         if (prevProps.positionRedux !== this.props.positionRedux) {
-            const arr = this.props.positionRedux || [];
-            // preserve existing position in state if present, otherwise try userInfo, otherwise default to first option
-            let positionValue = this.state.position;
-            if (!positionValue) {
-                const userPos = (this.props.userInfo && (this.props.userInfo.positionId || this.props.userInfo.position)) || '';
-                if (userPos) positionValue = userPos;
-                else if (arr && arr.length > 0) positionValue = arr[0].keyMap;
-                else positionValue = '';
-            }
             this.setState({
-                positionArr: arr,
-                position: positionValue
+                positionArr: this.props.positionRedux || []
             });
         }
     }
@@ -79,11 +65,12 @@ class Profile extends Component {
                 lastName: userInfo.lastName || '',
                 address: userInfo.address || '',
                 phoneNumber: userInfo.phoneNumber || '',
-                gender: userInfo.gender || userInfo.genderId || '',
-                position: userInfo.positionId || userInfo.position || ''
+                gender: userInfo.genderData.keyMap || '',
+                position: userInfo.positionData.keyMap || ''
             });
         }
-    }
+    };
+
     onChangeInput = (event, field) => {
         let value = event.target.value;
 
@@ -246,7 +233,7 @@ class Profile extends Component {
                         </div>
                         <div className="form-row">
                             <label><FormattedMessage id="user.position" />(*)</label>
-                            <select value={position} name="positionId" className="form-control" onChange={(event) => this.onChangeInput(event, 'position')}>
+                            <select key={`position-${positions?.length}`} value={position} name="positionId" className="form-control" onChange={(event) => this.onChangeInput(event, 'position')}>
                                 {
                                     positions && positions.length > 0 && positions.map((position, index) => {
                                         return (
@@ -260,7 +247,7 @@ class Profile extends Component {
                         </div>
                         <div className="form-row">
                             <label><FormattedMessage id="profile.gender" defaultMessage="Gender" /></label>
-                            <select value={this.state.gender} name="genderId" className="form-control" onChange={(event) => this.onChangeInput(event, 'gender')}>
+                            <select key={`gender-${genders?.length}`} value={this.state.gender} name="genderId" className="form-control" onChange={(event) => this.onChangeInput(event, 'gender')}>
                                 {
                                     genders && genders.length > 0 && genders.map((gender, index) => {
                                         console.log('check gender: ', gender);
