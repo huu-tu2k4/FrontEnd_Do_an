@@ -35,19 +35,14 @@ class Profile extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        // Chỉ load lại khi userInfo thay đổi
         if (prevProps.userInfo !== this.props.userInfo) {
             this.loadFromProps();
         }
-
-        // Xử lý gender khi data load xong
         if (prevProps.genderRedux !== this.props.genderRedux) {
             this.setState({
                 genderArr: this.props.genderRedux || []
             });
         }
-
-        // Xử lý position khi data load xong
         if (prevProps.positionRedux !== this.props.positionRedux) {
             this.setState({
                 positionArr: this.props.positionRedux || []
@@ -65,8 +60,8 @@ class Profile extends Component {
                 lastName: userInfo.lastName || '',
                 address: userInfo.address || '',
                 phoneNumber: userInfo.phoneNumber || '',
-                gender: userInfo.genderData.keyMap || '',
-                position: userInfo.positionData.keyMap || ''
+                gender: userInfo.gender || (userInfo.genderData && userInfo.genderData.keyMap) || '',
+                position: userInfo.positionId || (userInfo.positionData && userInfo.positionData.keyMap) || ''
             });
         }
     };
@@ -74,7 +69,6 @@ class Profile extends Component {
     onChangeInput = (event, field) => {
         let value = event.target.value;
 
-        // For password field: strip non-ASCII characters (prevents Vietnamese diacritics / Unikey input)
         if (field === 'password') {
             // remove all non-ASCII characters
             value = value.replace(/[^\x00-\x7F]/g, '');

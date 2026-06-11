@@ -12,7 +12,6 @@ const ValidatedInput = ({ value, onChange, type, placeholder, className, require
     useEffect(() => {
         if (!touched) return;
         validate(value);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     const validate = (val) => {

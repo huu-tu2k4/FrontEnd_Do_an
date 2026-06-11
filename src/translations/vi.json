@@ -206,7 +206,8 @@
         "select-hour": "Chọn giờ",
         "save-schedule": "Lưu lịch khám",
         "create-schedule": "Tạo lịch khám",
-        "edit": "Sửa"
+        "edit": "Sửa",
+        "error_cancel_before_edit": "Vui lòng hủy các lịch hẹn đã xác nhận trước khi chỉnh sửa lịch làm việc."
     },
     "manage-patient": {
         "title": "Quản lý bệnh nhân đã đặt lịch khám",
@@ -256,7 +257,12 @@
             "confirm": "Xác nhận",
             "cancel": "Hủy",
             "booking_success": "Đặt lịch khám thành công!",
-            "booking_failed": "Đặt lịch thất bại!"
+            "booking_failed": "Đặt lịch thất bại!",
+            "booking_full": "Khung giờ này đã đầy.",
+            "booking_slot_unavailable": "Khung giờ bạn chọn không còn hợp lệ.",
+            "booking_already": "Bạn đã đặt khung giờ này rồi!",
+            "booking_reserve_failed": "Đặt chỗ thất bại, vui lòng thử lại.",
+            "booking_create_failed": "Không thể tạo lịch hẹn."
         }
         
     },

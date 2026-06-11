@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Modal } from 'reactstrap';
 import ProfileDoctor from '../ProfileDoctor';
 import DatePicker from '../../../../components/Input/DatePicker';
@@ -142,7 +142,8 @@ class BookingModal extends Component {
         };
         try {
             let res = await postPatientBookAppointment(inputData);
-            if(res && res.errCode === 0) {
+            const data = (res && res.data) ? res.data : res;
+            if (data && data.errCode === 0) {
                 toast.success(<FormattedMessage id="patient.detail-doctor.booking_success" />);
                 this.props.onClose();
                 this.setState({
@@ -159,7 +160,30 @@ class BookingModal extends Component {
                 })
             } else {
                 this.setState({ isDisabled: false, isShowLoading: false });
-                toast.error(<FormattedMessage id="patient.detail-doctor.booking_failed" />);
+                // map backend errCodes to localized messages
+                if (data) {
+                    switch (data.errCode) {
+                        case 2:
+                            toast.error(this.props.intl.formatMessage({ id: 'patient.detail-doctor.booking_already' }));
+                            break;
+                        case 4:
+                            toast.error(this.props.intl.formatMessage({ id: 'patient.detail-doctor.booking_full' }));
+                            break;
+                        case 5:
+                            toast.error(this.props.intl.formatMessage({ id: 'patient.detail-doctor.booking_slot_unavailable' }));
+                            break;
+                        case 6:
+                            toast.error(this.props.intl.formatMessage({ id: 'patient.detail-doctor.booking_reserve_failed' }));
+                            break;
+                        case 3:
+                            toast.error(this.props.intl.formatMessage({ id: 'patient.detail-doctor.booking_create_failed' }));
+                            break;
+                        default:
+                            toast.error(<FormattedMessage id="patient.detail-doctor.booking_failed" />);
+                    }
+                } else {
+                    toast.error(<FormattedMessage id="patient.detail-doctor.booking_failed" />);
+                }
             }
         } catch (error) {
             this.setState({ isDisabled: false, isShowLoading: false });
@@ -296,4 +320,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingModal);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(BookingModal));

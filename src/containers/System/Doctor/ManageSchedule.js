@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Select from 'react-select';
 import * as actions from '../../../store/actions';
 import { LANGUAGE, dateFormat, USER_ROLE } from '../../../utils';
@@ -210,16 +210,20 @@ class ManageSchedule extends Component {
                     doctorId: selectedDoctor.value,
                     date: formatedDate
                 });
-                if (res && res.errCode === 0) {
-                    toast.success('Update schedule successfully');
+                const data = (res && res.data) ? res.data : res;
+                if (data && data.errCode === 0) {
+                    toast.success(this.props.intl.formatMessage({ id: 'manage-schedule.save-schedule' }) || 'Update schedule successfully');
                     // refresh schedule
                     await this.fetchScheduleForDoctorAndDate(selectedDoctor.value, currentDate);
+                } else if (data && data.errCode === 2) {
+                    // specific server error: verified bookings exist
+                    toast.error(this.props.intl.formatMessage({ id: 'manage-schedule.error_cancel_before_edit' }) || (data.errMessage || 'Update schedule failed'));
                 } else {
-                    toast.error('Update schedule failed');
+                    toast.error(this.props.intl.formatMessage({ id: 'manage-schedule.error_cancel_before_edit' }) || 'Update schedule failed');
                 }
             } catch (err) {
                 console.error('editBulkScheduleDoctorService error', err);
-                toast.error('Update schedule failed');
+                toast.error(this.props.intl.formatMessage({ id: 'manage-schedule.error_cancel_before_edit' }) || 'Update schedule failed');
             }
         } else {
             let res = await this.props.saveBulkScheduleDoctor({
@@ -318,4 +322,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageSchedule);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ManageSchedule));

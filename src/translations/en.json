@@ -205,7 +205,8 @@
         "save-schedule": "Save Schedule",
         "create-schedule": "Create Schedule",
         "select-hour": "Select Hour",
-        "edit": "Edit"
+        "edit": "Edit",
+        "error_cancel_before_edit": "Please cancel verified appointments before editing the schedule."
     },
     "manage-patient": {
         "title": "Manage Booked Patients",
@@ -255,7 +256,12 @@
             "confirm": "Confirm",
             "cancel": "Cancel",
             "booking_success": "Booking appointment successfully!",
-            "booking_failed": "Failed to book appointment!"
+            "booking_failed": "Failed to book appointment!",
+            "booking_full": "This time slot is full.",
+            "booking_slot_unavailable": "Selected time slot is no longer available.",
+            "booking_already": "You have already booked this slot!",
+            "booking_reserve_failed": "Failed to reserve the slot, please try again.",
+            "booking_create_failed": "Could not create booking."
         }
         
     },

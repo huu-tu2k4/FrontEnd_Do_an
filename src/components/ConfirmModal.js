@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-// using custom overlay markup instead of reactstrap Modal
 
 import './ConfirmModal.scss';
 import * as actions from "../store/actions";
@@ -32,7 +31,6 @@ class ConfirmModal extends Component {
     }
 
     handleBackdropClick = (e) => {
-        // close only when clicking on the backdrop (overlay)
         if (e && e.target === e.currentTarget) {
             this.onClose();
         }

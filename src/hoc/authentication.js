@@ -13,14 +13,12 @@ export const userIsAuthenticated = connectedRouterRedirect({
 });
 
 export const userIsNotAuthenticated = connectedRouterRedirect({
-    // Want to redirect the user when they are authenticated
     authenticatedSelector: state => !state.user.isLoggedIn,
     wrapperDisplayName: 'UserIsNotAuthenticated',
     redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/',
     allowRedirectBack: false
 });
 
-// role-check HOC: if not logged in -> redirect to login; if logged in but role not allowed -> show access denied message
 export const userHasRole = (allowedRoles = []) => (WrappedComponent) => {
     const RoleWrapper = (props) => {
         const { isLoggedIn, userInfo } = props;

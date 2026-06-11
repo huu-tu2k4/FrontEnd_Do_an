@@ -30,7 +30,6 @@ class InputSuggestion extends React.Component {
     }
 
     getSuggestions = textInput => {
-        // if (!textInput || textInput.length === 0) return []; //chưa nhập -> chưa gợi ý
         const inputValue = textInput.trim().toLowerCase();
 
         if (!this.props.inputsWithIndex) {
